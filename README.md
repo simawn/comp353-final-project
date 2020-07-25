@@ -1,1 +1,18 @@
-# comp353-final-project
+# COMP353 S2020 - Final Project
+
+### Local Setup
+1. Clone repo
+2. Run `npm run setup`. If it doesn't work, run `npm install` in root folder. Then, cd into `client`, run `npm install` again
+3. Create a `.env` file in the root folder with this content. Change password:
+```
+DB_NAME=jxc353_1
+DB_USER=jxc353_1
+DB_PASS=our db password
+DB_HOST=localhost
+DB_PORT=3307
+```
+4. SSH tunnel into the db with this command: ` ssh -L 3307:jxc353.encs.concordia.ca:3306 username@login.encs.concordia.ca` (Notice the port number: 3307. It should match the port in the .env file). Leave that window open.
+5. Run `npm start`
+
+Frontend: `http://localhost:3000/`
+Backend: `http://localhost:5000/`
