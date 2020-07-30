@@ -7,10 +7,9 @@ USE <SCEHMA TO BE USED>;
 -- Drop all previous tables (ORDER MATTERS)
 -- --------------------------------------------------
 
-DROP TABLE IF EXISTS `Applicants`;
+DROP TABLE IF EXISTS `Applicant`;
 DROP TABLE IF EXISTS `Job`;
 DROP TABLE IF EXISTS `Category`;
-DROP TABLE IF EXISTS `CheckingAccount`;
 DROP TABLE IF EXISTS `CreditCard`;
 DROP TABLE IF EXISTS `PaymentMethod`;
 DROP TABLE IF EXISTS `Employer`;
@@ -26,6 +25,7 @@ DROP TABLE IF EXISTS `Subscription`;
 CREATE TABLE `Subscription`(
   `subscriptionID` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255),
+  `limit` INT,
   `cost` DECIMAL,
   PRIMARY KEY (`subscriptionID`)
 );
@@ -37,37 +37,44 @@ CREATE TABLE `User`(
   `email` VARCHAR(255),
   `firstName` VARCHAR(255),
   `lastName` VARCHAR(255),
-  `privilege` ENUM('admin', 'employer', 'employee'),
+  `isAdmin` BOOLEAN,
   `balance` DECIMAL,
   `suffering` BOOLEAN,
   `active` BOOLEAN,
+  `lastPayment` DATE,
   PRIMARY KEY (`userName`),
   FOREIGN KEY (`subscriptionID`) REFERENCES `Subscription`(`subscriptionID`)
 );
 
-CREATE TABLE `PaymentMethod`(
-  `paymentID` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE `Employer`(
+  `employerID` INT NOT NULL AUTO_INCREMENT,
   `userName` VARCHAR(255) NOT NULL,
-  `privilege` ENUM('cheqing', 'credit'),
-  `lastPayment` DATE,
-  PRIMARY KEY (`paymentID`),
+  PRIMARY KEY (`employerID`),
+  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`)
+);
+
+CREATE TABLE `Employee`(
+  `employeeID` INT NOT NULL AUTO_INCREMENT,
+  `userName` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`employeeID`),
   FOREIGN KEY (`userName`) REFERENCES `User`(`userName`)
 );
 
 CREATE TABLE `CreditCard`(
   `creditCardNumber` VARCHAR(255) NOT NULL,
-  `paymentID` INT NOT NULL,
   `expirationDate` VARCHAR(255),
   `cvv` INT,  
-  PRIMARY KEY (`creditCardNumber`),
-  FOREIGN KEY (`paymentID`) REFERENCES `PaymentMethod`(`paymentID`)
+  PRIMARY KEY (`creditCardNumber`)
 );
 
-CREATE TABLE `CheckingAccount`(
-  `accountNumber` VARCHAR(255) NOT NULL,
-  `paymentID` INT NOT NULL,
-  PRIMARY KEY (`accountNumber`),
-  FOREIGN KEY (`paymentID`) REFERENCES `PaymentMethod`(`paymentID`)
+CREATE TABLE `PaymentMethod`(
+  `paymentID` INT NOT NULL AUTO_INCREMENT,
+  `userName` VARCHAR(255) NOT NULL,
+  `creditCardNumber` VARCHAR(255),
+  `accountNumber` VARCHAR(255),
+  PRIMARY KEY (`paymentID`),
+  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
+  FOREIGN KEY (`creditCardNumber`) REFERENCES `CreditCard`(`creditCardNumber`)
 );
 
 CREATE TABLE `Category`(
@@ -77,22 +84,22 @@ CREATE TABLE `Category`(
 
 CREATE TABLE `Job`(
   `jobID` INT NOT NULL AUTO_INCREMENT,
-  `userName` VARCHAR(255) NOT NULL,
+  `employerID` INT NOT NULL,
   `categoryName` VARCHAR(255) NOT NULL,
   `title` VARCHAR(255),
   `datePosted` DATE,
   `description` VARCHAR(255), -- MORE THAN 255?
   `employeesNeeded` INT,
   PRIMARY KEY (`jobID`),
-  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
+  FOREIGN KEY (`employerID`) REFERENCES `Employer`(`employerID`),
   FOREIGN KEY (`categoryName`) REFERENCES `Category`(`categoryName`)
 );
 
-CREATE TABLE `Applicants`(
-  `userName` VARCHAR(255) NOT NULL,
+CREATE TABLE `Applicant`(
+  `employeeID` INT NOT NULL,
   `jobID` INT NOT NULL,
   `status` ENUM('pending', 'rejected', 'hired', 'withdrawn'),
-  PRIMARY KEY (`userName`, `jobID`),
-  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
+  PRIMARY KEY (`employeeID`, `jobID`),
+  FOREIGN KEY (`employeeID`) REFERENCES `Employee`(`employeeID`),
   FOREIGN KEY (`jobID`) REFERENCES `Job`(`jobID`)
 );
