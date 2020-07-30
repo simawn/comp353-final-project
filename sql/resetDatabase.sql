@@ -1,8 +1,8 @@
 -- RUNNING THIS SCRIPT RESETS THE DATABASE
 
 -- Before running this script ensure to replace the statement below with your schema name
--- USE <SCEHMA TO BE USED>;
-USE assignment1;
+USE <SCEHMA TO BE USED>;
+
 -- --------------------------------------------------
 -- Drop all previous tables (ORDER MATTERS)
 -- --------------------------------------------------
