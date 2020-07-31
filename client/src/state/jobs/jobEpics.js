@@ -27,7 +27,7 @@ const browseJobsEvent = (action$) => {
     ofType(BROWSE_JOBS_REQUEST),
     mergeMap(() =>
       xhr("GET", `/jobs`).pipe(
-        map((response) => browseJobsSuccess(response)),
+        map(({ response }) => browseJobsSuccess(response)),
         catchError((err) => {
           return of(browseJobsError(err));
         })

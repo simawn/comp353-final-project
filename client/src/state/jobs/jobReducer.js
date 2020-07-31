@@ -13,12 +13,13 @@ import {
 } from "./jobActions";
 
 const initialState = {
-  jobs: {},
+  jobsList: [],
   isLoading: false,
   isSubmitting: false,
 };
 
 const jobReducer = (state = initialState, action) => {
+  console.log(action);
   switch (action.type) {
     /* REQUESTS */
     case BROWSE_JOBS_REQUEST: {
@@ -38,7 +39,7 @@ const jobReducer = (state = initialState, action) => {
     case BROWSE_JOBS_SUCCESS: {
       return {
         ...state,
-        jobs: action.payload.jobList,
+        jobsList: action.payload.jobList,
         isLoading: false,
       };
     }

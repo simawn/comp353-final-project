@@ -2,9 +2,6 @@ import { ajax } from "rxjs/ajax";
 
 // NOTE: If we are hosting this on a site then the url in the options object will need to change
 
-// Default content type of our data
-const CONTENT_TYPE = "application/x-www-form-urlencoded";
-
 /**
  * Helper method to augment the XMLHttpRequest (xhr) RxJS call
  *
@@ -15,19 +12,13 @@ const CONTENT_TYPE = "application/x-www-form-urlencoded";
  *
  * @returns {Observable}
  */
-const xhr = (method, url, body = null, contentType = CONTENT_TYPE) => {
+const xhr = (method, url, body = null) => {
   const options = {
     body,
     method,
     responseType: "json",
     url: `http://localhost:5000${url}`,
   };
-
-  // Adding this so we can allow for undefined contentType to trigger default behavior
-  // We will need this for avatars and any other file uploads later.
-  if (contentType) {
-    options.headers["Content-Type"] = contentType;
-  }
 
   return ajax(options);
 };

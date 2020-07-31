@@ -1,16 +1,22 @@
-const express = require('express');
+const express = require("express");
+const cors = require("cors");
 
 const app = express();
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 
-const userRouter = require('./routes/user');
-const bookRouter = require('./routes/book');
+const userRouter = require("./routes/user");
+const bookRouter = require("./routes/book");
+const jobRouter = require("./routes/job");
 
+/* Middleware */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
-app.use('/', userRouter);
-app.use('/', bookRouter);
+/* Routes */
+app.use("/", userRouter);
+app.use("/", bookRouter);
+app.use("/", jobRouter);
 
 const port = process.env.PORT || 5000;
 

@@ -41,18 +41,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AppBar({ openDrawer, setOpenDrawer }) {
+function AppBar({ open, setOpen }) {
   const classes = useStyles();
 
   return (
     <div>
-      <AppBarMUI position="absolute" className={clsx(classes.appBar, openDrawer && classes.appBarShift)}>
+      <AppBarMUI position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
             color="inherit"
-            onClick={() => setOpenDrawer(true)}
-            className={clsx(classes.menuButton, openDrawer && classes.menuButtonHidden)}
+            onClick={() => setOpen(true)}
+            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
           >
             <MenuIcon />
           </IconButton>
