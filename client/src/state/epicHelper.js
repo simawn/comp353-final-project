@@ -1,5 +1,7 @@
 import { ajax } from "rxjs/ajax";
 
+// NOTE: If we are hosting this on a site then the url in the options object will need to change
+
 // Default content type of our data
 const CONTENT_TYPE = "application/x-www-form-urlencoded";
 
@@ -18,7 +20,7 @@ const xhr = (method, url, body = null, contentType = CONTENT_TYPE) => {
     body,
     method,
     responseType: "json",
-    url: `http://localhost:3102${url}`,
+    url: `http://localhost:5000${url}`,
   };
 
   // Adding this so we can allow for undefined contentType to trigger default behavior
