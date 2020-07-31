@@ -1,24 +1,19 @@
 -- RUNNING THIS SCRIPT RESETS THE DATABASE
 
--- Before running this script ensure to replace the statement below with your schema name
-USE comp353_main_project;
+USE jxc353_1;
 
 -- --------------------------------------------------
 -- Drop all previous tables (ORDER MATTERS)
 -- --------------------------------------------------
-
 
 DROP TABLE IF EXISTS `Applicant`;
 DROP TABLE IF EXISTS `PaymentMethod`;
 DROP TABLE IF EXISTS `CreditCard`;
 DROP TABLE IF EXISTS `Admin`;
 DROP TABLE IF EXISTS `Job`;
-DROP TABLE IF EXISTS `Employee`;
-DROP TABLE IF EXISTS `Employer`;
 DROP TABLE IF EXISTS `User`;
 DROP TABLE IF EXISTS `Category`;
 DROP TABLE IF EXISTS `Subscription`;
-
 
 -- --------------------------------------------------
 -- Create all tables (ORDER MATTERS)
@@ -28,7 +23,7 @@ CREATE TABLE `Subscription`(
   `subscriptionID` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255),
   `limit` INT,
-  `cost` DECIMAL,
+  `cost` DECIMAL(19, 4),
   PRIMARY KEY (`subscriptionID`)
 );
 
@@ -39,27 +34,13 @@ CREATE TABLE `User`(
   `email` VARCHAR(255),
   `firstName` VARCHAR(255),
   `lastName` VARCHAR(255),
-  `isAdmin` BOOLEAN,
-  `balance` DECIMAL,
+  `balance` DECIMAL(19, 4),
   `suffering` BOOLEAN,
   `active` BOOLEAN,
   `lastPayment` DATE,
+  `role` ENUM('employer', 'employee', 'admin'),
   PRIMARY KEY (`userName`),
   FOREIGN KEY (`subscriptionID`) REFERENCES `Subscription`(`subscriptionID`)
-);
-
-CREATE TABLE `Employer`(
-  `employerID` INT NOT NULL AUTO_INCREMENT,
-  `userName` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`employerID`),
-  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`)
-);
-
-CREATE TABLE `Employee`(
-  `employeeID` INT NOT NULL AUTO_INCREMENT,
-  `userName` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`employeeID`),
-  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`)
 );
 
 CREATE TABLE `CreditCard`(
@@ -86,22 +67,22 @@ CREATE TABLE `Category`(
 
 CREATE TABLE `Job`(
   `jobID` INT NOT NULL AUTO_INCREMENT,
-  `employerID` INT NOT NULL,
+  `userName` VARCHAR(255) NOT NULL,
   `categoryName` VARCHAR(255) NOT NULL,
   `title` VARCHAR(255),
   `datePosted` DATE,
-  `description` VARCHAR(255), -- MORE THAN 255?
+  `description` VARCHAR(255),
   `employeesNeeded` INT,
   PRIMARY KEY (`jobID`),
-  FOREIGN KEY (`employerID`) REFERENCES `Employer`(`employerID`),
+  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
   FOREIGN KEY (`categoryName`) REFERENCES `Category`(`categoryName`)
 );
 
 CREATE TABLE `Applicant`(
-  `employeeID` INT NOT NULL,
+  `userName` VARCHAR(255) NOT NULL,
   `jobID` INT NOT NULL,
   `status` ENUM('pending', 'rejected', 'hired', 'withdrawn'),
-  PRIMARY KEY (`employeeID`, `jobID`),
-  FOREIGN KEY (`employeeID`) REFERENCES `Employee`(`employeeID`),
+  PRIMARY KEY (`userName`, `jobID`),
+  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
   FOREIGN KEY (`jobID`) REFERENCES `Job`(`jobID`)
 );
