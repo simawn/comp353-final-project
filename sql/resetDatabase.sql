@@ -1,22 +1,24 @@
 -- RUNNING THIS SCRIPT RESETS THE DATABASE
 
 -- Before running this script ensure to replace the statement below with your schema name
-USE <SCEHMA TO BE USED>;
+USE comp353_main_project;
 
 -- --------------------------------------------------
 -- Drop all previous tables (ORDER MATTERS)
 -- --------------------------------------------------
 
+
 DROP TABLE IF EXISTS `Applicant`;
-DROP TABLE IF EXISTS `Job`;
-DROP TABLE IF EXISTS `Category`;
-DROP TABLE IF EXISTS `CreditCard`;
 DROP TABLE IF EXISTS `PaymentMethod`;
-DROP TABLE IF EXISTS `Employer`;
-DROP TABLE IF EXISTS `Employee`;
+DROP TABLE IF EXISTS `CreditCard`;
 DROP TABLE IF EXISTS `Admin`;
+DROP TABLE IF EXISTS `Job`;
+DROP TABLE IF EXISTS `Employee`;
+DROP TABLE IF EXISTS `Employer`;
 DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `Category`;
 DROP TABLE IF EXISTS `Subscription`;
+
 
 -- --------------------------------------------------
 -- Create all tables (ORDER MATTERS)
@@ -62,7 +64,7 @@ CREATE TABLE `Employee`(
 
 CREATE TABLE `CreditCard`(
   `creditCardNumber` VARCHAR(255) NOT NULL,
-  `expirationDate` VARCHAR(255),
+  `expirationDate` DATE,
   `cvv` INT,  
   PRIMARY KEY (`creditCardNumber`)
 );
