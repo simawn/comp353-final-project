@@ -1,4 +1,4 @@
-// React / Redux
+// React
 import React, { useState } from "react";
 
 // Material UI
@@ -6,7 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { CssBaseline, Container, Grid, Paper } from "@material-ui/core";
 
 // Components
-import JobBoard from "../components/JobBoard";
+import EmployeeJobBoard from "../components/EmployeeJobBoard";
+import EmployerJobBoard from "../components/EmployerJobBoard";
 import AppBar from "../components/AppBar";
 import SideBar from "../components/SideBar";
 
@@ -32,24 +33,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// TODO: Render dynamically depending on user
+
+const isEmployee = true;
+
 function Dashboard() {
   const classes = useStyles();
-  const [openDrawer, setOpenDrawer] = useState(true);
+
+  const [open, setOpen] = useState(true);
 
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
-      <SideBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+      <AppBar open={open} setOpen={setOpen} />
+      <SideBar open={open} setOpen={setOpen} />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             {/* Job Board */}
             <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <JobBoard />
-              </Paper>
+              <Paper className={classes.paper}>{isEmployee ? <EmployeeJobBoard /> : <EmployerJobBoard />}</Paper>
             </Grid>
           </Grid>
         </Container>

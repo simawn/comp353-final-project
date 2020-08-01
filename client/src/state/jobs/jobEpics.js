@@ -1,8 +1,3 @@
-/* 
-  This is just an example of what epics should look like.
-  I still need to hook up the back end.
-*/
-
 // RxJS Operators
 import { catchError, mergeMap, map } from "rxjs/operators";
 // Observable Helpers
@@ -17,6 +12,9 @@ import {
   BROWSE_JOBS_REQUEST,
   browseJobsSuccess,
   browseJobsError,
+  BROWSE_CATEGORIES_REQUEST,
+  browseCategoriesSuccess,
+  browseCategoriesError,
   POST_JOB_REQUEST,
   postJobSuccess,
   postJobError,
@@ -27,9 +25,23 @@ const browseJobsEvent = (action$) => {
     ofType(BROWSE_JOBS_REQUEST),
     mergeMap(() =>
       xhr("GET", `/jobs`).pipe(
-        map((response) => browseJobsSuccess(response)),
+        map(({ response }) => browseJobsSuccess(response)),
         catchError((err) => {
           return of(browseJobsError(err));
+        })
+      )
+    )
+  );
+};
+
+const browseCategoriesEvent = (action$) => {
+  return action$.pipe(
+    ofType(BROWSE_CATEGORIES_REQUEST),
+    mergeMap(() =>
+      xhr("GET", `/jobs/categories`).pipe(
+        map(({ response }) => browseCategoriesSuccess(response)),
+        catchError((err) => {
+          return of(browseCategoriesError(err));
         })
       )
     )
@@ -50,4 +62,4 @@ const postJobEvent = (action$) => {
   );
 };
 
-export default combineEpics(browseJobsEvent, postJobEvent);
+export default combineEpics(browseJobsEvent, browseCategoriesEvent, postJobEvent);

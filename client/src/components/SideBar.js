@@ -46,19 +46,19 @@ const useStyles = makeStyles((theme) => ({
 
 // TODO: Render SideBar dynamically depending on what Account the User is
 
-function SideBar({ openDrawer, setOpenDrawer }) {
+function SideBar({ open, setOpen }) {
   const classes = useStyles();
 
   return (
     <Drawer
       variant="permanent"
       classes={{
-        paper: clsx(classes.drawerPaper, !openDrawer && classes.drawerPaperClose),
+        paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
       }}
-      openDrawer={openDrawer}
+      open={open}
     >
       <div className={classes.toolbarIcon}>
-        <IconButton onClick={() => setOpenDrawer(false)}>
+        <IconButton onClick={() => setOpen(false)}>
           <ChevronLeftIcon />
         </IconButton>
       </div>

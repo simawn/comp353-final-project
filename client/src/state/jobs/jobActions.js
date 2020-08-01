@@ -1,14 +1,16 @@
-/* 
-  This is just an example of what actions should look like.
-  I still need to hook up the back end.
-*/
-
 // REQUEST
 
 export const BROWSE_JOBS_REQUEST = "BROWSE_JOBS_REQUEST";
 export const browseJobsRequest = () => {
   return {
     type: BROWSE_JOBS_REQUEST,
+  };
+};
+
+export const BROWSE_CATEGORIES_REQUEST = "BROWSE_CATEGORIES_REQUEST";
+export const browseCategoriesRequest = () => {
+  return {
+    type: BROWSE_CATEGORIES_REQUEST,
   };
 };
 
@@ -30,6 +32,14 @@ export const browseJobsSuccess = (jobList) => {
   };
 };
 
+export const BROWSE_CATEGORIES_SUCCESS = "BROWSE_CATEGORIES_SUCCESS";
+export const browseCategoriesSuccess = (categoryList) => {
+  return {
+    type: BROWSE_CATEGORIES_SUCCESS,
+    payload: { categoryList },
+  };
+};
+
 export const POST_JOB_SUCCESS = "POST_JOB_SUCCESS";
 export const postJobSuccess = (job) => {
   return {
@@ -45,6 +55,14 @@ export const browseJobsError = (error) => ({
   type: BROWSE_JOBS_ERROR,
   payload: { error },
 });
+
+export const BROWSE_CATEGORIES_ERROR = "BROWSE_CATEGORIES_ERROR";
+export const browseCategoriesError = (error) => {
+  return {
+    type: BROWSE_CATEGORIES_ERROR,
+    payload: { error },
+  };
+};
 
 export const POST_JOB_ERROR = "POST_JOB_ERROR";
 export const postJobError = (error) => ({
