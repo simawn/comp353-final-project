@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 // TODO: Render dynamically depending on user
 
 const isEmployee = true;
-const isEmployer = false;
 
 function Dashboard() {
   const classes = useStyles();

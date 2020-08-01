@@ -19,7 +19,6 @@ const initialState = {
 };
 
 const jobReducer = (state = initialState, action) => {
-  console.log(action);
   switch (action.type) {
     /* REQUESTS */
     case BROWSE_JOBS_REQUEST: {

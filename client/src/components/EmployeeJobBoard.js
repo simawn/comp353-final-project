@@ -77,9 +77,7 @@ function EmployerJobBoard() {
           </Button>
         );
       }
-      case "Withdrawn":
-      case "Hired":
-      case "Rejected": {
+      default: {
         return (
           <Button fullWidth disabled variant="contained" color="primary">
             APPLY
@@ -161,6 +159,7 @@ function EmployerJobBoard() {
                     </TableRow>
                   );
                 }
+                return null;
               })}
             </TableBody>
           </Table>
