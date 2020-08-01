@@ -92,7 +92,7 @@ class Login extends Component {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Login
         </Typography>
                     <form className={classes.form} noValidate>
                         <TextField
@@ -133,7 +133,7 @@ class Login extends Component {
                             onClick={this.login}
                             disabled={this.state.loading}
                         >
-                            Sign In
+                            Login
           </Button>
                         <Grid container>
                             <Grid item xs>
@@ -143,7 +143,7 @@ class Login extends Component {
                             </Grid>
                             <Grid item>
                                 <Link href="/register" variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                    {"Don't have an account? Register"}
                                 </Link>
                             </Grid>
                         </Grid>

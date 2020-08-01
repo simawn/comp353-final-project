@@ -7,7 +7,7 @@ module.exports = (passport) => {
     async (username, password, callback) => {
       try {
       // Assuming that all usernames are unique
-        const userData = (await db.query(`SELECT * FROM User WHERE username='${username}'`, { type: db.QueryTypes.SELECT }))[0];
+        const userData = (await db.query(`SELECT * FROM User WHERE userName='${username}'`, { type: db.QueryTypes.SELECT }))[0];
 
         // Username is not found
         if (!userData) throw new Error('Username not found');
@@ -27,13 +27,13 @@ module.exports = (passport) => {
   ));
 
   passport.serializeUser((user, callback) => {
-    callback(null, user.id);
+    callback(null, user.userName);
   });
 
-  passport.deserializeUser(async (id, callback) => {
+  passport.deserializeUser(async (userName, callback) => {
     try {
-      const result = (await db.query(`SELECT * from User WHERE id=${id}`))[0];
-      if (!result[0]) throw new Error('Unable to find user id');
+      const result = (await db.query(`SELECT * from User WHERE userName='${userName}'`))[0];
+      if (!result[0]) throw new Error('Unable to find user');
       callback(null, result);
     } catch (error) {
       return callback(error);

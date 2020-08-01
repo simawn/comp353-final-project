@@ -19,15 +19,21 @@ exports.login = async (req, res, next) => {
   })(req, res, next);
 };
 
-exports.register = async (req, res) => {
-  const { username, password, userType } = req.body;
+exports.register = async (req, res, next) => {
+  const {
+    userName, subscription, password, email, firstName, lastName, role,
+  } = req.body;
   try {
-    const result = (await db.query('SELECT * FROM User WHERE username=?', { replacements: [username], type: db.QueryTypes.SELECT }))[0];
+    const result = (await db.query('SELECT * FROM User WHERE userName=?', { replacements: [userName], type: db.QueryTypes.SELECT }))[0];
     if (result) throw new Error('Username already exists!');
 
     const passwordEncrypt = await bcrypt.hash(password, 10);
 
-    await db.query('INSERT INTO User (username, password, type) VALUES (?, ?, ?)', { replacements: [username, passwordEncrypt, userType], type: db.QueryTypes.INSERT });
+    await db.query('INSERT INTO User (userName, subscriptionID, password, email, firstName, lastName, role, balance, suffering, active) VALUES (?, ?, ?, ?, ?, ?, ?, 0, 0, 1)',
+      {
+        replacements: [userName, subscription, passwordEncrypt, email, firstName, lastName, role],
+        type: db.QueryTypes.INSERT,
+      });
 
     res.sendStatus(200);
   } catch (error) {
@@ -35,7 +41,7 @@ exports.register = async (req, res) => {
   }
 };
 
-exports.logout = async (req, res) => {
+exports.logout = async (req, res, next) => {
   req.logout();
   res.sendStatus(200);
 };

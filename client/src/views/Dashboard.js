@@ -33,7 +33,7 @@ export default class Dashboard extends Component {
             <div>
                 {this.state.userDetails === null && <p>Loading...</p>}
                 {this.state.userDetails === false && <p>Error retrieving user details</p>}
-                {this.state.userDetails && <p>Hi, {this.state.userDetails.username}! You are a {this.state.userDetails.type}</p>}
+                {this.state.userDetails && <p>Hi, {this.state.userDetails.userName}! You are a {this.state.userDetails.role}</p>}
                 <button type="button" onClick={this.logout}>Logout</button> 
             </div>
         )

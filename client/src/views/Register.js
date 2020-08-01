@@ -32,8 +32,11 @@ class Register extends Component {
         this.state = {
             username: '',
             password: '',
+            firstName: '',
+            lastName: '',
+            email: '',
             loading: false,
-            userType: 'seeker',
+            role: 'employee',
             displaySnackbar: false,
             alertSeverity: "info",
             alertMessage: null,
@@ -57,20 +60,39 @@ class Register extends Component {
     register = async () => {
         this.setState({ loading: true });
         try {
-            const username = this.state.username.trim();
+            const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+            const userName = this.state.username.trim();
             const password = this.state.password;
+            const firstName = this.state.firstName.trim();
+            const lastName = this.state.lastName.trim();
+            const email = this.state.email.trim();
+            const role = this.state.role;
+            const subscription = 1;
 
-            if (username.length < 3) throw new Error("Invalid username length");
-            if (password.length < 5) throw new Error("Invalid password length");
+            if (userName.length <= 0) throw new Error("Username cannot be empty");
+            if (password.length <= 5) throw new Error("Password must have at least 6 characters");
+            if (firstName.length <= 0) throw new Error("First name cannot be empty");
+            if (lastName.length <= 0) throw new Error("Last name cannot be empty");
+            if (email.length <= 0) throw new Error("Email cannot be empty");
+            if (!re.test(email)) throw new Error("Invalid email");
 
-            await axios.post('/register', { username, password, userType: this.state.userType }, { withCredentials: true });
+            await axios.post('/register', { 
+                userName, 
+                password, 
+                firstName,
+                lastName,
+                email,
+                role,
+                subscription,
+            }, { withCredentials: true });
+
             this.displaySnackbar("Account created. You may now log in.", "success");
             this.setState({
                 username: '',
                 password: ''
             });
         } catch (error) {
-            this.displaySnackbar("An error occured.", "error");
+            this.displaySnackbar(error.message, "error");
         } finally {
             this.setState({ loading: false });
         }
@@ -92,7 +114,7 @@ class Register extends Component {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign up
+                        Register
               </Typography>
                     <form className={classes.form} noValidate>
                         <Grid container spacing={2}>
@@ -102,11 +124,51 @@ class Register extends Component {
                                     required
                                     fullWidth
                                     id="username"
-                                    label="Usernme"
+                                    label="Username"
                                     name="username"
                                     autoComplete="username"
                                     onChange={(e) => this.setState({ username: e.target.value })}
                                     value={this.state.username}
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    autoComplete="fname"
+                                    name="firstName"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="firstName"
+                                    label="First Name"
+                                    onChange={(e) => this.setState({ firstName: e.target.value })}
+                                    value={this.state.firstName}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="lastName"
+                                    label="Last Name"
+                                    name="lastName"
+                                    autoComplete="lname"
+                                    onChange={(e) => this.setState({ lastName: e.target.value })}
+                                    value={this.state.lastName}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    onChange={(e) => this.setState({ email: e.target.value })}
+                                    value={this.state.email}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -126,8 +188,8 @@ class Register extends Component {
                             <Grid item xs={12}>
                                 <FormControl component="fieldset" required>
                                     <FormLabel component="legend">I'm a(n)</FormLabel>
-                                    <RadioGroup aria-label="userType" name="userType" onChange={(e) => this.setState({ userType: e.target.value })} value={this.state.userType} row>
-                                        <FormControlLabel value="seeker" control={<Radio />} label="Job Seeker" />
+                                    <RadioGroup aria-label="role" name="role" onChange={(e) => this.setState({ role: e.target.value })} value={this.state.role} row>
+                                        <FormControlLabel value="employee" control={<Radio />} label="Employee" />
                                         <FormControlLabel value="employer" control={<Radio />} label="Employer" />
                                     </RadioGroup>
                                 </FormControl>
@@ -141,12 +203,12 @@ class Register extends Component {
                             onClick={this.register}
                             disabled={this.state.loading}
                         >
-                            Sign Up
+                            Register
                 </Button>
                         <Grid container justify="flex-end">
                             <Grid item>
                                 <Link href="/login" variant="body2">
-                                    Already have an account? Sign in
+                                    Already have an account? Login
                     </Link>
                             </Grid>
                         </Grid>
