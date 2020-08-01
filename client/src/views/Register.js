@@ -89,7 +89,10 @@ class Register extends Component {
             this.displaySnackbar("Account created. You may now log in.", "success");
             this.setState({
                 username: '',
-                password: ''
+                password: '',
+                firstName: '',
+                lastName: '',
+                email: '',
             });
         } catch (error) {
             this.displaySnackbar(error.message, "error");

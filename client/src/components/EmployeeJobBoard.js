@@ -1,5 +1,5 @@
 // React & Redux
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Actions
@@ -35,12 +35,22 @@ import LoadingScreen from "./LoadingScreen";
 
 // Util
 import { isEmpty, findIndex, get, capitalize } from "lodash";
+import axios from "axios";
 
 // TODO: Limit number of applications an employee can make (based on subscription level)
-// TODO: Take userName from state (just hardcoded currently to test)
-const currentUserName = "JohnDoe";
 
 function EmployerJobBoard() {
+  const currentUserNameRef = useRef(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      const response = ((await axios.get('/user', { withCredentials: true })).data)[0]; //This returns the entire user entry if credentials are valid
+      console.log(response);
+      currentUserNameRef.current = response ? response.userName : null;
+    }
+    fetchUser();
+  }, []);
+
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState("Select All");
@@ -59,7 +69,7 @@ function EmployerJobBoard() {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={() => dispatch(postApplicationRequest(currentUserName, jobID))}
+            onClick={() => dispatch(postApplicationRequest(currentUserNameRef.current, jobID))}
           >
             APPLY
           </Button>
@@ -71,7 +81,7 @@ function EmployerJobBoard() {
             fullWidth
             variant="contained"
             color="secondary"
-            onClick={() => dispatch(putApplicantStatusRequest(currentUserName, jobID, "withdrawn"))}
+            onClick={() => dispatch(putApplicantStatusRequest(currentUserNameRef.current, jobID, "withdrawn"))}
           >
             WITHDRAW
           </Button>
@@ -94,13 +104,13 @@ function EmployerJobBoard() {
   useEffect(() => {
     if (isEmpty(jobsList)) {
       dispatch(browseJobsRequest());
-      dispatch(getApplicantStatusRequest(currentUserName));
+      dispatch(getApplicantStatusRequest(currentUserNameRef.current));
       dispatch(browseCategoriesRequest());
     }
   }, []);
 
   useEffect(() => {
-    dispatch(getApplicantStatusRequest(currentUserName));
+    dispatch(getApplicantStatusRequest(currentUserNameRef.current));
   }, [isSubmitting]);
 
   return (

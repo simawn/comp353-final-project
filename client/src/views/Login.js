@@ -62,7 +62,7 @@ class Login extends Component {
 
             await axios.post('/login', { username, password }, { withCredentials: true });
 
-            this.props.history.push('/dashboard');
+            this.props.history.push('/jobboard');
             
             this.displaySnackbar("Login success!", "success");
             

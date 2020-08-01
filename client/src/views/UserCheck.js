@@ -1,7 +1,9 @@
+//TODO: Remove. Used to debug login
+
 import React, { Component } from 'react'
 import axios from 'axios'
 
-export default class Dashboard extends Component {
+export default class UserCheck extends Component {
     constructor(props) {
         super(props)
 
@@ -21,7 +23,7 @@ export default class Dashboard extends Component {
 
     logout = async () => {
         try {
-            await axios.post('/logout', {withCredentials: true});
+            await axios.post('/logout', { withCredentials: true });
             this.props.history.push('/')
         } catch (error) {
             console.log("error logging out");
@@ -33,8 +35,8 @@ export default class Dashboard extends Component {
             <div>
                 {this.state.userDetails === null && <p>Loading...</p>}
                 {this.state.userDetails === false && <p>Error retrieving user details</p>}
-                {this.state.userDetails && <p>Hi, {this.state.userDetails.userName}! You are a {this.state.userDetails.role}</p>}
-                <button type="button" onClick={this.logout}>Logout</button> 
+                {this.state.userDetails && <p>Hi, {this.state.userDetails.userName}! You are a {this.state.userDetails.role}. User info: {JSON.stringify(this.state.userDetails)}</p>}
+                <button type="button" onClick={this.logout}>Logout</button>
             </div>
         )
     }
