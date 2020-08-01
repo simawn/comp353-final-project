@@ -1,5 +1,9 @@
-// React
+// React & Redux
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+
+// Selectors
+import { currentUserSelector } from "../state/user/userSelectors";
 
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
@@ -40,7 +44,11 @@ const isEmployee = true;
 function Dashboard() {
   const classes = useStyles();
 
+  const currentUser = useSelector(currentUserSelector);
+
   const [open, setOpen] = useState(true);
+
+  console.log(currentUser);
 
   return (
     <div className={classes.root}>
@@ -53,7 +61,9 @@ function Dashboard() {
           <Grid container spacing={3}>
             {/* Job Board */}
             <Grid item xs={12}>
-              <Paper className={classes.paper}>{isEmployee ? <EmployeeJobBoard /> : <EmployerJobBoard />}</Paper>
+              <Paper className={classes.paper}>
+                {isEmployee ? <EmployeeJobBoard currentUser={currentUser} /> : <EmployerJobBoard />}
+              </Paper>
             </Grid>
           </Grid>
         </Container>

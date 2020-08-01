@@ -39,18 +39,7 @@ import axios from "axios";
 
 // TODO: Limit number of applications an employee can make (based on subscription level)
 
-function EmployerJobBoard() {
-  const currentUserNameRef = useRef(null);
-
-  useEffect(() => {
-    async function fetchUser() {
-      const response = ((await axios.get('/user', { withCredentials: true })).data)[0]; //This returns the entire user entry if credentials are valid
-      console.log(response);
-      currentUserNameRef.current = response ? response.userName : null;
-    }
-    fetchUser();
-  }, []);
-
+function EmployerJobBoard({ currentUser }) {
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState("Select All");
@@ -69,7 +58,7 @@ function EmployerJobBoard() {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={() => dispatch(postApplicationRequest(currentUserNameRef.current, jobID))}
+            onClick={() => dispatch(postApplicationRequest(currentUser.userName, jobID))}
           >
             APPLY
           </Button>
@@ -81,7 +70,7 @@ function EmployerJobBoard() {
             fullWidth
             variant="contained"
             color="secondary"
-            onClick={() => dispatch(putApplicantStatusRequest(currentUserNameRef.current, jobID, "withdrawn"))}
+            onClick={() => dispatch(putApplicantStatusRequest(currentUser.userName, jobID, "withdrawn"))}
           >
             WITHDRAW
           </Button>
@@ -104,13 +93,13 @@ function EmployerJobBoard() {
   useEffect(() => {
     if (isEmpty(jobsList)) {
       dispatch(browseJobsRequest());
-      dispatch(getApplicantStatusRequest(currentUserNameRef.current));
+      dispatch(getApplicantStatusRequest(currentUser.userName));
       dispatch(browseCategoriesRequest());
     }
   }, []);
 
   useEffect(() => {
-    dispatch(getApplicantStatusRequest(currentUserNameRef.current));
+    dispatch(getApplicantStatusRequest(currentUser.userName));
   }, [isSubmitting]);
 
   return (

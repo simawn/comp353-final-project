@@ -12,10 +12,13 @@ import { ajax } from "rxjs/ajax";
  *
  * @returns {Observable}
  */
-const xhr = (method, url, body = null) => {
+const xhr = (method, url, body = null, creds = false) => {
   const options = {
     body,
     method,
+    headers: {
+      withCredentials: creds,
+    },
     responseType: "json",
     url: `http://localhost:5000${url}`,
   };

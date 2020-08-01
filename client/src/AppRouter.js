@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 // Views
 import JobBoard from "./views/JobBoard";
 import Login from "./views/Login";
-import Register from './views/Register';
-import UserCheck from './views/UserCheck';
+import Register from "./views/Register";
+import UserCheck from "./views/UserCheck";
 
 const AppRouter = () => (
   <Router>
