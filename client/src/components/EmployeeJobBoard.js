@@ -36,6 +36,7 @@ import LoadingScreen from "./LoadingScreen";
 // Util
 import { isEmpty, findIndex, get, capitalize } from "lodash";
 
+// TODO: Limit number of applications an employee can make (based on subscription level)
 // TODO: Take userName from state (just hardcoded currently to test)
 const currentUserName = "JohnDoe";
 

@@ -1,3 +1,5 @@
+/* WORK IN PRGORESS */
+
 // React
 import React, { useEffect, Fragment } from "react";
 
@@ -14,8 +16,6 @@ import LoadingScreen from "./LoadingScreen";
 
 // Util
 import { isEmpty } from "lodash";
-
-// TODO: Allow user to sort by category
 
 // TODO: Take userName from state
 const currentUserName = "JohnDoe";
