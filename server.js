@@ -5,8 +5,8 @@ const app = express();
 const bodyParser = require("body-parser");
 
 const userRouter = require("./routes/user");
-const bookRouter = require("./routes/book");
 const jobRouter = require("./routes/job");
+const applicantRouter = require("./routes/applicant");
 
 /* Middleware */
 app.use(bodyParser.json());
@@ -15,8 +15,8 @@ app.use(cors());
 
 /* Routes */
 app.use("/", userRouter);
-app.use("/", bookRouter);
 app.use("/", jobRouter);
+app.use("/", applicantRouter);
 
 const port = process.env.PORT || 5000;
 

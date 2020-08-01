@@ -6,8 +6,6 @@ const router = express.Router();
 
 // Job Specific Routes
 router.get("/jobs", jobController.getAllJobs);
-
-// Job - Applicant Interaction Specific Routes
-router.get("/jobs/:userID", jobController.getEmployeeJobStatuses);
+router.get("/jobs/categories", jobController.getJobCategories);
 
 module.exports = router;

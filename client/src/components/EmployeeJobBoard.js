@@ -1,46 +1,136 @@
-// React
-import React, { useEffect, Fragment } from "react";
-
-// Redux
+// React & Redux
+import React, { useEffect, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { browseJobsRequest } from "../state/jobs/jobActions";
-import { jobsListSelector, jobsListIsLoading } from "../state/jobs/jobSelectors";
+
+// Actions
+import { browseJobsRequest, browseCategoriesRequest } from "../state/jobs/jobActions";
+import {
+  getApplicantStatusRequest,
+  putApplicantStatusRequest,
+  postApplicationRequest,
+} from "../state/applicants/applicantActions";
+
+// Selectors
+import { jobsListSelector, jobCategoryListSelector, jobListIsLoadingSelector } from "../state/jobs/jobSelectors";
+import { applicantStatusListSelector, applicantIsSubmittingSelector } from "../state/applicants/applicantSelectors";
 
 // MaterialUI
-import { Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  List,
+  ListItem,
+  MenuItem,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@material-ui/core";
 
 // Components
 import LoadingScreen from "./LoadingScreen";
 
 // Util
-import { isEmpty } from "lodash";
+import { isEmpty, findIndex, get, capitalize } from "lodash";
 
-// TODO: Allow user to sort by category
-// TODO: Match user's
+// TODO: Take userName from state (just hardcoded currently to test)
+const currentUserName = "JohnDoe";
 
-function EmployeeJobBoard() {
+function EmployerJobBoard() {
   const dispatch = useDispatch();
 
+  const [category, setCategory] = useState("Select All");
+
   const jobsList = useSelector(jobsListSelector);
-  const isLoading = useSelector(jobsListIsLoading);
+  const categoryList = useSelector(jobCategoryListSelector);
+  const applicantStatuses = useSelector(applicantStatusListSelector);
+  const isLoadingJobList = useSelector(jobListIsLoadingSelector);
+  const isSubmitting = useSelector(applicantIsSubmittingSelector);
+
+  const createButton = (status, jobID) => {
+    switch (status) {
+      case "Not yet applied": {
+        return (
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={() => dispatch(postApplicationRequest(currentUserName, jobID))}
+          >
+            APPLY
+          </Button>
+        );
+      }
+      case "Pending": {
+        return (
+          <Button
+            fullWidth
+            variant="contained"
+            color="secondary"
+            onClick={() => dispatch(putApplicantStatusRequest(currentUserName, jobID, "withdrawn"))}
+          >
+            WITHDRAW
+          </Button>
+        );
+      }
+      case "Withdrawn":
+      case "Hired":
+      case "Rejected": {
+        return (
+          <Button fullWidth disabled variant="contained" color="primary">
+            APPLY
+          </Button>
+        );
+      }
+    }
+  };
+
+  const handleChange = (event) => {
+    setCategory(event.target.value || "Select All");
+  };
 
   useEffect(() => {
     if (isEmpty(jobsList)) {
       dispatch(browseJobsRequest());
+      dispatch(getApplicantStatusRequest(currentUserName));
+      dispatch(browseCategoriesRequest());
     }
   }, []);
 
-  console.log(jobsList);
+  useEffect(() => {
+    dispatch(getApplicantStatusRequest(currentUserName));
+  }, [isSubmitting]);
 
   return (
     <Fragment>
-      {isLoading ? (
+      {isLoadingJobList || isEmpty(jobsList) || isEmpty(categoryList) ? (
         <LoadingScreen fullScreen={false} message={"Loading jobs..."} />
       ) : (
         <Fragment>
           <Typography align="center" variant="h3">
             Job Listings
           </Typography>
+          <Grid container justify="flex-start" spacing={1}>
+            <Grid item xs={12} sm={12} md={6}>
+              <List>
+                <ListItem>
+                  <Typography>Select a category to narrow your search:</Typography>
+                </ListItem>
+                <ListItem>
+                  <Select value={category} onChange={handleChange} fullWidth>
+                    {categoryList.map((category, key) => (
+                      <MenuItem key={key} value={category.categoryName}>
+                        {category.categoryName}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </ListItem>
+              </List>
+            </Grid>
+          </Grid>
           <Table size="medium">
             <TableHead>
               <TableRow>
@@ -54,27 +144,23 @@ function EmployeeJobBoard() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {jobsList.map((job, key) => (
-                <TableRow key={key}>
-                  <TableCell align="center">{job.jobID}</TableCell>
-                  <TableCell align="center">{job.title}</TableCell>
-                  <TableCell align="center">{job.description}</TableCell>
-                  <TableCell align="center">{job.categoryName}</TableCell>
-                  <TableCell align="center">{job.employeesNeeded}</TableCell>
-                  {/* <TableCell align="center">{job.status}</TableCell> */}
-                  {/* <TableCell>
-                          {row.status === "Not Yet Applied" ? (
-                      <Button fullWidth variant="contained" color="primary">
-                        APPLY
-                      </Button>
-                      ) : (
-                      <Button fullWidth variant="contained" color="secondary">
-                        WITHDRAW
-                      </Button>
-                      )}
-                    </TableCell> */}
-                </TableRow>
-              ))}
+              {jobsList.map((job, key) => {
+                const index = findIndex(applicantStatuses, { jobID: job.jobID });
+                const jobStatus = capitalize(get(applicantStatuses[index], `status`, "Not Yet Applied"));
+                if (category === "Select All" || category === job.categoryName) {
+                  return (
+                    <TableRow key={key}>
+                      <TableCell align="center">{job.jobID}</TableCell>
+                      <TableCell align="center">{job.title}</TableCell>
+                      <TableCell align="center">{job.description}</TableCell>
+                      <TableCell align="center">{job.categoryName}</TableCell>
+                      <TableCell align="center">{job.employeesNeeded}</TableCell>
+                      <TableCell align="center">{jobStatus}</TableCell>
+                      <TableCell>{createButton(jobStatus, job.jobID)}</TableCell>
+                    </TableRow>
+                  );
+                }
+              })}
             </TableBody>
           </Table>
         </Fragment>
@@ -83,4 +169,4 @@ function EmployeeJobBoard() {
   );
 }
 
-export default EmployeeJobBoard;
+export default EmployerJobBoard;

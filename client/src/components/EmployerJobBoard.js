@@ -4,7 +4,7 @@ import React, { useEffect, Fragment } from "react";
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import { browseJobsRequest } from "../state/jobs/jobActions";
-import { jobsListSelector, jobsListIsLoading } from "../state/jobs/jobSelectors";
+import { jobsListSelector } from "../state/jobs/jobSelectors";
 
 // MaterialUI
 import { Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@material-ui/core";
@@ -16,13 +16,15 @@ import LoadingScreen from "./LoadingScreen";
 import { isEmpty } from "lodash";
 
 // TODO: Allow user to sort by category
-// TODO: Match user's
+
+// TODO: Take userName from state
+const currentUserName = "JohnDoe";
 
 function EmployerJobBoard() {
   const dispatch = useDispatch();
 
   const jobsList = useSelector(jobsListSelector);
-  const isLoading = useSelector(jobsListIsLoading);
+  const isLoading = false;
 
   useEffect(() => {
     if (isEmpty(jobsList)) {

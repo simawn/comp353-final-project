@@ -21,31 +21,25 @@ exports.getAllJobs = async (req, res, next) => {
   }
 };
 
-exports.getEmployeeJobStatuses = async (req, res, next) => {
-  // Return bad request if data is missing
-  if (!req.body.userName) {
-    return res.status(400).send({
-      error: "No username provided.",
-    });
-  }
-
-  const userName = req.body.userName;
-
+exports.getJobCategories = async (req, res, next) => {
   try {
-    // Fetch user's job status from database
-    const jobStatuses = await db.query(
-      `SELECT Job.jobID, Applicant.status FROM Job JOIN Applicant ON Applicant.jobID = Job.jobID WHERE Applicant.employeeID = ${userName}`
-    );
+    const categories = await db.query("SELECT * FROM Category", { type: db.QueryTypes.SELECT });
 
-    // If user has applied to no jobs then return empty array
-    if (jobStatuses.length < 1) {
-      return status(204).send([]);
+    // Return no content if no categories exist in list
+    if (categories.length < 1) {
+      return res.status(204).send({
+        message: "No categories currently exist.",
+      });
     }
 
-    res.status(200).send(jobStatuses);
+    // Add Select All option
+    categories.unshift({ categoryName: "Select All" });
+
+    // Return list of categories
+    res.status(200).send(categories);
   } catch (err) {
     res.status(404).send({
-      error: `Could not retrieve job statuses for user: ${userName}`,
+      error: "Could not retrieve categories.",
     });
   }
 };

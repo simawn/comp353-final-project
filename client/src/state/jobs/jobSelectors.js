@@ -4,4 +4,11 @@ const jobStateSelector = (state) => state.jobReducer;
 
 export const jobsListSelector = createSelector([jobStateSelector], (jobState) => jobState.jobsList);
 
-export const jobsListIsLoading = createSelector([jobStateSelector], (jobState) => jobState.isLoading);
+export const jobCategoryListSelector = createSelector([jobStateSelector], (jobState) => jobState.categoryList);
+
+export const jobListIsLoadingSelector = createSelector([jobStateSelector], (jobState) => jobState.isLoadingJobsList);
+
+export const jobCategoryListIsLoadingSelector = createSelector(
+  [jobStateSelector],
+  (jobState) => jobState.isLoadingCategoryList
+);
