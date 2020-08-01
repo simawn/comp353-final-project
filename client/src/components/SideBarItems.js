@@ -7,6 +7,18 @@ import ListIcon from "@material-ui/icons/List";
 import SettingsIcon from "@material-ui/icons/Settings";
 import PaymentIcon from "@material-ui/icons/Payment";
 import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
+import LogoutIcon from "@material-ui/icons/ExitToApp";
+
+import axios from 'axios';
+
+const handleLogout = async () => {
+  try {
+    await axios.post('/logout', {withCredentials: true});
+    window.location.href = "/";
+  } catch (error) {
+    console.log("Error logging out", error);
+  }
+};
 
 export const adminMenuOptions = (
   <Fragment>
@@ -27,6 +39,12 @@ export const adminMenuOptions = (
         <SettingsIcon />
       </ListItemIcon>
       <ListItemText primary="Account Settings" />
+    </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <LogoutIcon />
+      </ListItemIcon>
+      <ListItemText primary="Logout" />
     </ListItem>
   </Fragment>
 );
@@ -51,6 +69,12 @@ export const employerMenuOptions = (
       </ListItemIcon>
       <ListItemText primary="Payment Methods" />
     </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <LogoutIcon />
+      </ListItemIcon>
+      <ListItemText primary="Logout" />
+    </ListItem>
   </Fragment>
 );
 
@@ -73,6 +97,12 @@ export const employeeMenuOptions = (
         <PaymentIcon />
       </ListItemIcon>
       <ListItemText primary="Payment Methods" />
+    </ListItem>
+    <ListItem button onClick={handleLogout}>
+      <ListItemIcon>
+        <LogoutIcon />
+      </ListItemIcon>
+      <ListItemText primary="Logout" />
     </ListItem>
   </Fragment>
 );

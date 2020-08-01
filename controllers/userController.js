@@ -1,5 +1,3 @@
-exports.getAllUsers = async (req, res) => {
-  res.status(200).send({
-    data: 'test data',
-  });
+exports.getUserDetails = async (req, res) => {
+  res.send(req.user);
 };
