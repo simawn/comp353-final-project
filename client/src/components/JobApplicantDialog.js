@@ -34,7 +34,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import LoadingScreen from "./LoadingScreen";
 
 // Util
-import { capitalize, isEmpty } from "lodash";
+import { startCase, isEmpty } from "lodash";
 
 const styles = (theme) => ({
   root: {
@@ -107,14 +107,16 @@ function JobApplicantDialog({ open, close, jobID }) {
               <TableRow key={key}>
                 <TableCell align="center">{applicant.firstName}</TableCell>
                 <TableCell align="center">{applicant.lastName}</TableCell>
-                <TableCell align="center">{capitalize(applicant.status)}</TableCell>
+                <TableCell align="center">
+                  {startCase(applicant.status === "offer" ? "Offer Sent" : applicant.status)}
+                </TableCell>
                 <TableCell align="center">
                   <Button
                     fullWidth
                     variant="contained"
                     color="primary"
-                    disabled={["rejected", "withdrawn", "hired"].includes(applicant.status)}
-                    onClick={() => dispatch(putApplicantStatusRequest(applicant.userName, applicant.jobID, "hired"))}
+                    disabled={["rejected", "withdrawn", "hired", "offer"].includes(applicant.status)}
+                    onClick={() => dispatch(putApplicantStatusRequest(applicant.userName, applicant.jobID, "offer"))}
                   >
                     HIRE
                   </Button>
