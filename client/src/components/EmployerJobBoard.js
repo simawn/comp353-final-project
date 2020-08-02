@@ -27,6 +27,7 @@ import EditIcon from "@material-ui/icons/Edit";
 // Components
 import LoadingScreen from "./LoadingScreen";
 import CreateJobFormDialog from "../forms/CreateJobFormDialog";
+import EditJobFormDialog from "../forms/EditJobFormDialog";
 import CreateCategoryFormDialog from "../forms/CreateCategoryFormDialog";
 import JobApplicantDialog from "./JobApplicantDialog";
 
@@ -54,6 +55,7 @@ function EmployerJobBoard({ userName }) {
   const isSubmitting = useSelector(jobIsSubmittingSelector);
 
   const [createJobFormOpen, setCreateJobFormOpen] = useState(false);
+  const [editJobFormOpen, setEditJobFormOpen] = useState(false);
   const [createCategoryFormOpen, setCreateCategoryFormOpen] = useState(false);
   const [jobApplicantDialogOpen, setJobApplicantDialogOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState(0);
@@ -80,10 +82,11 @@ function EmployerJobBoard({ userName }) {
         <Fragment>
           <CreateJobFormDialog open={createJobFormOpen} close={() => setCreateJobFormOpen(false)} userName={userName} />
           <CreateCategoryFormDialog open={createCategoryFormOpen} close={() => setCreateCategoryFormOpen(false)} />
+          <EditJobFormDialog open={editJobFormOpen} close={() => setEditJobFormOpen(false)} job={selectedListing} />
           <JobApplicantDialog
             open={jobApplicantDialogOpen}
             close={() => setJobApplicantDialogOpen(false)}
-            jobID={selectedListing}
+            jobID={selectedListing.id}
           />
           <Typography align="center" variant="h3">
             Your Job Listings
@@ -141,7 +144,7 @@ function EmployerJobBoard({ userName }) {
                         variant="outlined"
                         color="primary"
                         onClick={() => {
-                          setSelectedListing(job.jobID);
+                          setSelectedListing(job);
                           setJobApplicantDialogOpen(true);
                         }}
                       >
@@ -149,7 +152,14 @@ function EmployerJobBoard({ userName }) {
                       </Button>
                     </TableCell>
                     <TableCell align="center">
-                      <IconButton className={classes.margin} size="medium">
+                      <IconButton
+                        onClick={() => {
+                          setSelectedListing(job);
+                          setEditJobFormOpen(true);
+                        }}
+                        className={classes.margin}
+                        size="medium"
+                      >
                         <EditIcon color="primary" />
                       </IconButton>
                     </TableCell>

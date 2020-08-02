@@ -143,7 +143,6 @@ function EmployerJobBoard({ userName }) {
             </TableHead>
             <TableBody>
               {jobsList.map((job, key) => {
-                console.log(job);
                 const index = findIndex(applicantStatuses, { jobID: job.jobID });
                 const jobStatus = capitalize(get(applicantStatuses[index], `status`, "Not Yet Applied"));
                 if (category === "Select All" || category === job.categoryName) {
