@@ -11,6 +11,7 @@ const sequelize = new Sequelize(
     dialect: 'mysql',
     dialectOptions: {
       connectTimeout: 30000,
+      multipleStatements: true,
     },
   },
 );
