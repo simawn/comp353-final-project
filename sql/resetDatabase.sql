@@ -1,6 +1,6 @@
 -- RUNNING THIS SCRIPT RESETS THE DATABASE
 
-USE jxc353_1;
+-- USE jxc353_1;
 
 -- --------------------------------------------------
 -- Drop all previous tables (ORDER MATTERS)
@@ -45,7 +45,7 @@ CREATE TABLE `User`(
 
 CREATE TABLE `CreditCard`(
   `creditCardNumber` VARCHAR(255) NOT NULL,
-  `expirationDate` DATE,
+  `expirationDate` VARCHAR(5),
   `cvv` INT,  
   PRIMARY KEY (`creditCardNumber`)
 );

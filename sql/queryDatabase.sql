@@ -2,28 +2,27 @@
 -- i. Create an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
   
-  SET @givenUserName = 'Mickey Mouse';
-  SET @givenSubscriptionID = '3';
-  SET @givenPassword = 'qetu';
-  SET @givenEmail = 'Mickey_mouse@gg.com';
-  SET @givenFirstName = 'Mickey';
-  SET @givenLastName = 'Mouse';
-  SET @givenIsAdmin = '1';
-  SET @givenBalance = '0';
-  SET @givenSuffering = '0';
-  SET @givenActive = '1';
-  SET @givenLastPayment = '2020-07-02'; 
+ SET @givenUserName = 'Kevin Carlsen';
+ SET @givenSubscriptionID = '3';
+ SET @givenPassword = 'qetu';
+ SET @givenEmail = 'kevin_carlsen@yahoo.com';
+ SET @givenFirstName = 'Kevin';
+ SET @givenLastName = 'Carlsen';
+ SET @givenBalance = '0';
+ SET @givenSuffering = '0';
+ SET @givenActive = '1';
+ SET @givenLastPayment = '2020-07-31'; 
   
-INSERT INTO `user`
+INSERT INTO `User` (userName, `role`, subscriptionID, `password`, email, firstName, lastName, balance, suffering, `active`, lastPayment)
 VALUES
 (@givenUserName, 'employer', @givenSubscriptionID, @givenPassword, @givenEmail, @givenFirstName, @givenLastName,
-@givenIsAdmin, @givenBalance, @givenSuffering, @givenActive, @givenLastPayment); 
+@givenBalance, @givenSuffering, @givenActive, @givenLastPayment); 
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- i. Delete an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
 
-SET @givenUserName = 'Mickey Mouse';
+SET @givenUserName = 'Kevin Carlsen';
 
 DELETE FROM `user`
 WHERE 
@@ -43,31 +42,24 @@ WHERE
 -- i. Edit an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
  
-  SET @originalUserName = 'Mickey Mouse';
+  SET @givenUserName = 'Kevin Carlsen';
   
-  SET @givenUserName = 'MR MICKEY';
-  SET @givenRole = 'employer';
-  SET @givenSubscriptionID = '3';
   SET @givenPassword = 'qetu';
   SET @givenEmail = 'Mickey_mouse@gg.com';
   SET @givenFirstName = 'Mickey';
-  SET @givenLastName = 'MR';
-  SET @givenIsAdmin = '1';
-  SET @givenBalance = '0';
-  SET @givenSuffering = '0';
-  SET @givenActive = '1';
-  SET @givenLastPayment = '2020-07-02'; 
+  SET @givenLastName = 'Mouse';
+  
 
 UPDATE `user`
-	SET userName = @givenUserName, lastName = @givenLastName
-    WHERE userName = @originalUserName;
+	SET `password` = @givenPassword, email = @givenEmail, firstName = @givenFirstName, lastName = @givenLastName
+    WHERE userName = @givenUserName;
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- ii. Create a category by an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
   SET @givenCategoryName = 'concordia';
   
-  INSERT INTO category
+  INSERT INTO category (categoryName)
   VALUES 
 	(@givenCategoryName);
   
@@ -91,8 +83,7 @@ UPDATE `user`
   WHERE
 		(categoryName = @originalCategoryName);
     
-    
- -- -----------------------------------------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------------------------------------------
 -- ii. Display a category by an Employer.
 -- -----------------------------------------------------------------------------------------------------------------     
     SET @givenCategoryName = 'mcgill';
@@ -103,21 +94,19 @@ UPDATE `user`
     
   
   -- -----------------------------------------------------------------------------------------------------------------
--- iii. post a new job by an employer ???
+-- iii. post a new job by an employer 
 -- ----------------------------------------------------------------------------------------------------------------- 
   
-  SET @givenJobID = '7';
-  SET @givenUserName = 'Leila Disney';
-  SET @givenCategoryName = 'education';
-  SET @givenTitle = 'manager';
-  SET @givenDatePosted = '2020-07-03';
-  SET @givenDescription = 'we need manager';
-  SET @givenEmployeesNeeded = '3';
+  SET @givenUserName = 'Arabella Andreutti';
+  SET @givenCategoryName = 'finance';
+  SET @givenTitle = 'stock manager';
+  SET @givenDatePosted = '2020-07-29';
+  SET @givenDescription = 'we need a money maker';
+  SET @givenEmployeesNeeded = '1';
 
-INSERT INTO `job`
+INSERT INTO `job` (userName, categoryName, title, datePosted, `description`, employeesNeeded)
 VALUES
-	(jobID = @givenJobID, userName = @givenUserName, categoryName = @givenCategoryName, title = @givenTitle, datePosted = @givenDatePosted,
-	`description` = @givenDescription, employeesNeeded = @givenEmployeesNeeded)
+	(@givenUserName, @givenCategoryName, @givenTitle, @givenDatePosted,	@givenDescription, @givenEmployeesNeeded);
 
 -- ------------------------------------------------------------------------------------------------------------------
 -- iv. Provide a job offer for an employee by an employer.
@@ -129,12 +118,11 @@ UPDATE applicant
 SET status = 'hired'
 WHERE userName = @givenUserName AND jobID = @givenJobID;
 
-
 -- ------------------------------------------------------------------------------------------------------------------
 -- v. Report of a posted job by an employer (Job title and description, date posted, 
 -- list of employees applied to the job and status of each application).
 -- ------------------------------------------------------------------------------------------------------------------
-SET @givenJobID = '1';
+SET @givenJobID = '3';
 
 SELECT J.title, J.`description`, J.datePosted, A.userName, A.`status`
 FROM job as J INNER JOIN applicant as A
@@ -168,16 +156,15 @@ GROUP BY J.jobID;
   SET @givenEmail = 'Mickey_mouse@gg.com';
   SET @givenFirstName = 'Mickey';
   SET @givenLastName = 'Mouse';
-  SET @givenIsAdmin = '1';
   SET @givenBalance = '0';
   SET @givenSuffering = '0';
   SET @givenActive = '1';
   SET @givenLastPayment = '2020-07-02'; 
   
-INSERT INTO `user`
+INSERT INTO `user` (userName, `role`, subscriptionID, `password`, email, firstName, lastName, balance, suffering, `active`, lastPayment)
 VALUES
 (@givenUserName, 'employee', @givenSubscriptionID, @givenPassword, @givenEmail, @givenFirstName, @givenLastName,
-@givenIsAdmin, @givenBalance, @givenSuffering, @givenActive, @givenLastPayment); 
+@givenBalance, @givenSuffering, @givenActive, @givenLastPayment); 
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- vii. Delete an Employee.
@@ -201,34 +188,30 @@ WHERE
 -- -----------------------------------------------------------------------------------------------------------------
 -- vii. Edit an Employee.
 -- -----------------------------------------------------------------------------------------------------------------
-  SET @originalUserName = 'Mickey Mouse';
+  SET @givenUserName = 'Mickey Mouse';
   
-  SET @givenUserName = 'MR MICKEY';
-  SET @givenSubscriptionID = '3';
   SET @givenPassword = 'qetu';
-  SET @givenEmail = 'Mickey_mouse@gg.com';
-  SET @givenFirstName = 'Mickey';
-  SET @givenLastName = 'MR';
-  SET @givenIsAdmin = '1';
-  SET @givenBalance = '0';
-  SET @givenSuffering = '0';
-  SET @givenActive = '1';
-  SET @givenLastPayment = '2020-07-02'; 
+  SET @givenEmail = 'MR_MICKEY@gg.com';
+  SET @givenFirstName = 'TOM';
+  SET @givenLastName = 'CAT';
+
 
 UPDATE `user`
-	SET userName = @givenUserName, lastName = @givenLastName
-    WHERE userName = @originalUserName;
+	SET `password` = @givenPassword, email = @givenEmail, firstName = @givenFirstName, lastName = @givenLastName
+    WHERE userName = @givenUserName;
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- viii. Search for a job by an Employee 
 -- -----------------------------------------------------------------------------------------------------------------
-SET @givenJobTitle = 'full stack dev';
+SET @givenJobTitle = 'full stack developer';
 SET @givenJobCategory = 'construction';
 
+-- search by title 
 SELECT *
 FROM job 
 WHERE title = @givenJobTitle; 
 
+-- search by category 
 SELECT *
 FROM job
 WHERE categoryName = @givenJobCategory; 
