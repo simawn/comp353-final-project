@@ -11,6 +11,9 @@ import {
   POST_JOB_REQUEST,
   POST_JOB_SUCCESS,
   POST_JOB_ERROR,
+  PUT_JOB_REQUEST,
+  PUT_JOB_SUCCESS,
+  PUT_JOB_ERROR,
   DELETE_JOB_REQUEST,
   DELETE_JOB_SUCCESS,
   DELETE_JOB_ERROR,
@@ -45,6 +48,7 @@ const jobReducer = (state = initialState, action) => {
       };
     }
     case POST_JOB_REQUEST:
+    case PUT_JOB_REQUEST:
     case DELETE_JOB_REQUEST:
     case POST_CATEGORY_REQUEST: {
       return {
@@ -70,6 +74,7 @@ const jobReducer = (state = initialState, action) => {
       };
     }
     case POST_JOB_SUCCESS:
+    case PUT_JOB_SUCCESS:
     case DELETE_JOB_SUCCESS:
     case POST_CATEGORY_SUCCESS: {
       return {
@@ -93,6 +98,7 @@ const jobReducer = (state = initialState, action) => {
       };
     }
     case POST_JOB_ERROR:
+    case PUT_JOB_ERROR:
     case DELETE_JOB_ERROR:
     case POST_CATEGORY_ERROR: {
       return {

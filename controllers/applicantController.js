@@ -22,9 +22,9 @@ exports.getJobStatuses = async (req, res, next) => {
       return status(204).send([]);
     }
 
-    res.status(200).send(jobStatuses);
-  } catch (err) {
-    res.status(404).send({
+    return res.status(200).send(jobStatuses);
+  } catch {
+    return res.status(404).send({
       error: `Could not retrieve job statuses for user: ${userName}`,
     });
   }
@@ -43,14 +43,15 @@ exports.postJobApplication = async (req, res, next) => {
 
   try {
     await db.query(
-      `INSERT INTO \`Applicant\`(userName, jobID, \`status\`) VALUES ('${userName}', ${jobID}, 'pending')`
+      `INSERT INTO \`Applicant\`(userName, jobID, \`status\`) VALUES ('${userName}', ${jobID}, 'pending')`,
+      { type: db.QueryTypes.INSERT }
     );
 
-    res.status(201).send({
+    return res.status(201).send({
       message: "Applicant successfully applied to the listing.",
     });
   } catch {
-    res.status(400).send({
+    return res.status(400).send({
       error: "Applicant was not able to apply to the listing.",
     });
   }
@@ -69,14 +70,40 @@ exports.updateJobStatus = async (req, res, next) => {
   const newStatus = req.params.newStatus;
 
   try {
-    await db.query(`UPDATE Applicant SET status = '${newStatus}' WHERE userName = '${userName}' AND jobID = ${jobID}`);
+    await db.query(`UPDATE Applicant SET status = '${newStatus}' WHERE userName = '${userName}' AND jobID = ${jobID}`, {
+      type: db.QueryTypes.UPDATE,
+    });
 
     res.status(200).send({
       message: "Applicant status successfully updated.",
     });
   } catch {
     res.status(404).send({
-      error: "Could not update Squad",
+      error: "Could not update Job status",
+    });
+  }
+};
+
+exports.getApplicants = async (req, res, next) => {
+  // Return bad request if data is missing
+  if (!req.params.jobID) {
+    return res.status(400).send({
+      error: "jobID not provided.",
+    });
+  }
+
+  const jobID = req.params.jobID;
+
+  try {
+    const applicantList = await db.query(
+      `SELECT User.userName, User.firstName, User.lastName, Applicant.status, Applicant.jobID FROM Applicant JOIN User ON Applicant.userName = User.userName WHERE Applicant.jobID = ${jobID};`,
+      { type: db.QueryTypes.SELECT }
+    );
+
+    return res.status(200).send(applicantList);
+  } catch {
+    return res.status(400).send({
+      error: "Could not update retrieve applicant list",
     });
   }
 };
