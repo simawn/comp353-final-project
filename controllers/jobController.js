@@ -21,6 +21,28 @@ exports.getAllJobs = async (req, res, next) => {
   }
 };
 
+exports.getAllEmployerJobs = async (req, res, next) => {
+  if (!req.params.userName) {
+    return res.status(400).send({
+      error: "No username provided.",
+    });
+  }
+
+  userName = req.params.userName;
+
+  try {
+    // Fetch jobs from database
+    const jobs = await db.query(`SELECT * FROM Job WHERE Job.userName = '${userName}'`, { type: db.QueryTypes.SELECT });
+
+    // Return list of jobs
+    res.status(200).send(jobs);
+  } catch (err) {
+    res.status(404).send({
+      error: `Could not retrieve jobs posted by ${userName}.`,
+    });
+  }
+};
+
 exports.getJobCategories = async (req, res, next) => {
   try {
     const categories = await db.query("SELECT * FROM Category", { type: db.QueryTypes.SELECT });
@@ -40,6 +62,82 @@ exports.getJobCategories = async (req, res, next) => {
   } catch (err) {
     res.status(404).send({
       error: "Could not retrieve categories.",
+    });
+  }
+};
+
+exports.postJob = async (req, res, next) => {
+  try {
+    if (!req.body.title || !req.body.category || !req.body.jobDescription || !req.body.employeesNeeded) {
+      return res.status(400).send({
+        error: "Not all information needed to create job was provided.",
+      });
+    }
+
+    const title = req.body.title;
+    const categoryName = req.body.category;
+    const description = req.body.jobDescription;
+    const employeesNeeded = req.body.employeesNeeded;
+    const userName = req.params.userName;
+
+    await db.query(
+      `INSERT INTO \`Job\`(userName, categoryName, title, datePosted, \`description\`, employeesNeeded) VALUES ('${userName}', '${categoryName}', '${title}', CURDATE(), '${description}', ${employeesNeeded});`,
+      { type: db.QueryTypes.INSERT }
+    );
+    res.status(200).send({ message: "Successfully added new job." });
+  } catch (err) {
+    res.status(400).send({
+      error: "Error creating Job.",
+    });
+  }
+};
+
+exports.postJobCategory = async (req, res, next) => {
+  try {
+    if (!req.body.categoryName) {
+      return res.status(400).send({
+        error: "Category name was not provided",
+      });
+    }
+
+    const categoryName = req.body.categoryName;
+
+    await db.query(`INSERT INTO \`Category\`(categoryName) VALUES ('${categoryName}');`, {
+      type: db.QueryTypes.INSERT,
+    });
+
+    res.status(200).send({ message: "Sucessfully added new category." });
+  } catch (err) {
+    res.status(400).send({
+      error: "Error creating category.",
+    });
+  }
+};
+
+exports.deleteJob = async (req, res, next) => {
+  try {
+    if (!req.params.jobID) {
+      return res.status(404).send({
+        error: "JobID name was not found.",
+      });
+    }
+
+    const jobID = req.params.jobID;
+
+    // Delete from applicant table
+    await db.query(`DELETE FROM \`Applicant\` WHERE jobID = ${jobID};`, {
+      type: db.QueryTypes.DELETE,
+    });
+
+    // Delete from User table
+    await db.query(`DELETE FROM \`Job\` WHERE jobID = ${jobID};`, {
+      type: db.QueryTypes.DELETE,
+    });
+
+    res.status(200).send({ message: "Sucessfully deleted job." });
+  } catch (err) {
+    res.status(400).send({
+      error: "Error deleting job.",
     });
   }
 };
