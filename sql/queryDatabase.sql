@@ -2,7 +2,7 @@
 -- i. Create an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
   
- SET @givenUserName = 'Kevin Carlsen';
+ SET @givenUserName = 'KevinCarlsen';
  SET @givenSubscriptionID = '3';
  SET @givenPassword = 'qetu';
  SET @givenEmail = 'kevin_carlsen@yahoo.com';
@@ -22,7 +22,7 @@ VALUES
 -- i. Delete an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
 
-SET @givenUserName = 'Kevin Carlsen';
+SET @givenUserName = 'KevinCarlsen';
 
 DELETE FROM `user`
 WHERE 
@@ -32,7 +32,7 @@ WHERE
 -- i. Display an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
 
- SET @givenUserName = 'Alexei Adcocks';
+ SET @givenUserName = 'AlexeiAdcocks';
  
  SELECT *
  FROM `user`
@@ -42,7 +42,7 @@ WHERE
 -- i. Edit an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
  
-  SET @givenUserName = 'Kevin Carlsen';
+  SET @givenUserName = 'KevinCarlsen';
   
   SET @givenPassword = 'qetu';
   SET @givenEmail = 'Mickey_mouse@gg.com';
@@ -97,7 +97,7 @@ UPDATE `user`
 -- iii. post a new job by an employer 
 -- ----------------------------------------------------------------------------------------------------------------- 
   
-  SET @givenUserName = 'Arabella Andreutti';
+  SET @givenUserName = 'ArabellaAndreutti';
   SET @givenCategoryName = 'finance';
   SET @givenTitle = 'stock manager';
   SET @givenDatePosted = '2020-07-29';
@@ -111,11 +111,11 @@ VALUES
 -- ------------------------------------------------------------------------------------------------------------------
 -- iv. Provide a job offer for an employee by an employer.
 -- ------------------------------------------------------------------------------------------------------------------
-SET @givenUserName = 'Leila Disney';
+SET @givenUserName = 'LeilaDisney';
 SET @givenJobID = '1'; 
 
 UPDATE applicant
-SET status = 'hired'
+SET status = 'offer'
 WHERE userName = @givenUserName AND jobID = @givenJobID;
 
 -- ------------------------------------------------------------------------------------------------------------------
@@ -136,7 +136,7 @@ WHERE J.jobID = @givenJobID AND J.jobID = A.jobID;
 -- ------------------------------------------------------------------------------------------------------------------
 SET @givenStartDate = '2020-02-01';
 SET @givenEndDate = '2020-07-30';
-SET @givenUserName = 'Bab Kelsall';
+SET @givenUserName = 'BabKelsall';
 
 SELECT J.jobID, J.title, J.datePosted, J.`description`, J.employeesNeeded, count(A.jobID) as numOfApplicants
 FROM job AS J, applicant AS A
@@ -150,7 +150,7 @@ GROUP BY J.jobID;
 -- vii. Create an Employee.
 -- -----------------------------------------------------------------------------------------------------------------
   
-  SET @givenUserName = 'Mickey Mouse';
+  SET @givenUserName = 'MickeyMouse';
   SET @givenSubscriptionID = '3';
   SET @givenPassword = 'qetu';
   SET @givenEmail = 'Mickey_mouse@gg.com';
@@ -170,7 +170,7 @@ VALUES
 -- vii. Delete an Employee.
 -- -----------------------------------------------------------------------------------------------------------------
 
-SET @givenUserName = 'Mickey Mouse';
+SET @givenUserName = 'MickeyMouse';
 
 DELETE FROM `user`
 WHERE 
@@ -179,7 +179,7 @@ WHERE
 -- -----------------------------------------------------------------------------------------------------------------
 -- vii. Display an Employee.
 -- -----------------------------------------------------------------------------------------------------------------
- SET @givenUserName = 'Leila Disney';
+ SET @givenUserName = 'LeilaDisney';
  
  SELECT *
  FROM `user`
@@ -188,7 +188,7 @@ WHERE
 -- -----------------------------------------------------------------------------------------------------------------
 -- vii. Edit an Employee.
 -- -----------------------------------------------------------------------------------------------------------------
-  SET @givenUserName = 'Mickey Mouse';
+  SET @givenUserName = 'MickeyMouse';
   
   SET @givenPassword = 'qetu';
   SET @givenEmail = 'MR_MICKEY@gg.com';
@@ -220,8 +220,16 @@ WHERE categoryName = @givenJobCategory;
 -- ix. apply for a job by an employee
 -- -----------------------------------------------------------------------------------------------------------------
 SET @givenJobID = '5'; 
-SET @givenUserName = 'Leila Disney';
+SET @givenUserName = 'LeilaDisney';
 
 INSERT INTO applicant(userName, jobID, `status`) 
 VALUES ( @givenUserName, @givenJobID,'pending');
+
+-- -----------------------------------------------------------------------------------------------------------------
+-- x. Accept a job offer by an employee 
+-- -----------------------------------------------------------------------------------------------------------------
+SET @givenJobID = '5';
+SET @givenUserName = 'LeilaDisney';
+
+
 
