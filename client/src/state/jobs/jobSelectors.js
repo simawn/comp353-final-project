@@ -12,3 +12,5 @@ export const jobCategoryListIsLoadingSelector = createSelector(
   [jobStateSelector],
   (jobState) => jobState.isLoadingCategoryList
 );
+
+export const jobIsSubmittingSelector = createSelector([jobStateSelector], (jobState) => jobState.isSubmitting);

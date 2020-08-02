@@ -7,7 +7,7 @@ import { Drawer, IconButton, Divider, List } from "@material-ui/core";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
 // Components
-import { employeeMenuOptions } from "./SideBarItems";
+import MenuOptions from "./SideBarItems";
 
 // Util
 import clsx from "clsx";
@@ -44,9 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// TODO: Render SideBar dynamically depending on what Account the User is
-
-function SideBar({ open, setOpen }) {
+function SideBar({ open, setOpen, role }) {
   const classes = useStyles();
 
   return (
@@ -63,7 +61,9 @@ function SideBar({ open, setOpen }) {
         </IconButton>
       </div>
       <Divider />
-      <List>{employeeMenuOptions}</List>
+      <List>
+        <MenuOptions role={role} />
+      </List>
     </Drawer>
   );
 }

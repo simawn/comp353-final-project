@@ -15,9 +15,18 @@ import {
   BROWSE_CATEGORIES_REQUEST,
   browseCategoriesSuccess,
   browseCategoriesError,
+  GET_EMPLOYER_JOBS_REQUEST,
+  getEmployerJobsSuccess,
+  getEmployerJobsError,
   POST_JOB_REQUEST,
   postJobSuccess,
   postJobError,
+  DELETE_JOB_REQUEST,
+  deleteJobSuccess,
+  deleteJobError,
+  POST_CATEGORY_REQUEST,
+  postCategorySuccess,
+  postCategoryError,
 } from "./jobActions";
 
 const browseJobsEvent = (action$) => {
@@ -48,11 +57,25 @@ const browseCategoriesEvent = (action$) => {
   );
 };
 
+const getEmployerJobsEvent = (action$) => {
+  return action$.pipe(
+    ofType(GET_EMPLOYER_JOBS_REQUEST),
+    mergeMap(({ payload: { userName } }) =>
+      xhr("GET", `/jobs/${userName}`).pipe(
+        map(({ response }) => getEmployerJobsSuccess(response)),
+        catchError((err) => {
+          return of(getEmployerJobsError(err));
+        })
+      )
+    )
+  );
+};
+
 const postJobEvent = (action$) => {
   return action$.pipe(
     ofType(POST_JOB_REQUEST),
-    mergeMap(({ payload: { jobInformation } }) =>
-      xhr("POST", `/jobs`, jobInformation).pipe(
+    mergeMap(({ payload: { jobInformation, userName } }) =>
+      xhr("POST", `/jobs/${userName}`, jobInformation).pipe(
         map((response) => postJobSuccess(response)),
         catchError((err) => {
           return of(postJobError(err));
@@ -62,4 +85,39 @@ const postJobEvent = (action$) => {
   );
 };
 
-export default combineEpics(browseJobsEvent, browseCategoriesEvent, postJobEvent);
+const deleteJobEvent = (action$) => {
+  return action$.pipe(
+    ofType(DELETE_JOB_REQUEST),
+    mergeMap(({ payload: { jobID } }) =>
+      xhr("DELETE", `/jobs/${jobID}`).pipe(
+        map((response) => deleteJobSuccess(response)),
+        catchError((err) => {
+          return of(deleteJobError(err));
+        })
+      )
+    )
+  );
+};
+
+const postCategoryEvent = (action$) => {
+  return action$.pipe(
+    ofType(POST_CATEGORY_REQUEST),
+    mergeMap(({ payload: { categoryName } }) =>
+      xhr("POST", `/jobs/categories`, categoryName).pipe(
+        map((response) => postCategorySuccess(response)),
+        catchError((err) => {
+          return of(postCategoryError(err));
+        })
+      )
+    )
+  );
+};
+
+export default combineEpics(
+  browseJobsEvent,
+  browseCategoriesEvent,
+  getEmployerJobsEvent,
+  postJobEvent,
+  deleteJobEvent,
+  postCategoryEvent
+);
