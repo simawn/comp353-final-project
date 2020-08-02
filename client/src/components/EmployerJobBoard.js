@@ -86,7 +86,7 @@ function EmployerJobBoard({ userName }) {
           <JobApplicantDialog
             open={jobApplicantDialogOpen}
             close={() => setJobApplicantDialogOpen(false)}
-            jobID={selectedListing.id}
+            jobID={selectedListing.jobID}
           />
           <Typography align="center" variant="h3">
             Your Job Listings

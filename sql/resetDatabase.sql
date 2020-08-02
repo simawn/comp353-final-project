@@ -81,7 +81,7 @@ CREATE TABLE `Job`(
 CREATE TABLE `Applicant`(
   `userName` VARCHAR(255) NOT NULL,
   `jobID` INT NOT NULL,
-  `status` ENUM('pending', 'rejected', 'hired', 'withdrawn'),
+  `status` ENUM('pending', 'rejected', 'hired', 'withdrawn', 'offer'),
   PRIMARY KEY (`userName`, `jobID`),
   FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
   FOREIGN KEY (`jobID`) REFERENCES `Job`(`jobID`)
