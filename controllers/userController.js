@@ -56,12 +56,21 @@ exports.deleteUser = async (req, res) => {
     const userInfo = req.user[0];
     if (!userInfo.userName) throw new Error('No username set');
 
-    await db.query(`UPDATE User SET active=0 WHERE username='${userInfo.userName}'`);
+    // Assuming we have ON DELETE CASCADE for all creditCardNumber and userName FK
+    await db.query(`
+    DELETE FROM CreditCard WHERE creditCardNumber IN 
+      (SELECT P.creditCardNumber
+      FROM (SELECT * FROM CreditCard) as DC , PaymentMethod AS P
+      WHERE DC.creditCardnumber = P.creditCardNumber AND P.userName = '?');
+
+    DELETE FROM User WHERE username='?';
+    `, { replacements: [userInfo.userName, userInfo.userName] });
 
     res.status(200).send({
-      message: 'Account deactivated',
+      message: 'Account deleted',
     });
   } catch (error) {
+    console.log(error);
     return res.status(400).send({
       error: 'Cannot delete user',
     });
