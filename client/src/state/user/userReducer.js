@@ -22,7 +22,6 @@ const initialState = {
 };
 
 const userReducer = (state = initialState, action) => {
-  console.log(action);
   switch (action.type) {
     /* REQUESTS */
     case POST_USER_REQUEST: {

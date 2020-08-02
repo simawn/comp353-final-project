@@ -9,7 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { postLoginRequest } from "../state/user/userActions";
 
 // Selectors
-import { userIsSubmittingSelector, userSuccessfulLoginSelector } from "../state/user/userSelectors";
+import {
+  userIsSubmittingSelector,
+  userSuccessfulLoginSelector,
+  currentUserSelector,
+} from "../state/user/userSelectors";
 
 // Material UI
 import {
@@ -28,6 +32,9 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import MuiAlert from "@material-ui/lab/Alert";
+
+// Util
+import localStorage from "local-storage";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -60,6 +67,7 @@ function Login() {
 
   const isSubmitting = useSelector(userIsSubmittingSelector);
   const loginSuccess = useSelector(userSuccessfulLoginSelector);
+  const currentUser = useSelector(currentUserSelector);
 
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -68,19 +76,27 @@ function Login() {
   const [snackBarSeverity, setSnackBarSeverity] = useState("");
 
   const login = () => {
-    setUserName(userName.trim());
+    try {
+      setUserName(userName.trim());
 
-    // Should be replaced with a library called JOI for easy validation, i dont mind doing this
-    if (userName === "") throw new Error();
-    if (password === "") throw new Error();
+      // Should be replaced with a library called JOI for easy validation, i dont mind doing this
+      if (userName === "") throw new Error("Please enter your username!");
+      if (password === "") throw new Error("Please enter your password!");
 
-    dispatch(postLoginRequest({ username: userName, password: password }, true));
+      dispatch(postLoginRequest({ username: userName, password: password }, true));
 
-    setPassword("");
+      setPassword("");
+    } catch (error) {
+      setSnackBarSeverity("warning");
+      setSnackBarMessage(error.message);
+      setDisplaySnackbar(true);
+    }
   };
 
   useEffect(() => {
     if (loginSuccess) {
+      localStorage.set("currentUserName", currentUser.userName);
+      localStorage.set("currentUserRole", currentUser.role);
       history.push("/jobboard");
     }
   }, [isSubmitting]);

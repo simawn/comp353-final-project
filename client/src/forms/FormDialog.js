@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Form } from "react-final-form";
 
 // Material UI
