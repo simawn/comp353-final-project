@@ -13,9 +13,9 @@ exports.getAllJobs = async (req, res, next) => {
     }
 
     // Return list of jobs
-    res.status(200).send(jobs);
+    return res.status(200).send(jobs);
   } catch (err) {
-    res.status(404).send({
+    return res.status(404).send({
       error: "Could not retrieve jobs.",
     });
   }
@@ -35,9 +35,9 @@ exports.getAllEmployerJobs = async (req, res, next) => {
     const jobs = await db.query(`SELECT * FROM Job WHERE Job.userName = '${userName}'`, { type: db.QueryTypes.SELECT });
 
     // Return list of jobs
-    res.status(200).send(jobs);
+    return res.status(200).send(jobs);
   } catch (err) {
-    res.status(404).send({
+    return res.status(404).send({
       error: `Could not retrieve jobs posted by ${userName}.`,
     });
   }
@@ -58,9 +58,9 @@ exports.getJobCategories = async (req, res, next) => {
     categories.unshift({ categoryName: "Select All" });
 
     // Return list of categories
-    res.status(200).send(categories);
+    return res.status(200).send(categories);
   } catch (err) {
-    res.status(404).send({
+    return res.status(404).send({
       error: "Could not retrieve categories.",
     });
   }
@@ -84,15 +84,17 @@ exports.postJob = async (req, res, next) => {
       `INSERT INTO \`Job\`(userName, categoryName, title, datePosted, \`description\`, employeesNeeded) VALUES ('${userName}', '${categoryName}', '${title}', CURDATE(), '${description}', ${employeesNeeded});`,
       { type: db.QueryTypes.INSERT }
     );
-    res.status(200).send({ message: "Successfully added new job." });
+    return res.status(200).send({ message: "Successfully added new job." });
   } catch (err) {
-    res.status(400).send({
+    return res.status(400).send({
       error: "Error creating Job.",
     });
   }
 };
 
 exports.postJobCategory = async (req, res, next) => {
+  console.log(req.body.categoryName);
+
   try {
     if (!req.body.categoryName) {
       return res.status(400).send({
@@ -106,9 +108,9 @@ exports.postJobCategory = async (req, res, next) => {
       type: db.QueryTypes.INSERT,
     });
 
-    res.status(200).send({ message: "Sucessfully added new category." });
+    return res.status(200).send({ message: "Sucessfully added new category." });
   } catch (err) {
-    res.status(400).send({
+    return res.status(400).send({
       error: "Error creating category.",
     });
   }
@@ -134,9 +136,9 @@ exports.deleteJob = async (req, res, next) => {
       type: db.QueryTypes.DELETE,
     });
 
-    res.status(200).send({ message: "Sucessfully deleted job." });
+    return res.status(200).send({ message: "Sucessfully deleted job." });
   } catch (err) {
-    res.status(400).send({
+    return res.status(400).send({
       error: "Error deleting job.",
     });
   }

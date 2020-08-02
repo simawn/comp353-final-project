@@ -109,7 +109,7 @@ function EmployerJobBoard() {
             </Grid>
           </Grid>
           {isEmpty(jobsList) ? (
-            <Typography>You don't have any job listings posted yet...</Typography>
+            <Typography align="center">You don't have any job listings posted yet...</Typography>
           ) : (
             <Table size="medium">
               <TableHead>

@@ -1,9 +1,5 @@
 // React & Redux
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-
-// Selectors
-import { currentUserSelector } from "../state/user/userSelectors";
 
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,6 +10,9 @@ import EmployeeJobBoard from "../components/EmployeeJobBoard";
 import EmployerJobBoard from "../components/EmployerJobBoard";
 import AppBar from "../components/AppBar";
 import SideBar from "../components/SideBar";
+
+// Util
+import localStorage from "local-storage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,39 +30,47 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
+    elevation: 3,
     display: "flex",
     overflow: "auto",
     flexDirection: "column",
   },
 }));
 
-// TODO: Render dynamically depending on user
-
-const isEmployee = false;
-
 function Dashboard() {
   const classes = useStyles();
-
-  const currentUser = useSelector(currentUserSelector);
-
   const [open, setOpen] = useState(true);
 
-  console.log(currentUser);
+  const currentUserRole = localStorage.get("currentUserRole");
+  const currentUserName = localStorage.get("currentUserName");
+
+  const renderJobBoard = () => {
+    switch (currentUserRole) {
+      case "employee": {
+        return <EmployeeJobBoard userName={currentUserName} />;
+      }
+      case "employer": {
+        return <EmployerJobBoard userName={currentUserName} />;
+      }
+      // TODO: Implement admin board (mix of employee and employer board)
+      default: {
+        return null;
+      }
+    }
+  };
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar open={open} setOpen={setOpen} />
-      <SideBar open={open} setOpen={setOpen} />
+      <SideBar role={currentUserRole} open={open} setOpen={setOpen} />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
+        <Container maxWidth={false} className={classes.container}>
           <Grid container spacing={3}>
             {/* Job Board */}
             <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                {isEmployee ? <EmployeeJobBoard currentUser={currentUser} /> : <EmployerJobBoard />}
-              </Paper>
+              <Paper className={classes.paper}>{renderJobBoard()}</Paper>
             </Grid>
           </Grid>
         </Container>

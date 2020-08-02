@@ -1,5 +1,5 @@
 // React & Redux
-import React, { useEffect, useState, Fragment, useRef } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Actions
@@ -35,11 +35,10 @@ import LoadingScreen from "./LoadingScreen";
 
 // Util
 import { isEmpty, findIndex, get, capitalize } from "lodash";
-import axios from "axios";
 
 // TODO: Limit number of applications an employee can make (based on subscription level)
 
-function EmployerJobBoard({ currentUser }) {
+function EmployerJobBoard({ userName }) {
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState("Select All");
@@ -58,7 +57,7 @@ function EmployerJobBoard({ currentUser }) {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={() => dispatch(postApplicationRequest(currentUser.userName, jobID))}
+            onClick={() => dispatch(postApplicationRequest(userName, jobID))}
           >
             APPLY
           </Button>
@@ -70,7 +69,7 @@ function EmployerJobBoard({ currentUser }) {
             fullWidth
             variant="contained"
             color="secondary"
-            onClick={() => dispatch(putApplicantStatusRequest(currentUser.userName, jobID, "withdrawn"))}
+            onClick={() => dispatch(putApplicantStatusRequest(userName, jobID, "withdrawn"))}
           >
             WITHDRAW
           </Button>
@@ -93,13 +92,13 @@ function EmployerJobBoard({ currentUser }) {
   useEffect(() => {
     if (isEmpty(jobsList)) {
       dispatch(browseJobsRequest());
-      dispatch(getApplicantStatusRequest(currentUser.userName));
+      dispatch(getApplicantStatusRequest(userName));
       dispatch(browseCategoriesRequest());
     }
   }, []);
 
   useEffect(() => {
-    dispatch(getApplicantStatusRequest(currentUser.userName));
+    dispatch(getApplicantStatusRequest(userName));
   }, [isSubmitting]);
 
   return (
@@ -112,7 +111,7 @@ function EmployerJobBoard({ currentUser }) {
             Job Listings
           </Typography>
           <Grid container justify="flex-start" spacing={1}>
-            <Grid item xs={12} sm={12} md={6}>
+            <Grid item xs={12} sm={12} md={4}>
               <List>
                 <ListItem>
                   <Typography>Select a category to narrow your search:</Typography>
@@ -137,12 +136,14 @@ function EmployerJobBoard({ currentUser }) {
                 <TableCell align="center">Description</TableCell>
                 <TableCell align="center">Category</TableCell>
                 <TableCell align="center">Employees Needed</TableCell>
+                <TableCell align="center">Date Posted</TableCell>
                 <TableCell align="center">Status</TableCell>
                 <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {jobsList.map((job, key) => {
+                console.log(job);
                 const index = findIndex(applicantStatuses, { jobID: job.jobID });
                 const jobStatus = capitalize(get(applicantStatuses[index], `status`, "Not Yet Applied"));
                 if (category === "Select All" || category === job.categoryName) {
@@ -153,6 +154,7 @@ function EmployerJobBoard({ currentUser }) {
                       <TableCell align="center">{job.description}</TableCell>
                       <TableCell align="center">{job.categoryName}</TableCell>
                       <TableCell align="center">{job.employeesNeeded}</TableCell>
+                      <TableCell align="center">{job.datePosted}</TableCell>
                       <TableCell align="center">{jobStatus}</TableCell>
                       <TableCell>{createButton(jobStatus, job.jobID)}</TableCell>
                     </TableRow>

@@ -16,11 +16,15 @@ module.exports = (passport) => {
 
         // Check for password
         bcrypt.compare(password, userData.password, (err, success) => {
-          if (err) throw err;
-          if (success) {
-            return callback(null, userData);
+          try {
+            if (err) throw err;
+            if (success) {
+              return callback(null, userData);
+            }
+            throw new Error("Password invalid");
+          } catch (err) {
+            callback(err.message, false);
           }
-          throw new Error("Password invalid");
         });
       } catch (error) {
         return callback(error.message, false);

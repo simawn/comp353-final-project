@@ -1,6 +1,7 @@
 // React & Redux
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Form } from "react-final-form";
 
 // Actions
 import { postUserRequest } from "../state/user/userActions";
@@ -71,41 +72,47 @@ function Register() {
 
   const register = () => {
     // Clean up data
-    const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    setUserName(userName.trim());
-    setFirstName(firstName.trim());
-    setLastName(lastName.trim());
-    setEmail(email.trim());
+    try {
+      const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+      setUserName(userName.trim());
+      setFirstName(firstName.trim());
+      setLastName(lastName.trim());
+      setEmail(email.trim());
 
-    // I can replace this with a library called JOI for validation, makes it really clean
-    if (userName.length <= 0) throw new Error("Username cannot be empty");
-    if (password.length <= 5) throw new Error("Password must have at least 6 characters");
-    if (firstName.length <= 0) throw new Error("First name cannot be empty");
-    if (lastName.length <= 0) throw new Error("Last name cannot be empty");
-    if (email.length <= 0) throw new Error("Email cannot be empty");
-    if (!re.test(email)) throw new Error("Invalid email");
+      // I can replace this with a library called JOI for validation, makes it really clean
+      if (userName.length <= 0) throw new Error("Username cannot be empty");
+      if (password.length <= 5) throw new Error("Password must have at least 6 characters");
+      if (firstName.length <= 0) throw new Error("First name cannot be empty");
+      if (lastName.length <= 0) throw new Error("Last name cannot be empty");
+      if (email.length <= 0) throw new Error("Email cannot be empty");
+      if (!re.test(email)) throw new Error("Invalid email");
 
-    dispatch(
-      postUserRequest(
-        {
-          userName: userName,
-          password: password,
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          role: role,
-          subscription: 1,
-        },
-        true
-      )
-    );
+      dispatch(
+        postUserRequest(
+          {
+            userName: userName,
+            password: password,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            role: role,
+            subscription: 1,
+          },
+          true
+        )
+      );
 
-    setPageInitialized(true);
-    setUserName("");
-    setPassword("");
-    setFirstName("");
-    setLastName("");
-    setEmail("");
+      setPageInitialized(true);
+      setUserName("");
+      setPassword("");
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+    } catch (error) {
+      snackBarSettings.alertSeverity = "warning";
+      snackBarSettings.message = error.message;
+      setDisplaySnackbar(true);
+    }
   };
 
   useEffect(() => {
