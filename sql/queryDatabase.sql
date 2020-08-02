@@ -22,8 +22,30 @@ VALUES
 -- i. Delete an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
 
-SET @givenUserName = 'KevinCarlsen';
+SET @givenUserName = 'AlexeiAdcocks';
+SET @givenUserCreditCardNumber = 
+	(SELECT C.creditCardNumber
+    FROM creditCard AS C, paymentMethod AS P
+    WHERE C.creditCardnumber = P.creditCardNumber AND P.userName = @givenUsername);
+   
+DELETE FROM paymentMethod 
+WHERE 
+	userName = @givenUserName; 
 
+DELETE FROM creditcard
+WHERE 
+	creditCardNumber = @givenUserCreditCardNumber; 
+
+DELETE FROM applicant 
+WHERE jobID IN  
+	(SELECT	A.jobID 
+    FROM (SELECT * FROM job) AS J INNER JOIN (SELECT * FROM applicant) AS A
+    WHERE J.userName = @givenUserName); 
+    
+DELETE FROM job 
+WHERE 
+	userName = @givenUserName; 
+    
 DELETE FROM `user`
 WHERE 
 	userName = @givenUserName;
@@ -169,9 +191,24 @@ VALUES
 -- -----------------------------------------------------------------------------------------------------------------
 -- vii. Delete an Employee.
 -- -----------------------------------------------------------------------------------------------------------------
+SET @givenUserName = 'LeilaDisney';
+SET @givenUserCreditCardNumber = 
+	(SELECT C.creditCardNumber
+    FROM creditCard AS C, paymentMethod AS P
+    WHERE C.creditCardnumber = P.creditCardNumber AND P.userName = @givenUsername);
 
-SET @givenUserName = 'MickeyMouse';
+DELETE FROM paymentMethod 
+WHERE 
+	userName = @givenUserName; 
 
+DELETE FROM creditcard
+WHERE 
+	creditCardNumber = @givenUserCreditCardNumber; 
+
+DELETE FROM applicant 
+WHERE 
+	userName = @givenUserName; 
+    
 DELETE FROM `user`
 WHERE 
 	userName = @givenUserName;
@@ -228,8 +265,19 @@ VALUES ( @givenUserName, @givenJobID,'pending');
 -- -----------------------------------------------------------------------------------------------------------------
 -- x. Accept a job offer by an employee 
 -- -----------------------------------------------------------------------------------------------------------------
-SET @givenJobID = '5';
+SET @givenJobID = '3';
 SET @givenUserName = 'LeilaDisney';
 
+UPDATE applicant 
+SET `status` = 'hired'
+WHERE jobID = @givenJobID AND userName = @givenUserName;
 
+-- -----------------------------------------------------------------------------------------------------------------
+-- xi. Withdraw from an applied job by an employee. DUPLICATE AS VII.
+-- -----------------------------------------------------------------------------------------------------------------
+
+
+-- ----------------------------------------------------------------------------------------------------------------  
+--   
+-- ----------------------------------------------------------------------------------------------------------------    
 

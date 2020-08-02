@@ -40,7 +40,7 @@ CREATE TABLE `User`(
   `lastPayment` DATE,
   `role` ENUM('employer', 'employee', 'admin'),
   PRIMARY KEY (`userName`),
-  FOREIGN KEY (`subscriptionID`) REFERENCES `Subscription`(`subscriptionID`)
+  FOREIGN KEY (`subscriptionID`) REFERENCES `Subscription`(`subscriptionID`)  
 );
 
 CREATE TABLE `CreditCard`(
@@ -56,8 +56,8 @@ CREATE TABLE `PaymentMethod`(
   `creditCardNumber` VARCHAR(255),
   `accountNumber` VARCHAR(255),
   PRIMARY KEY (`paymentID`),
-  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
-  FOREIGN KEY (`creditCardNumber`) REFERENCES `CreditCard`(`creditCardNumber`)
+  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
+  FOREIGN KEY (`creditCardNumber`) REFERENCES `CreditCard`(`creditCardNumber`) 
 );
 
 CREATE TABLE `Category`(
@@ -74,8 +74,8 @@ CREATE TABLE `Job`(
   `description` VARCHAR(255),
   `employeesNeeded` INT,
   PRIMARY KEY (`jobID`),
-  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
-  FOREIGN KEY (`categoryName`) REFERENCES `Category`(`categoryName`)
+  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
+  FOREIGN KEY (`categoryName`) REFERENCES `Category`(`categoryName`) 
 );
 
 CREATE TABLE `Applicant`(
@@ -83,6 +83,6 @@ CREATE TABLE `Applicant`(
   `jobID` INT NOT NULL,
   `status` ENUM('pending', 'rejected', 'offer', 'hired', 'withdrawn'),
   PRIMARY KEY (`userName`, `jobID`),
-  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
-  FOREIGN KEY (`jobID`) REFERENCES `Job`(`jobID`)
+  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
+  FOREIGN KEY (`jobID`) REFERENCES `Job`(`jobID`) 
 );

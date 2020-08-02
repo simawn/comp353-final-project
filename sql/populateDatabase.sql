@@ -76,7 +76,8 @@ VALUES
   ('ArabellaAndreutti', 'Construction', 'Construction Worker', '2020-07-12', 'We build really cool stuff.', 5),
   ('BabKelsall', 'Design', 'Graphic Designer', '2020-07-14', 'We take commissions and give you bonuses.', 2),
   ('ShelleyGirt', 'Education', 'High School Teacher', '2020-07-14', 'Show the kids how to behave and smack em around.', 1),
-  ('AlexeiAdcocks', 'Engineering', 'Senior Mechanical Engineer', '2020-07-20', 'Help us, we are stuck', 1)
+  ('AlexeiAdcocks', 'Engineering', 'Senior Mechanical Engineer', '2020-07-20', 'Help us, we are stuck', 1),
+  ('AlexeiAdcocks', 'Engineering', 'Chief Mechanical Engineer', '2020-07-20', 'Help us, we are stuck too', 1)
 ;
 
 
