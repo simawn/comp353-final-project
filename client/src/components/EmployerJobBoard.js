@@ -74,8 +74,6 @@ function EmployerJobBoard({ userName }) {
     dispatch(browseCategoriesRequest());
   }, [isSubmitting]);
 
-  console.log(selectedListing);
-
   return (
     <Fragment>
       {isLoadingJobList ? (
