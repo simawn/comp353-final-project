@@ -6,6 +6,7 @@ import JobBoard from "./views/JobBoard";
 import Login from "./views/Login";
 import Register from "./views/Register";
 import AccountSettings from "./views/AccountSettings";
+import Support from "./views/Support";
 
 const AppRouter = () => (
   <Router>
@@ -16,6 +17,7 @@ const AppRouter = () => (
     <Route exact path="/accountsettings" component={AccountSettings} />
     <Route exact path="/register" component={Register} />
     <Route exact path="/jobboard" component={JobBoard} />
+    <Route exact path="/support" component={Support} />
   </Router>
 );
 

@@ -27,6 +27,9 @@ import {
   PUT_USER_SUBSCRIPTION_REQUEST,
   putUserSubscriptionSuccess,
   putUserSubscriptionError,
+  DELETE_USER_REQUEST,
+  deleteUserSuccess,
+  deleteUserError,
 } from "./userActions";
 
 const postUserEvent = (action$) => {
@@ -113,11 +116,26 @@ const putUserSubscriptionEvent = (action$) => {
   );
 };
 
+const deleteUserEvent = (action$) => {
+  return action$.pipe(
+    ofType(DELETE_USER_REQUEST),
+    mergeMap(({ payload: { userName } }) =>
+      xhr("DELETE", `/users/${userName}`).pipe(
+        map(({ response }) => deleteUserSuccess(response)),
+        catchError((err) => {
+          return of(deleteUserError(err));
+        })
+      )
+    )
+  );
+};
+
 export default combineEpics(
   postUserEvent,
   postLoginEvent,
   postLogoutEvent,
   getUserEvent,
   putUserEvent,
-  putUserSubscriptionEvent
+  putUserSubscriptionEvent,
+  deleteUserEvent
 );

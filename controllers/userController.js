@@ -72,25 +72,28 @@ exports.editUserDetails = async (req, res) => {
  */
 exports.deleteUser = async (req, res) => {
   try {
-    const { userName } = req.body;
-    if (!userName) throw new Error('No username set');
+    const { userName } = req.params;
+    if (!userName) throw new Error("No username set");
 
     // TODO: Fix?
     // const userInfo = req.user[0];
     // if (!userInfo.userName) throw new Error('No username set');
 
     // Assuming we have ON DELETE CASCADE for all creditCardNumber and userName FK
-    await db.query(`
+    await db.query(
+      `
     DELETE FROM CreditCard WHERE creditCardNumber IN 
       (SELECT P.creditCardNumber
       FROM (SELECT * FROM CreditCard) as DC , PaymentMethod AS P
       WHERE DC.creditCardnumber = P.creditCardNumber AND P.userName = ?);
 
     DELETE FROM User WHERE username=?;
-    `, { replacements: [userName, userName] });
+    `,
+      { replacements: [userName, userName] }
+    );
 
     res.status(200).send({
-      message: 'Account deleted',
+      message: "Account deleted",
     });
   } catch (error) {
     console.log(error);
@@ -102,19 +105,14 @@ exports.deleteUser = async (req, res) => {
 
 exports.editUserSubscription = async (req, res, next) => {
   try {
-    console.log(req.params);
-
-    if (!req.params.subscriptionID || !req.params.userID) {
+    if (!req.params.subscriptionID || !req.params.userName) {
       return res.status(400).send({
         error: "SubscriptionID was not provided.",
       });
     }
 
     const subscriptionID = req.params.subscriptionID;
-    const userName = req.params.userID;
-
-    console.log(subscriptionID);
-    console.log(userName);
+    const userName = req.params.userName;
 
     // Update the selected job
     await db.query(`UPDATE User SET subscriptionID = ${subscriptionID} WHERE userName = '${userName}';`, {

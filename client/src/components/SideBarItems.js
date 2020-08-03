@@ -12,6 +12,7 @@ import ListIcon from "@material-ui/icons/List";
 import LogoutIcon from "@material-ui/icons/ExitToApp";
 import SettingsIcon from "@material-ui/icons/Settings";
 import PaymentIcon from "@material-ui/icons/Payment";
+import ContactSupportIcon from "@material-ui/icons/ContactSupport";
 
 // Util
 import localStorage from "local-storage";
@@ -56,6 +57,14 @@ function MenuOptions({ role }) {
         </ListItemIcon>
         <ListItemText primary="Payment Methods" />
       </ListItem>
+      {role === "employer" ? (
+        <ListItem onClick={() => history.push("/support")} button>
+          <ListItemIcon>
+            <ContactSupportIcon />
+          </ListItemIcon>
+          <ListItemText primary="Contact Support" />
+        </ListItem>
+      ) : null}
       <ListItem onClick={handleLogout} button>
         <ListItemIcon>
           <LogoutIcon />

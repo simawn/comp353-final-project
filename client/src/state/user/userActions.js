@@ -47,6 +47,14 @@ export const putUserSubscriptionRequest = (subscriptionID, userName) => {
   };
 };
 
+export const DELETE_USER_REQUEST = "DELETE_USER_REQUEST";
+export const deleteUserRequest = (userName) => {
+  return {
+    type: DELETE_USER_REQUEST,
+    payload: { userName },
+  };
+};
+
 // SUCCESSES
 
 export const POST_USER_SUCCESS = "POST_USER_SUCCESS";
@@ -91,6 +99,13 @@ export const PUT_USER_SUBSCRIPTION_SUCCESS = "PUT_USER_SUBSCRIPTION_SUCCESS";
 export const putUserSubscriptionSuccess = () => {
   return {
     type: PUT_USER_SUBSCRIPTION_SUCCESS,
+  };
+};
+
+export const DELETE_USER_SUCCESS = "DELETE_USER_SUCCESS";
+export const deleteUserSuccess = () => {
+  return {
+    type: DELETE_USER_SUCCESS,
   };
 };
 
@@ -140,6 +155,14 @@ export const PUT_USER_SUBSCRIPTION_ERROR = "PUT_USER_SUBSCRIPTION_ERROR";
 export const putUserSubscriptionError = (error) => {
   return {
     type: PUT_USER_SUBSCRIPTION_ERROR,
+    payload: { error },
+  };
+};
+
+export const DELETE_USER_ERROR = "DELETE_USER_ERROR";
+export const deleteUserError = (error) => {
+  return {
+    type: DELETE_USER_ERROR,
     payload: { error },
   };
 };
