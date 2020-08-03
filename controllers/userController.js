@@ -36,14 +36,45 @@ exports.getUserDetails = async (req, res) => {
  *
  */
 exports.editUserDetails = async (req, res) => {
+  // Edit User Balance
+  if (req.body.payment) {
+    try {
+      const userName = req.params.userName;
+      let payment = req.body.payment;
+
+      let balance = await db.query(`SELECT User.balance FROM User WHERE userName = '${userName}'`, {
+        type: db.QueryTypes.SELECT,
+      });
+
+      balance = parseFloat(balance[0].balance).toFixed(2);
+      payment = parseFloat(payment).toFixed(2);
+
+      const newBalance = Number(balance) + Number(payment);
+
+      await db.query(`UPDATE User SET balance = ${newBalance} WHERE userName = '${userName}'`, {
+        type: db.QueryTypes.UPDATE,
+      });
+
+      return res.status(200).send({
+        message: "Successfully updated upayment.",
+      });
+    } catch {
+      return res.status(400).send({
+        error: "Unable to fulfill payment.",
+      });
+    }
+  }
+
+  // Edit All User Values
   try {
-    if (!req.body.firstName || !req.body.lastName || !req.body.password || !req.body.email) {
+    if (!req.body.firstName || !req.body.lastName || !req.body.password || !req.body.email || !req.body.paymentMethod) {
       return res.status(400).send({
         error: "Not all information needed to edit the user was provided.",
       });
     }
 
     let password = req.body.password;
+    const paysWithManual = req.body.paymentMethod === "manual" ? 1 : 0;
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
     const email = req.body.email;
@@ -53,7 +84,7 @@ exports.editUserDetails = async (req, res) => {
 
     // Update the selected job
     await db.query(
-      `UPDATE User SET firstName = '${firstName}', lastName = '${lastName}', \`password\` = '${password}', email = '${email}' WHERE userName = '${userName}';`,
+      `UPDATE User SET firstName = '${firstName}', lastName = '${lastName}', paysWithManual = '${paysWithManual}', \`password\` = '${password}', email = '${email}' WHERE userName = '${userName}';`,
       {
         type: db.QueryTypes.UPDATE,
       }

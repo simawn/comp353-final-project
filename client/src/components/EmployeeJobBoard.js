@@ -38,7 +38,7 @@ import { isEmpty, findIndex, get, capitalize } from "lodash";
 
 // TODO: Limit number of applications an employee can make (based on subscription level)
 
-function EmployerJobBoard({ userName }) {
+function EmployerJobBoard({ userName, frozen }) {
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState("Select All");
@@ -57,6 +57,7 @@ function EmployerJobBoard({ userName }) {
             fullWidth
             variant="contained"
             color="primary"
+            disabled={frozen}
             onClick={() => dispatch(postApplicationRequest(userName, jobID))}
           >
             APPLY
@@ -70,6 +71,7 @@ function EmployerJobBoard({ userName }) {
             fullWidth
             variant="contained"
             color="secondary"
+            disabled={frozen}
             onClick={() => dispatch(putApplicantStatusRequest(userName, jobID, "withdrawn"))}
           >
             WITHDRAW
@@ -111,6 +113,11 @@ function EmployerJobBoard({ userName }) {
           <Typography align="center" variant="h3">
             Job Listings
           </Typography>
+          {frozen ? (
+            <Typography align="center" color="secondary" gutterBottom variant="h6" style={{ paddingTop: "20px" }}>
+              This account is <b>FROZEN</b>. Please make the appropriate payments to regain functionality.
+            </Typography>
+          ) : null}
           <Grid container justify="flex-start" spacing={1}>
             <Grid item xs={12} sm={12} md={4}>
               <List>
@@ -161,6 +168,7 @@ function EmployerJobBoard({ userName }) {
                             fullWidth
                             variant="contained"
                             color="primary"
+                            disabled="frozen"
                             onClick={() => dispatch(putApplicantStatusRequest(userName, job.jobID, "hired"))}
                           >
                             ACCEPT

@@ -23,7 +23,18 @@ exports.login = async (req, res, next) => {
 };
 
 exports.register = async (req, res, next) => {
-  const { userName, subscription, password, email, firstName, lastName, role } = req.body;
+  const { userName, password, email, firstName, lastName } = req.body;
+
+  let role = req.body.role;
+  let subscription = req.body.subscription;
+
+  // Set employee subscription manually
+  if (role === "employee") {
+    subscription = 3;
+  } else {
+    subscription = 1;
+  }
+
   try {
     const result = (
       await db.query("SELECT * FROM User WHERE userName=?", { replacements: [userName], type: db.QueryTypes.SELECT })
@@ -33,7 +44,7 @@ exports.register = async (req, res, next) => {
     const passwordEncrypt = await bcrypt.hash(password, 10);
 
     await db.query(
-      "INSERT INTO User (userName, subscriptionID, password, email, firstName, lastName, role, balance, paysWithManual, active) VALUES (?, ?, ?, ?, ?, ?, ?, 0, 0, 1)",
+      "INSERT INTO User (userName, subscriptionID, password, email, firstName, lastName, role, balance, paysWithManual, active) VALUES (?, ?, ?, ?, ?, ?, ?, 0, 1, 1)",
       {
         replacements: [userName, subscription, passwordEncrypt, email, firstName, lastName, role],
         type: db.QueryTypes.INSERT,
