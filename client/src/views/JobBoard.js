@@ -1,5 +1,12 @@
 // React & Redux
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+// Actions
+import { getUserRequest } from "../state/user/userActions";
+
+// Selectors
+import { currentUserSelector, userIsLoadingSelector } from "../state/user/userSelectors";
 
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,8 +17,10 @@ import EmployeeJobBoard from "../components/EmployeeJobBoard";
 import EmployerJobBoard from "../components/EmployerJobBoard";
 import AppBar from "../components/AppBar";
 import SideBar from "../components/SideBar";
+import LoadingScreen from "../components/LoadingScreen";
 
 // Util
+import { isEmpty } from "lodash";
 import localStorage from "local-storage";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,18 +48,24 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard() {
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
+  const dispatch = useDispatch();
+
+  const user = useSelector(currentUserSelector);
+  const isLoading = useSelector(userIsLoadingSelector);
 
   const currentUserRole = localStorage.get("currentUserRole");
   const currentUserName = localStorage.get("currentUserName");
 
-  const renderJobBoard = () => {
+  const [open, setOpen] = useState(true);
+  const [userIsFrozen, setUserIsFrozen] = useState(false);
+
+  const renderJobBoard = (userIsFrozen) => {
     switch (currentUserRole) {
       case "employee": {
-        return <EmployeeJobBoard userName={currentUserName} />;
+        return <EmployeeJobBoard userName={currentUserName} frozen={userIsFrozen} />;
       }
       case "employer": {
-        return <EmployerJobBoard userName={currentUserName} />;
+        return <EmployerJobBoard userName={currentUserName} frozen={userIsFrozen} />;
       }
       // TODO: Implement admin board (mix of employee and employer board)
       default: {
@@ -58,6 +73,13 @@ function Dashboard() {
       }
     }
   };
+
+  useEffect(() => {
+    dispatch(getUserRequest(currentUserName));
+    if (user && user.balance) {
+      setUserIsFrozen(parseFloat(user.balance) < 0.0);
+    }
+  }, [user.balance]);
 
   return (
     <div className={classes.root}>
@@ -70,7 +92,13 @@ function Dashboard() {
           <Grid container spacing={3}>
             {/* Job Board */}
             <Grid item xs={12}>
-              <Paper className={classes.paper}>{renderJobBoard()}</Paper>
+              <Paper className={classes.paper}>
+                {isEmpty(user) ? (
+                  <LoadingScreen fullScreen={false} message={"Loading User..."} />
+                ) : (
+                  renderJobBoard(userIsFrozen)
+                )}
+              </Paper>
             </Grid>
           </Grid>
         </Container>

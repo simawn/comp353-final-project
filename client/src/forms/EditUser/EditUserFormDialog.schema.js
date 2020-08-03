@@ -8,6 +8,7 @@ const editJobSchema = Joi.object({
     .required()
     .label("Email"),
   password: Joi.string().required().label("Password"),
+  paymentMethod: Joi.string().required().label("Payment Method"),
 });
 
 export default editJobSchema;

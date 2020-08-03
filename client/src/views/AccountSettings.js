@@ -5,9 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Actions
 import { getUserRequest, deleteUserRequest, postLogoutRequest } from "../state/user/userActions";
+import { browsePaymentRequest } from "../state/payments/paymentActions";
 
 // Selectors
 import { currentUserSelector, userIsSubmittingSelector } from "../state/user/userSelectors";
+import { paymentMethodListSelector } from "../state/payments/paymentSelectors";
 
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,12 +19,15 @@ import { CssBaseline, Container, Divider, Grid, Paper, List, ListItem, Button, T
 import AppBar from "../components/AppBar";
 import SideBar from "../components/SideBar";
 import LoadingScreen from "../components/LoadingScreen";
-import EditUserFormDialog from "../forms/EditUser/EditUserFormDialog";
 import SubscriptionDialog from "../components/SubscriptionDialog";
+
+// Forms
+import EditUserFormDialog from "../forms/EditUser/EditUserFormDialog";
+import MakePaymentFormDialog from "../forms/MakePayment/MakePaymentFormDialog";
 
 // Util
 import localStorage from "local-storage";
-import { isEmpty, capitalize } from "lodash";
+import { isEmpty, capitalize, get } from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,18 +58,34 @@ function Dashboard() {
   const history = useHistory();
 
   const currentUser = useSelector(currentUserSelector);
+  const paymentMethods = useSelector(paymentMethodListSelector);
   const isSubmitting = useSelector(userIsSubmittingSelector);
 
   const [open, setOpen] = useState(true);
   const [openEditUserDialog, setOpenEditUserDialog] = useState(false);
+  const [openMakePaymentDialog, setOpenMakePaymentDialog] = useState(false);
   const [openSubscriptionDialog, setOpenSubscriptionDialog] = useState(false);
+  const [activePaymentAccount, setActivePaymentAccount] = useState("");
 
   const currentUserRole = localStorage.get("currentUserRole");
   const currentUserName = localStorage.get("currentUserName");
 
   useEffect(() => {
     dispatch(getUserRequest(currentUserName));
+    dispatch(browsePaymentRequest(currentUserName));
   }, [isSubmitting]);
+
+  useEffect(() => {
+    paymentMethods.forEach((payment) => {
+      if (payment.active === 1) {
+        payment.creditCardNumber
+          ? setActivePaymentAccount(payment.creditCardNumber)
+          : setActivePaymentAccount(payment.accountNumber);
+      }
+    });
+  }, [paymentMethods]);
+
+  console.log(activePaymentAccount);
 
   return (
     <div className={classes.root}>
@@ -81,6 +102,17 @@ function Dashboard() {
                 <Typography gutterBottom align="center" variant="h3">
                   Account Settings
                 </Typography>
+                {parseFloat(currentUser.balance) < 0.0 ? (
+                  <Typography
+                    align="center"
+                    color="secondary"
+                    gutterBottom
+                    variant="h6"
+                    style={{ paddingBottom: "20px" }}
+                  >
+                    This account is <b>FROZEN</b>. Please make the appropriate payments to regain functionality.
+                  </Typography>
+                ) : null}
                 {isEmpty(currentUser) ? (
                   <LoadingScreen fullScreen={false} message={"Loading User..."} />
                 ) : (
@@ -88,6 +120,11 @@ function Dashboard() {
                     <EditUserFormDialog
                       open={openEditUserDialog}
                       close={() => setOpenEditUserDialog(false)}
+                      userName={currentUserName}
+                    />
+                    <MakePaymentFormDialog
+                      open={openMakePaymentDialog}
+                      close={() => setOpenMakePaymentDialog(false)}
                       userName={currentUserName}
                     />
                     <SubscriptionDialog
@@ -171,7 +208,7 @@ function Dashboard() {
                       <ListItem>
                         <Grid container>
                           <Grid item xs={12} sm={6}>
-                            <Typography>
+                            <Typography color={parseFloat(currentUser.balance) < 0.0 ? "secondary" : "initial"}>
                               <b>Balance:</b> {parseFloat(currentUser.balance).toFixed(2)}
                             </Typography>
                           </Grid>
@@ -186,13 +223,14 @@ function Dashboard() {
                         <Grid container>
                           <Grid item xs={12} sm={6}>
                             <Typography>
-                              <b>Currently Payment Method:</b> {currentUser.paysWithManual ? "Manual" : "Automatic"}{" "}
+                              <b>Current Payment Method:</b> {currentUser.paysWithManual ? "Manual" : "Automatic"}{" "}
                               Payments
                             </Typography>
                           </Grid>
                           <Grid item xs={12} sm={6}>
                             <Typography>
-                              <b>Card / Account #:</b>
+                              <b>Card / Account #:</b>{" "}
+                              {activePaymentAccount === "" ? "No Active Payment Method Set" : activePaymentAccount}
                             </Typography>
                           </Grid>
                         </Grid>
@@ -205,8 +243,18 @@ function Dashboard() {
                             </Button>
                           </Grid>
                           <Grid item xs={12} sm={6} md={3}>
-                            <Button fullWidth variant="outlined" disabled={currentUser.balance === "0.0000"}>
-                              MAKE PAYMENT
+                            <Button
+                              fullWidth
+                              variant="outlined"
+                              color={activePaymentAccount === "" ? "primary" : "secondary"}
+                              disabled={parseFloat(currentUser.balance) >= 0.0}
+                              onClick={
+                                activePaymentAccount === ""
+                                  ? () => history.push("/paymentmethods")
+                                  : () => setOpenMakePaymentDialog(true)
+                              }
+                            >
+                              {activePaymentAccount === "" ? "SELECT A PAYMENT METHOD" : "MAKE PAYMENT"}
                             </Button>
                           </Grid>
                         </Grid>

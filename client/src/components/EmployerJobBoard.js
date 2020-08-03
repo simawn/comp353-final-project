@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function EmployerJobBoard({ userName }) {
+function EmployerJobBoard({ userName, frozen }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -91,6 +91,11 @@ function EmployerJobBoard({ userName }) {
           <Typography align="center" variant="h3">
             Your Job Listings
           </Typography>
+          {frozen ? (
+            <Typography align="center" color="secondary" gutterBottom variant="h6" style={{ paddingTop: "20px" }}>
+              This account is <b>FROZEN</b>. Please make the appropriate payments to regain functionality.
+            </Typography>
+          ) : null}
           <Grid container justify="center" spacing={2}>
             <Grid item xs={12} sm={6} md={3}>
               <Button
@@ -98,6 +103,7 @@ function EmployerJobBoard({ userName }) {
                 fullWidth
                 variant="outlined"
                 onClick={() => setCreateJobFormOpen(true)}
+                disabled={frozen}
               >
                 POST A JOB
               </Button>
@@ -108,6 +114,7 @@ function EmployerJobBoard({ userName }) {
                 fullWidth
                 variant="outlined"
                 onClick={() => setCreateCategoryFormOpen(true)}
+                disabled={frozen}
               >
                 ADD A CATEGORY
               </Button>
@@ -147,6 +154,7 @@ function EmployerJobBoard({ userName }) {
                           setSelectedListing(job);
                           setJobApplicantDialogOpen(true);
                         }}
+                        disabled={frozen}
                       >
                         APPLICANTS
                       </Button>
@@ -159,8 +167,9 @@ function EmployerJobBoard({ userName }) {
                         }}
                         className={classes.margin}
                         size="medium"
+                        disabled={frozen}
                       >
-                        <EditIcon color="primary" />
+                        <EditIcon color={frozen ? "default" : "secondary"} />
                       </IconButton>
                     </TableCell>
                     <TableCell align="center">
@@ -168,9 +177,9 @@ function EmployerJobBoard({ userName }) {
                         className={classes.margin}
                         size="medium"
                         onClick={() => dispatch(deleteJobRequest(job.jobID))}
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || frozen}
                       >
-                        <DeleteIcon color="secondary" />
+                        <DeleteIcon color={frozen ? "default" : "secondary"} />
                       </IconButton>
                     </TableCell>
                   </TableRow>

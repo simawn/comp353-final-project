@@ -1,6 +1,6 @@
 // React & Redux
 import React, { Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 // Actions
 import { putUserRequest } from "../../state/user/userActions";
@@ -9,7 +9,7 @@ import { putUserRequest } from "../../state/user/userActions";
 import { Typography } from "@material-ui/core";
 
 // Form
-import { TextField } from "mui-rff";
+import { TextField, Radios } from "mui-rff";
 import FormDialog from "../FormDialog";
 import editUserSchema from "./EditUserFormDialog.schema";
 
@@ -65,6 +65,15 @@ function EditUserFormDialog({ open, close, userName }) {
           id="password"
           label="Password"
           name="password"
+        />
+        <Radios
+          label="Payment Method"
+          name="paymentMethod"
+          radioGroupProps={{ row: true }}
+          data={[
+            { label: "Manual Payments", value: "manual" },
+            { label: "Automatic Payments", value: "automatic" },
+          ]}
         />
       </Fragment>
     </FormDialog>
