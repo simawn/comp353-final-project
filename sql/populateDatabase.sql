@@ -12,7 +12,7 @@ VALUES
 ;
 
     
-INSERT INTO `User`(userName, subscriptionID, `password`, email, firstName, lastName, `role`, balance, suffering, `active`, lastPayment)
+INSERT INTO `User`(userName, subscriptionID, `password`, email, firstName, lastName, `role`, balance, paysWithManual, `active`, lastPayment)
 VALUES 
 	('LeilaDisney', 3,	'qwer', 'leila_disney@hotmail.com', 'Leila', 'Disney', 'employee', -9.98,	1, 1,	'2020-05-07'),
 	('HubeKlamman',	2,	'tyui', 'hube_klamman@hotmail.com', 'Hube', 'Klamman', 'employer', 0.00, 0, 1, '2020-07-08'), 				
@@ -29,30 +29,26 @@ VALUES
 
 INSERT INTO `CreditCard` (creditCardNumber, expirationDate, cvv)
 VALUES
-	('3533824238007180', '07/24', '132'),
-  ('2016335644770111', '05/22', '253'),
-  ('3742883897292441', '09/22', '638'),
-  ('5602242629786240', '04/22', '952'),
-  ('3558824795154210', '07/23', '685'),
-  ('3570140841478170', '11/21', '956'),
-  ('5020956162470040', '11/23', '645'),
-  ('3547131580418310', '11/23', '067'),
-  ('3536309143887770', '04/22', '684'),
-  ('3555954581085500', '09/22', '782');
-   
+	('2016335644770111', '05/22', '253'),
+	('3742883897292441', '09/22', '638'),
+	('5602242629786240', '04/22', '952'),
+	('5020956162470040', '11/23', '645'),
+	('3547131580418310', '11/23', '067'),
+	('3536309143887770', '04/22', '684')
+;   
 
 INSERT INTO `PaymentMethod` (userName, creditCardNumber, accountNumber)
 VALUES 
-	('LeilaDisney', '3533824238007180', '1001001234'),
-	('HubeKlamman', '2016335644770111', '1001001352'),
-	('DenBalsdon', '3742883897292441', '1001001338'),
-	('ArabellaAndreutti', '5602242629786240', '1001001849'),
-	('DienaDaniele', '3558824795154210', '1001001862'),
-	('BabKelsall', '3570140841478170', '1001001283'),
-	('MelisseCostley', '5020956162470040', '1001001976'),
-	('ShelleyGirt', '3547131580418310', '1001001937'),
-	('AlexeiAdcocks', '3536309143887770', '1001001392'),
-	('SanfordGout', '3555954581085500', '1001001823')
+	('LeilaDisney', NULL, '1001001234'),
+	('HubeKlamman', '2016335644770111', NULL),
+	('DenBalsdon', '3742883897292441', NULL),
+	('ArabellaAndreutti', '5602242629786240', NULL),
+	('DienaDaniele', NULL, '1001001862'),
+	('BabKelsall', NULL, '1001001283'),
+	('MelisseCostley', '5020956162470040', NULL),
+	('ShelleyGirt', '3547131580418310', NULL),
+	('AlexeiAdcocks', '3536309143887770', NULL),
+	('SanfordGout', NULL, '1001001823')
 ;
 
 INSERT INTO `Category`(categoryName)
@@ -90,11 +86,3 @@ VALUES
   ('SanfordGout', '5', 'pending'),
   ('LeilaDisney', '3', 'pending');
 	
-
-
-
-
-
-
-
-
