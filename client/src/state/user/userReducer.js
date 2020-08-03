@@ -17,6 +17,9 @@ import {
   GET_USER_REQUEST,
   GET_USER_SUCCESS,
   GET_USER_ERROR,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_ERROR,
 } from "./userActions";
 
 const initialState = {
@@ -35,7 +38,8 @@ const userReducer = (state = initialState, action) => {
     /* REQUESTS */
     case POST_USER_REQUEST:
     case PUT_USER_REQUEST:
-    case PUT_USER_SUBSCRIPTION_REQUEST: {
+    case PUT_USER_SUBSCRIPTION_REQUEST:
+    case DELETE_USER_REQUEST: {
       return {
         ...state,
         isSubmitting: true,
@@ -87,7 +91,8 @@ const userReducer = (state = initialState, action) => {
       };
     }
     case PUT_USER_SUCCESS:
-    case PUT_USER_SUBSCRIPTION_SUCCESS: {
+    case PUT_USER_SUBSCRIPTION_SUCCESS:
+    case DELETE_USER_SUCCESS: {
       return {
         ...state,
         isSubmitting: false,
@@ -112,7 +117,8 @@ const userReducer = (state = initialState, action) => {
     }
     case POST_LOGOUT_ERROR:
     case PUT_USER_ERROR:
-    case PUT_USER_SUBSCRIPTION_ERROR: {
+    case PUT_USER_SUBSCRIPTION_ERROR:
+    case DELETE_USER_ERROR: {
       return {
         ...state,
         isSubmitting: false,

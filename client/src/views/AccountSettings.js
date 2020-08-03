@@ -1,9 +1,10 @@
 // React & Redux
 import React, { useState, useEffect, Fragment } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 // Actions
-import { getUserRequest } from "../state/user/userActions";
+import { getUserRequest, deleteUserRequest, postLogoutRequest } from "../state/user/userActions";
 
 // Selectors
 import { currentUserSelector, userIsSubmittingSelector } from "../state/user/userSelectors";
@@ -49,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 function Dashboard() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const currentUser = useSelector(currentUserSelector);
   const isSubmitting = useSelector(userIsSubmittingSelector);
@@ -107,7 +109,17 @@ function Dashboard() {
                         </Button>
                       </Grid>
                       <Grid item xs={12} sm={4} md={2}>
-                        <Button fullWidth variant="contained" color="secondary">
+                        <Button
+                          fullWidth
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => {
+                            dispatch(postLogoutRequest());
+                            dispatch(deleteUserRequest(currentUser.userName));
+                            localStorage.clear();
+                            history.push("/login");
+                          }}
+                        >
                           DELETE
                         </Button>
                       </Grid>
