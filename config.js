@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 
 module.exports = {
   dbName: process.env.DB_NAME,

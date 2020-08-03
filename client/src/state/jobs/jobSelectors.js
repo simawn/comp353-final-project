@@ -8,7 +8,11 @@ export const jobCategoryListSelector = createSelector([jobStateSelector], (jobSt
 
 export const jobListIsLoadingSelector = createSelector([jobStateSelector], (jobState) => jobState.isLoadingJobsList);
 
+export const jobLimitSelector = createSelector([jobStateSelector], (jobState) => jobState.atJobLimit);
+
 export const jobCategoryListIsLoadingSelector = createSelector(
   [jobStateSelector],
   (jobState) => jobState.isLoadingCategoryList
 );
+
+export const jobIsSubmittingSelector = createSelector([jobStateSelector], (jobState) => jobState.isSubmitting);

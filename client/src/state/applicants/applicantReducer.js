@@ -2,6 +2,9 @@ import {
   GET_APPLICANT_STATUS_REQUEST,
   GET_APPLICANT_STATUS_SUCCESS,
   GET_APPLICANT_STATUS_ERROR,
+  GET_APPLICANTS_REQUEST,
+  GET_APPLICANTS_SUCCESS,
+  GET_APPLICANTS_ERROR,
   PUT_APPLICANT_STATUS_REQUEST,
   PUT_APPLICANT_STATUS_SUCCESS,
   PUT_APPLICANT_STATUS_ERROR,
@@ -12,6 +15,9 @@ import {
 
 const initialState = {
   applicantStatusList: [],
+  applicantList: [],
+  atApplicationLimit: false,
+  isLoadingApplicantList: false,
   isLoadingApplicantStatusList: false,
   isSubmitting: false,
 };
@@ -25,8 +31,20 @@ const applicantReducer = (state = initialState, action) => {
         isLoadingApplicantStatusList: true,
       };
     }
-    case PUT_APPLICANT_STATUS_REQUEST:
+    case GET_APPLICANTS_REQUEST: {
+      return {
+        ...state,
+        isLoadingApplicantList: true,
+      };
+    }
     case POST_APPLICATION_REQUEST: {
+      return {
+        ...state,
+        atApplicationLimit: false,
+        isSubmitting: true,
+      };
+    }
+    case PUT_APPLICANT_STATUS_REQUEST: {
       return {
         ...state,
         isSubmitting: true,
@@ -41,8 +59,21 @@ const applicantReducer = (state = initialState, action) => {
         isLoadingApplicantStatusList: false,
       };
     }
-    case PUT_APPLICANT_STATUS_SUCCESS:
+    case GET_APPLICANTS_SUCCESS: {
+      return {
+        ...state,
+        applicantList: action.payload.applicantList,
+        isLoadingApplicantList: false,
+      };
+    }
     case POST_APPLICATION_SUCCESS: {
+      return {
+        ...state,
+        atApplicationLimit: false,
+        isSubmitting: false,
+      };
+    }
+    case PUT_APPLICANT_STATUS_SUCCESS: {
       return {
         ...state,
         isSubmitting: false,
@@ -56,8 +87,20 @@ const applicantReducer = (state = initialState, action) => {
         isLoadingApplicantStatusList: false,
       };
     }
-    case PUT_APPLICANT_STATUS_ERROR:
+    case GET_APPLICANTS_ERROR: {
+      return {
+        ...state,
+        isLoadingApplicantList: false,
+      };
+    }
     case POST_APPLICATION_ERROR: {
+      return {
+        ...state,
+        atApplicationLimit: true,
+        isSubmitting: false,
+      };
+    }
+    case PUT_APPLICANT_STATUS_ERROR: {
       return {
         ...state,
         isSubmitting: false,

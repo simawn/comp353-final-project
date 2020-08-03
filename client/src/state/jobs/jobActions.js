@@ -14,11 +14,43 @@ export const browseCategoriesRequest = () => {
   };
 };
 
+export const GET_EMPLOYER_JOBS_REQUEST = "GET_EMPLOYER_JOBS_REQUEST";
+export const getEmployerJobsRequest = (userName) => {
+  return {
+    type: GET_EMPLOYER_JOBS_REQUEST,
+    payload: { userName },
+  };
+};
+
 export const POST_JOB_REQUEST = "POST_JOB_REQUEST";
-export const postJobRequest = (jobInformation) => {
+export const postJobRequest = (jobInformation, userName) => {
   return {
     type: POST_JOB_REQUEST,
-    payload: { jobInformation },
+    payload: { jobInformation, userName },
+  };
+};
+
+export const PUT_JOB_REQUEST = "PUT_JOB_REQUEST";
+export const putJobRequest = (jobInformation, jobID) => {
+  return {
+    type: PUT_JOB_REQUEST,
+    payload: { jobInformation, jobID },
+  };
+};
+
+export const POST_CATEGORY_REQUEST = "POST_CATEGORY_REQUEST";
+export const postCategoryRequest = (categoryName) => {
+  return {
+    type: POST_CATEGORY_REQUEST,
+    payload: { categoryName },
+  };
+};
+
+export const DELETE_JOB_REQUEST = "DELETE_JOB_REQUEST";
+export const deleteJobRequest = (jobID) => {
+  return {
+    type: DELETE_JOB_REQUEST,
+    payload: { jobID },
   };
 };
 
@@ -40,11 +72,39 @@ export const browseCategoriesSuccess = (categoryList) => {
   };
 };
 
+export const GET_EMPLOYER_JOBS_SUCCESS = "GET_EMPLOYER_JOBS_SUCCESS";
+export const getEmployerJobsSuccess = (jobList) => {
+  return {
+    type: GET_EMPLOYER_JOBS_SUCCESS,
+    payload: { jobList },
+  };
+};
+
 export const POST_JOB_SUCCESS = "POST_JOB_SUCCESS";
-export const postJobSuccess = (job) => {
+export const postJobSuccess = () => {
   return {
     type: POST_JOB_SUCCESS,
-    payload: { job },
+  };
+};
+
+export const PUT_JOB_SUCCESS = "PUT_JOB_SUCCESS";
+export const putJobSuccess = () => {
+  return {
+    type: PUT_JOB_SUCCESS,
+  };
+};
+
+export const POST_CATEGORY_SUCCESS = "POST_CATEGORY_SUCCESS";
+export const postCategorySuccess = () => {
+  return {
+    type: POST_CATEGORY_SUCCESS,
+  };
+};
+
+export const DELETE_JOB_SUCCESS = "DELETE_JOB_SUCCESS";
+export const deleteJobSuccess = () => {
+  return {
+    type: DELETE_JOB_SUCCESS,
   };
 };
 
@@ -64,8 +124,38 @@ export const browseCategoriesError = (error) => {
   };
 };
 
+export const GET_EMPLOYER_JOBS_ERROR = "GET_EMPLOYER_JOBS_ERROR";
+export const getEmployerJobsError = (error) => {
+  return {
+    type: GET_EMPLOYER_JOBS_ERROR,
+    payload: { error },
+  };
+};
+
 export const POST_JOB_ERROR = "POST_JOB_ERROR";
 export const postJobError = (error) => ({
   type: POST_JOB_ERROR,
+  payload: { error },
+});
+
+export const PUT_JOB_ERROR = "PUT_JOB_ERROR";
+export const putJobError = (error) => {
+  return {
+    type: PUT_JOB_ERROR,
+    payload: { error },
+  };
+};
+
+export const POST_CATEGORY_ERROR = "POST_CATEGORY_ERROR";
+export const postCategoryError = (error) => {
+  return {
+    type: POST_CATEGORY_ERROR,
+    payload: { error },
+  };
+};
+
+export const DELETE_JOB_ERROR = "DELETE_JOB_ERROR";
+export const deleteJobError = (error) => ({
+  type: DELETE_JOB_ERROR,
   payload: { error },
 });

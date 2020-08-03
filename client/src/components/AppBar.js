@@ -57,7 +57,7 @@ function AppBar({ open, setOpen }) {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" align="center" noWrap className={classes.title}>
-            Site Name Here
+            A Way Worse Version of LinkedIn
           </Typography>
         </Toolbar>
       </AppBarMUI>

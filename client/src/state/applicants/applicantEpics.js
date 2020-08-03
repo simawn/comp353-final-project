@@ -12,6 +12,9 @@ import {
   GET_APPLICANT_STATUS_REQUEST,
   getApplicantStatusSuccess,
   getApplicantStatusError,
+  GET_APPLICANTS_REQUEST,
+  getApplicantsSuccess,
+  getApplicantsError,
   PUT_APPLICANT_STATUS_REQUEST,
   putApplicantStatusSuccess,
   putApplicantStatusError,
@@ -24,10 +27,24 @@ const getApplicantStatusesEvent = (action$) => {
   return action$.pipe(
     ofType(GET_APPLICANT_STATUS_REQUEST),
     mergeMap(({ payload: { userName } }) =>
-      xhr("GET", `/applicants/${userName}`).pipe(
+      xhr("GET", `/applicants/${userName}/statuses`).pipe(
         map(({ response }) => getApplicantStatusSuccess(response)),
         catchError((err) => {
           return of(getApplicantStatusError(err));
+        })
+      )
+    )
+  );
+};
+
+const getApplicantsEvent = (action$) => {
+  return action$.pipe(
+    ofType(GET_APPLICANTS_REQUEST),
+    mergeMap(({ payload: { jobID } }) =>
+      xhr("GET", `/applicants/${jobID}`).pipe(
+        map(({ response }) => getApplicantsSuccess(response)),
+        catchError((err) => {
+          return of(getApplicantsError(err));
         })
       )
     )
@@ -62,4 +79,9 @@ const postApplicationEvent = (action$) => {
   );
 };
 
-export default combineEpics(getApplicantStatusesEvent, putApplicantStatusEvent, postApplicationEvent);
+export default combineEpics(
+  getApplicantStatusesEvent,
+  getApplicantsEvent,
+  putApplicantStatusEvent,
+  postApplicationEvent
+);
