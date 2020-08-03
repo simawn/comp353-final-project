@@ -85,8 +85,6 @@ function Dashboard() {
     });
   }, [paymentMethods]);
 
-  console.log(activePaymentAccount);
-
   return (
     <div className={classes.root}>
       <CssBaseline />
