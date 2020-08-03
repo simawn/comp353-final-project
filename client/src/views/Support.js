@@ -1,13 +1,5 @@
 // React & Redux
-import React, { useState, useEffect, Fragment } from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-
-// Actions
-import { getUserRequest, deleteUserRequest, postLogoutRequest } from "../state/user/userActions";
-
-// Selectors
-import { currentUserSelector, userIsSubmittingSelector } from "../state/user/userSelectors";
+import React, { useState } from "react";
 
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,13 +8,9 @@ import { CssBaseline, Container, Divider, Grid, Paper, List, ListItem, Button, T
 // Components
 import AppBar from "../components/AppBar";
 import SideBar from "../components/SideBar";
-import LoadingScreen from "../components/LoadingScreen";
-import EditUserFormDialog from "../forms/EditUser/EditUserFormDialog";
-import SubscriptionDialog from "../components/SubscriptionDialog";
 
 // Util
 import localStorage from "local-storage";
-import { isEmpty, capitalize } from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,22 +37,10 @@ const useStyles = makeStyles((theme) => ({
 
 function Support() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const history = useHistory();
-
-  const currentUser = useSelector(currentUserSelector);
-  const isSubmitting = useSelector(userIsSubmittingSelector);
 
   const [open, setOpen] = useState(true);
-  const [openEditUserDialog, setOpenEditUserDialog] = useState(false);
-  const [openSubscriptionDialog, setOpenSubscriptionDialog] = useState(false);
 
   const currentUserRole = localStorage.get("currentUserRole");
-  const currentUserName = localStorage.get("currentUserName");
-
-  useEffect(() => {
-    dispatch(getUserRequest(currentUserName));
-  }, [isSubmitting]);
 
   return (
     <div className={classes.root}>
