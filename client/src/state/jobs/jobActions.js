@@ -30,6 +30,14 @@ export const postJobRequest = (jobInformation, userName) => {
   };
 };
 
+export const PUT_JOB_REQUEST = "PUT_JOB_REQUEST";
+export const putJobRequest = (jobInformation, jobID) => {
+  return {
+    type: PUT_JOB_REQUEST,
+    payload: { jobInformation, jobID },
+  };
+};
+
 export const POST_CATEGORY_REQUEST = "POST_CATEGORY_REQUEST";
 export const postCategoryRequest = (categoryName) => {
   return {
@@ -79,6 +87,13 @@ export const postJobSuccess = () => {
   };
 };
 
+export const PUT_JOB_SUCCESS = "PUT_JOB_SUCCESS";
+export const putJobSuccess = () => {
+  return {
+    type: PUT_JOB_SUCCESS,
+  };
+};
+
 export const POST_CATEGORY_SUCCESS = "POST_CATEGORY_SUCCESS";
 export const postCategorySuccess = () => {
   return {
@@ -122,6 +137,14 @@ export const postJobError = (error) => ({
   type: POST_JOB_ERROR,
   payload: { error },
 });
+
+export const PUT_JOB_ERROR = "PUT_JOB_ERROR";
+export const putJobError = (error) => {
+  return {
+    type: PUT_JOB_ERROR,
+    payload: { error },
+  };
+};
 
 export const POST_CATEGORY_ERROR = "POST_CATEGORY_ERROR";
 export const postCategoryError = (error) => {

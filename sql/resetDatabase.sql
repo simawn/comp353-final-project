@@ -35,7 +35,7 @@ CREATE TABLE `User`(
   `firstName` VARCHAR(255),
   `lastName` VARCHAR(255),
   `balance` DECIMAL(19, 4),
-  `suffering` BOOLEAN,
+  `paysWithManual` BOOLEAN,
   `active` BOOLEAN,
   `lastPayment` DATE,
   `role` ENUM('employer', 'employee', 'admin'),
@@ -57,8 +57,8 @@ CREATE TABLE `PaymentMethod`(
   `accountNumber` VARCHAR(255),
   PRIMARY KEY (`paymentID`),
   FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
-  FOREIGN KEY (`creditCardNumber`) REFERENCES `CreditCard`(`creditCardNumber`) 
-);
+  FOREIGN KEY (`creditCardNumber`) REFERENCES `CreditCard`(`creditCardNumber`) ON DELETE CASCADE
+) ENGINE=InnoDB;
 
 CREATE TABLE `Category`(
   `categoryName` VARCHAR(255) NOT NULL,
@@ -75,14 +75,15 @@ CREATE TABLE `Job`(
   `employeesNeeded` INT,
   PRIMARY KEY (`jobID`),
   FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
-  FOREIGN KEY (`categoryName`) REFERENCES `Category`(`categoryName`) 
-);
+  FOREIGN KEY (`categoryName`) REFERENCES `Category`(`categoryName`)
+) ENGINE=InnoDB;
+
 
 CREATE TABLE `Applicant`(
   `userName` VARCHAR(255) NOT NULL,
   `jobID` INT NOT NULL,
-  `status` ENUM('pending', 'rejected', 'offer', 'hired', 'withdrawn'),
+  `status` ENUM('pending', 'rejected', 'hired', 'withdrawn', 'offer'),
   PRIMARY KEY (`userName`, `jobID`),
   FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
-  FOREIGN KEY (`jobID`) REFERENCES `Job`(`jobID`) 
-);
+  FOREIGN KEY (`jobID`) REFERENCES `Job`(`jobID`)
+) ENGINE=InnoDB;

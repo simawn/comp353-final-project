@@ -11,5 +11,6 @@ router.post("/jobs/:userName", jobController.postJob);
 router.get("/jobs/categories", jobController.getJobCategories);
 router.get("/jobs/:userName", jobController.getAllEmployerJobs);
 router.delete("/jobs/:jobID", jobController.deleteJob);
+router.put("/jobs/:jobID", jobController.editJob);
 
 module.exports = router;

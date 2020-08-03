@@ -27,14 +27,14 @@ import EditIcon from "@material-ui/icons/Edit";
 // Components
 import LoadingScreen from "./LoadingScreen";
 import CreateJobFormDialog from "../forms/CreateJobFormDialog";
+import EditJobFormDialog from "../forms/EditJobFormDialog";
 import CreateCategoryFormDialog from "../forms/CreateCategoryFormDialog";
+import JobApplicantDialog from "./JobApplicantDialog";
 
 // Util
-import { isEmpty, findIndex, get, capitalize } from "lodash";
+import { isEmpty } from "lodash";
 
 // TODO: Limit number of jobs an employer can list (based on subscription level)
-// TODO: Take userName from state (just hardcoded currently to test)
-const currentUserName = "AlexeiAdcocks";
 
 const useStyles = makeStyles((theme) => ({
   margin: {
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function EmployerJobBoard() {
+function EmployerJobBoard({ userName }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -55,19 +55,22 @@ function EmployerJobBoard() {
   const isSubmitting = useSelector(jobIsSubmittingSelector);
 
   const [createJobFormOpen, setCreateJobFormOpen] = useState(false);
+  const [editJobFormOpen, setEditJobFormOpen] = useState(false);
   const [createCategoryFormOpen, setCreateCategoryFormOpen] = useState(false);
+  const [jobApplicantDialogOpen, setJobApplicantDialogOpen] = useState(false);
+  const [selectedListing, setSelectedListing] = useState(0);
 
   // Check for jobsList on page load
   useEffect(() => {
     if (isEmpty(jobsList)) {
-      dispatch(getEmployerJobsRequest(currentUserName));
+      dispatch(getEmployerJobsRequest(userName));
       dispatch(browseCategoriesRequest());
     }
   }, []);
 
   // Check for jobsList every time user creates a new job
   useEffect(() => {
-    dispatch(getEmployerJobsRequest(currentUserName));
+    dispatch(getEmployerJobsRequest(userName));
     dispatch(browseCategoriesRequest());
   }, [isSubmitting]);
 
@@ -77,12 +80,14 @@ function EmployerJobBoard() {
         <LoadingScreen fullScreen={false} message={"Loading jobs..."} />
       ) : (
         <Fragment>
-          <CreateJobFormDialog
-            userName={currentUserName}
-            open={createJobFormOpen}
-            close={() => setCreateJobFormOpen(false)}
-          />
+          <CreateJobFormDialog open={createJobFormOpen} close={() => setCreateJobFormOpen(false)} userName={userName} />
           <CreateCategoryFormDialog open={createCategoryFormOpen} close={() => setCreateCategoryFormOpen(false)} />
+          <EditJobFormDialog open={editJobFormOpen} close={() => setEditJobFormOpen(false)} job={selectedListing} />
+          <JobApplicantDialog
+            open={jobApplicantDialogOpen}
+            close={() => setJobApplicantDialogOpen(false)}
+            jobID={selectedListing.jobID}
+          />
           <Typography align="center" variant="h3">
             Your Job Listings
           </Typography>
@@ -119,6 +124,7 @@ function EmployerJobBoard() {
                   <TableCell align="center">Description</TableCell>
                   <TableCell align="center">Category</TableCell>
                   <TableCell align="center">Employees Needed</TableCell>
+                  <TableCell align="center">Date Posted</TableCell>
                   <TableCell align="center">View Applicants</TableCell>
                   <TableCell align="center">Edit Job</TableCell>
                   <TableCell align="center">Delete Job</TableCell>
@@ -132,17 +138,32 @@ function EmployerJobBoard() {
                     <TableCell align="center">{job.description}</TableCell>
                     <TableCell align="center">{job.categoryName}</TableCell>
                     <TableCell align="center">{job.employeesNeeded}</TableCell>
-                    <TableCell>
-                      <Button variant="outlined" color="primary">
+                    <TableCell align="center">{job.datePosted}</TableCell>
+                    <TableCell align="center">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => {
+                          setSelectedListing(job);
+                          setJobApplicantDialogOpen(true);
+                        }}
+                      >
                         APPLICANTS
                       </Button>
                     </TableCell>
-                    <TableCell>
-                      <IconButton className={classes.margin} size="medium">
+                    <TableCell align="center">
+                      <IconButton
+                        onClick={() => {
+                          setSelectedListing(job);
+                          setEditJobFormOpen(true);
+                        }}
+                        className={classes.margin}
+                        size="medium"
+                      >
                         <EditIcon color="primary" />
                       </IconButton>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <IconButton
                         className={classes.margin}
                         size="medium"

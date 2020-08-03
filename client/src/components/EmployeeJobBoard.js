@@ -63,7 +63,8 @@ function EmployerJobBoard({ userName }) {
           </Button>
         );
       }
-      case "Pending": {
+      case "Pending":
+      case "Offer": {
         return (
           <Button
             fullWidth
@@ -143,7 +144,6 @@ function EmployerJobBoard({ userName }) {
             </TableHead>
             <TableBody>
               {jobsList.map((job, key) => {
-                console.log(job);
                 const index = findIndex(applicantStatuses, { jobID: job.jobID });
                 const jobStatus = capitalize(get(applicantStatuses[index], `status`, "Not Yet Applied"));
                 if (category === "Select All" || category === job.categoryName) {
@@ -155,7 +155,20 @@ function EmployerJobBoard({ userName }) {
                       <TableCell align="center">{job.categoryName}</TableCell>
                       <TableCell align="center">{job.employeesNeeded}</TableCell>
                       <TableCell align="center">{job.datePosted}</TableCell>
-                      <TableCell align="center">{jobStatus}</TableCell>
+                      <TableCell align="center">
+                        {jobStatus === "Offer" ? (
+                          <Button
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            onClick={() => dispatch(putApplicantStatusRequest(userName, job.jobID, "hired"))}
+                          >
+                            ACCEPT
+                          </Button>
+                        ) : (
+                          jobStatus
+                        )}
+                      </TableCell>
                       <TableCell>{createButton(jobStatus, job.jobID)}</TableCell>
                     </TableRow>
                   );

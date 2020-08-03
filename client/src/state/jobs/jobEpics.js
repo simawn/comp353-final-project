@@ -21,6 +21,9 @@ import {
   POST_JOB_REQUEST,
   postJobSuccess,
   postJobError,
+  PUT_JOB_REQUEST,
+  putJobSuccess,
+  putJobError,
   DELETE_JOB_REQUEST,
   deleteJobSuccess,
   deleteJobError,
@@ -85,6 +88,20 @@ const postJobEvent = (action$) => {
   );
 };
 
+const putJobEvent = (action$) => {
+  return action$.pipe(
+    ofType(PUT_JOB_REQUEST),
+    mergeMap(({ payload: { jobInformation, jobID } }) =>
+      xhr("PUT", `/jobs/${jobID}`, jobInformation).pipe(
+        map((response) => putJobSuccess(response)),
+        catchError((err) => {
+          return of(putJobError(err));
+        })
+      )
+    )
+  );
+};
+
 const deleteJobEvent = (action$) => {
   return action$.pipe(
     ofType(DELETE_JOB_REQUEST),
@@ -119,5 +136,6 @@ export default combineEpics(
   getEmployerJobsEvent,
   postJobEvent,
   deleteJobEvent,
-  postCategoryEvent
+  postCategoryEvent,
+  putJobEvent
 );

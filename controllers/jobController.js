@@ -93,8 +93,6 @@ exports.postJob = async (req, res, next) => {
 };
 
 exports.postJobCategory = async (req, res, next) => {
-  console.log(req.body.categoryName);
-
   try {
     if (!req.body.categoryName) {
       return res.status(400).send({
@@ -131,7 +129,7 @@ exports.deleteJob = async (req, res, next) => {
       type: db.QueryTypes.DELETE,
     });
 
-    // Delete from User table
+    // Delete from user job table
     await db.query(`DELETE FROM \`Job\` WHERE jobID = ${jobID};`, {
       type: db.QueryTypes.DELETE,
     });
@@ -140,6 +138,36 @@ exports.deleteJob = async (req, res, next) => {
   } catch (err) {
     return res.status(400).send({
       error: "Error deleting job.",
+    });
+  }
+};
+
+exports.editJob = async (req, res, next) => {
+  try {
+    if (!req.body.title || !req.body.category || !req.body.jobDescription || !req.body.employeesNeeded) {
+      return res.status(400).send({
+        error: "Not all information needed to edit the job was provided.",
+      });
+    }
+
+    const title = req.body.title;
+    const categoryName = req.body.category;
+    const description = req.body.jobDescription;
+    const employeesNeeded = req.body.employeesNeeded;
+    const jobID = req.params.jobID;
+
+    // Update the selected job
+    await db.query(
+      `UPDATE Job SET categoryName = '${categoryName}', title = '${title}', \`description\` = '${description}', employeesNeeded = ${employeesNeeded} WHERE jobID = ${jobID};`,
+      {
+        type: db.QueryTypes.DELETE,
+      }
+    );
+
+    return res.status(200).send({ message: "Sucessfully updated job." });
+  } catch (err) {
+    return res.status(400).send({
+      error: "Error updating job.",
     });
   }
 };
