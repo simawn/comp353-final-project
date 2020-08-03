@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import JobBoard from "./views/JobBoard";
 import Login from "./views/Login";
 import Register from "./views/Register";
-import UserCheck from "./views/UserCheck";
+import AccountSettings from "./views/AccountSettings";
 
 const AppRouter = () => (
   <Router>
@@ -13,9 +13,9 @@ const AppRouter = () => (
       <Redirect to="/login" />
     </Route>
     <Route exact path="/login" component={Login} />
+    <Route exact path="/accountsettings" component={AccountSettings} />
     <Route exact path="/register" component={Register} />
     <Route exact path="/jobboard" component={JobBoard} />
-    <Route exact path="/usercheck" component={UserCheck} />
   </Router>
 );
 

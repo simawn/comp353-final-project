@@ -35,7 +35,7 @@ CREATE TABLE `User`(
   `firstName` VARCHAR(255),
   `lastName` VARCHAR(255),
   `balance` DECIMAL(19, 4),
-  `suffering` BOOLEAN,
+  `paysWithManual` BOOLEAN,
   `active` BOOLEAN,
   `lastPayment` DATE,
   `role` ENUM('employer', 'employee', 'admin'),

@@ -3,11 +3,11 @@ import React, { Fragment } from "react";
 import { useDispatch } from "react-redux";
 
 // Actions
-import { postCategoryRequest } from "../state/jobs/jobActions";
+import { postCategoryRequest } from "../../state/jobs/jobActions";
 
 // Form
 import { TextField } from "mui-rff";
-import FormDialog from "./FormDialog";
+import FormDialog from "../FormDialog";
 import createCategorySchema from "./CreateCategoryFormDialog.schema";
 
 // Util

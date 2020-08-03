@@ -3,17 +3,17 @@ import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Actions
-import { postJobRequest } from "../state/jobs/jobActions";
+import { postJobRequest } from "../../state/jobs/jobActions";
 
 // Selectors
-import { jobCategoryListSelector } from "../state/jobs/jobSelectors";
+import { jobCategoryListSelector } from "../../state/jobs/jobSelectors";
 
 // Material UI
 import { Grid, MenuItem } from "@material-ui/core";
 
 // Form
 import { TextField, Select } from "mui-rff";
-import FormDialog from "./FormDialog";
+import FormDialog from "../FormDialog";
 import createJobSchema from "./CreateJobFormDialog.schema";
 
 // Util
