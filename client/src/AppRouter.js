@@ -7,6 +7,7 @@ import Login from "./views/Login";
 import Register from "./views/Register";
 import AccountSettings from "./views/AccountSettings";
 import Support from "./views/Support";
+import PaymentMethods from "./views/PaymentMethods";
 
 const AppRouter = () => (
   <Router>
@@ -18,6 +19,7 @@ const AppRouter = () => (
     <Route exact path="/register" component={Register} />
     <Route exact path="/jobboard" component={JobBoard} />
     <Route exact path="/support" component={Support} />
+    <Route exact path="/paymentmethods" component={PaymentMethods} />
   </Router>
 );
 

@@ -1,5 +1,4 @@
 import { createSelector } from "reselect";
-import { ExpansionPanel } from "@material-ui/core";
 
 const applicantStateSelector = (state) => state.applicantReducer;
 

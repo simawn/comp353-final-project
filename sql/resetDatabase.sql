@@ -1,6 +1,6 @@
 -- RUNNING THIS SCRIPT RESETS THE DATABASE
 
--- USE jxc353_1;
+USE jxc353_1;
 
 -- --------------------------------------------------
 -- Drop all previous tables (ORDER MATTERS)
@@ -27,22 +27,6 @@ CREATE TABLE `Subscription`(
   PRIMARY KEY (`subscriptionID`)
 );
 
-CREATE TABLE `User`(
-  `userName` VARCHAR(255) NOT NULL,
-  `subscriptionID` INT NOT NULL,
-  `password` VARCHAR(255),
-  `email` VARCHAR(255),
-  `firstName` VARCHAR(255),
-  `lastName` VARCHAR(255),
-  `balance` DECIMAL(19, 4),
-  `paysWithManual` BOOLEAN,
-  `active` BOOLEAN,
-  `lastPayment` DATE,
-  `role` ENUM('employer', 'employee', 'admin'),
-  PRIMARY KEY (`userName`),
-  FOREIGN KEY (`subscriptionID`) REFERENCES `Subscription`(`subscriptionID`)  
-);
-
 CREATE TABLE `CreditCard`(
   `creditCardNumber` VARCHAR(255) NOT NULL,
   `expirationDate` VARCHAR(5),
@@ -55,10 +39,27 @@ CREATE TABLE `PaymentMethod`(
   `userName` VARCHAR(255) NOT NULL,
   `creditCardNumber` VARCHAR(255),
   `accountNumber` VARCHAR(255),
+  `active` BOOL,
   PRIMARY KEY (`paymentID`),
   FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
   FOREIGN KEY (`creditCardNumber`) REFERENCES `CreditCard`(`creditCardNumber`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE TABLE `User`(
+  `userName` VARCHAR(255) NOT NULL,
+  `subscriptionID` INT,
+  `password` VARCHAR(255),
+  `email` VARCHAR(255),
+  `firstName` VARCHAR(255),
+  `lastName` VARCHAR(255),
+  `balance` DECIMAL(19, 4),
+  `paysWithManual` BOOLEAN,
+  `active` BOOLEAN,
+  `lastPayment` DATE,
+  `role` ENUM('employer', 'employee', 'admin'),
+  PRIMARY KEY (`userName`),
+  FOREIGN KEY (`subscriptionID`) REFERENCES `Subscription`(`subscriptionID`)
+)ENGINE=InnoDB;
 
 CREATE TABLE `Category`(
   `categoryName` VARCHAR(255) NOT NULL,

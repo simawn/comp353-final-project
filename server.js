@@ -13,6 +13,7 @@ const userRouter = require("./routes/user");
 const jobRouter = require("./routes/job");
 const applicantRouter = require("./routes/applicant");
 const authRouter = require("./routes/auth");
+const paymentRouter = require("./routes/payment");
 
 /* Middleware */
 app.use(bodyParser.json());
@@ -35,6 +36,7 @@ app.use("/", authRouter);
 app.use("/", userRouter);
 app.use("/", jobRouter);
 app.use("/", applicantRouter);
+app.use("/", paymentRouter);
 
 const port = process.env.PORT || 5000;
 

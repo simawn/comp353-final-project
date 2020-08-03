@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 // Material UI
 import { makeStyles } from "@material-ui/core/styles";
-import { CssBaseline, Container, Divider, Grid, Paper, List, ListItem, Button, Typography } from "@material-ui/core";
+import { CssBaseline, Container, Divider, Grid, Paper, Typography } from "@material-ui/core";
 
 // Components
 import AppBar from "../components/AppBar";

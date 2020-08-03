@@ -51,7 +51,7 @@ function MenuOptions({ role }) {
         </ListItemIcon>
         <ListItemText primary="Account Settings" />
       </ListItem>
-      <ListItem button>
+      <ListItem onClick={() => history.push("/paymentmethods")} button>
         <ListItemIcon>
           <PaymentIcon />
         </ListItemIcon>
