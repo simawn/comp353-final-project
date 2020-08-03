@@ -1,6 +1,6 @@
 -- RUNNING THIS SCRIPT RESETS THE DATABASE
 
-USE jxc353_1;
+-- USE jxc353_1;
 
 -- --------------------------------------------------
 -- Drop all previous tables (ORDER MATTERS)
@@ -40,12 +40,12 @@ CREATE TABLE `User`(
   `lastPayment` DATE,
   `role` ENUM('employer', 'employee', 'admin'),
   PRIMARY KEY (`userName`),
-  FOREIGN KEY (`subscriptionID`) REFERENCES `Subscription`(`subscriptionID`)
+  FOREIGN KEY (`subscriptionID`) REFERENCES `Subscription`(`subscriptionID`)  
 );
 
 CREATE TABLE `CreditCard`(
   `creditCardNumber` VARCHAR(255) NOT NULL,
-  `expirationDate` DATE,
+  `expirationDate` VARCHAR(5),
   `cvv` INT,  
   PRIMARY KEY (`creditCardNumber`)
 );
@@ -56,9 +56,9 @@ CREATE TABLE `PaymentMethod`(
   `creditCardNumber` VARCHAR(255),
   `accountNumber` VARCHAR(255),
   PRIMARY KEY (`paymentID`),
-  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
-  FOREIGN KEY (`creditCardNumber`) REFERENCES `CreditCard`(`creditCardNumber`)
-);
+  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
+  FOREIGN KEY (`creditCardNumber`) REFERENCES `CreditCard`(`creditCardNumber`) ON DELETE CASCADE
+) ENGINE=InnoDB;
 
 CREATE TABLE `Category`(
   `categoryName` VARCHAR(255) NOT NULL,
@@ -74,15 +74,16 @@ CREATE TABLE `Job`(
   `description` VARCHAR(255),
   `employeesNeeded` INT,
   PRIMARY KEY (`jobID`),
-  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
+  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
   FOREIGN KEY (`categoryName`) REFERENCES `Category`(`categoryName`)
-);
+) ENGINE=InnoDB;
+
 
 CREATE TABLE `Applicant`(
   `userName` VARCHAR(255) NOT NULL,
   `jobID` INT NOT NULL,
   `status` ENUM('pending', 'rejected', 'hired', 'withdrawn', 'offer'),
   PRIMARY KEY (`userName`, `jobID`),
-  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`),
+  FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
   FOREIGN KEY (`jobID`) REFERENCES `Job`(`jobID`)
-);
+) ENGINE=InnoDB;
