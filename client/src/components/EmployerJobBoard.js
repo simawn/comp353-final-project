@@ -26,9 +26,9 @@ import EditIcon from "@material-ui/icons/Edit";
 
 // Components
 import LoadingScreen from "./LoadingScreen";
-import CreateJobFormDialog from "../forms/CreateJobFormDialog";
-import EditJobFormDialog from "../forms/EditJobFormDialog";
-import CreateCategoryFormDialog from "../forms/CreateCategoryFormDialog";
+import CreateJobFormDialog from "../forms/CreateJob/CreateJobFormDialog";
+import EditJobFormDialog from "../forms/EditJob/EditJobFormDialog";
+import CreateCategoryFormDialog from "../forms/CreateCategory/CreateCategoryFormDialog";
 import JobApplicantDialog from "./JobApplicantDialog";
 
 // Util

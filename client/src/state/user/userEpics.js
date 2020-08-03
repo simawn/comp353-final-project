@@ -18,6 +18,15 @@ import {
   POST_LOGOUT_REQUEST,
   postLogoutSuccess,
   postLogoutError,
+  GET_USER_REQUEST,
+  getUserSuccess,
+  getUserError,
+  PUT_USER_REQUEST,
+  putUserSuccess,
+  putUserError,
+  PUT_USER_SUBSCRIPTION_REQUEST,
+  putUserSubscriptionSuccess,
+  putUserSubscriptionError,
 } from "./userActions";
 
 const postUserEvent = (action$) => {
@@ -62,4 +71,53 @@ const postLogoutEvent = (action$) => {
   );
 };
 
-export default combineEpics(postUserEvent, postLoginEvent, postLogoutEvent);
+const getUserEvent = (action$) => {
+  return action$.pipe(
+    ofType(GET_USER_REQUEST),
+    mergeMap(({ payload: { userName } }) =>
+      xhr("GET", `/users/${userName}`).pipe(
+        map(({ response }) => getUserSuccess(response)),
+        catchError((err) => {
+          return of(getUserError(err));
+        })
+      )
+    )
+  );
+};
+
+const putUserEvent = (action$) => {
+  return action$.pipe(
+    ofType(PUT_USER_REQUEST),
+    mergeMap(({ payload: { userInformation, userName } }) =>
+      xhr("PUT", `/users/${userName}`, userInformation).pipe(
+        map(({ response }) => putUserSuccess(response)),
+        catchError((err) => {
+          return of(putUserError(err));
+        })
+      )
+    )
+  );
+};
+
+const putUserSubscriptionEvent = (action$) => {
+  return action$.pipe(
+    ofType(PUT_USER_SUBSCRIPTION_REQUEST),
+    mergeMap(({ payload: { subscriptionID, userName } }) =>
+      xhr("PUT", `/users/${userName}/subscription/${subscriptionID}`).pipe(
+        map(({ response }) => putUserSubscriptionSuccess(response)),
+        catchError((err) => {
+          return of(putUserSubscriptionError(err));
+        })
+      )
+    )
+  );
+};
+
+export default combineEpics(
+  postUserEvent,
+  postLoginEvent,
+  postLogoutEvent,
+  getUserEvent,
+  putUserEvent,
+  putUserSubscriptionEvent
+);

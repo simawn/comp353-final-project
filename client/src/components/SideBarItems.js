@@ -39,7 +39,12 @@ function MenuOptions({ role }) {
         </ListItemIcon>
         <ListItemText primary={role === "employee" ? "Job Listings" : "Your Job Postings"} />
       </ListItem>
-      <ListItem button>
+      <ListItem
+        onClick={() => {
+          history.push("/accountsettings");
+        }}
+        button
+      >
         <ListItemIcon>
           <SettingsIcon />
         </ListItemIcon>

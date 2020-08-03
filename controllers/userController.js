@@ -1,8 +1,28 @@
-const bcrypt = require('bcryptjs');
-const db = require('../database');
+const bcrypt = require("bcryptjs");
+const db = require("../database");
 
 exports.getUserDetails = async (req, res) => {
-  res.send(req.user);
+  if (!req.params.userName) {
+    return res.status(400).send({
+      error: "No username provided.",
+    });
+  }
+
+  const userName = req.params.userName;
+
+  try {
+    // Fetch user from database
+    const user = await db.query(
+      `SELECT User.userName, User.role, User.firstName, User.subscriptionID, User.lastName, User.email, User.balance, User.lastPayment, User.paysWithManual, Subscription.name FROM User JOIN Subscription ON Subscription.subscriptionID = User.subscriptionID WHERE userName = '${userName}'`,
+      { type: db.QueryTypes.SELECT }
+    );
+
+    return res.status(200).send(user[0]);
+  } catch {
+    return res.status(404).send({
+      error: `Could not retrieve information for user: ${userName}`,
+    });
+  }
 };
 
 /**
@@ -16,34 +36,33 @@ exports.getUserDetails = async (req, res) => {
  *
  */
 exports.editUserDetails = async (req, res) => {
-  const {
-    firstName, lastName, email, password,
-  } = req.body;
   try {
-    const userInfo = req.user[0];
-    if (!firstName && !lastName && !email && !password) throw new Error('Nothing to update');
-    if (!userInfo.userName) throw new Error('No username set');
+    if (!req.body.firstName || !req.body.lastName || !req.body.password || !req.body.email) {
+      return res.status(400).send({
+        error: "Not all information needed to edit the user was provided.",
+      });
+    }
 
-    const passwordEncrypt = password ? await bcrypt.hash(password, 10) : null;
+    let password = req.body.password;
+    const firstName = req.body.firstName;
+    const lastName = req.body.lastName;
+    const email = req.body.email;
+    const userName = req.params.userName;
 
-    let query = 'UPDATE User SET ';
+    password = await bcrypt.hash(password, 10);
 
-    // TODO: Sanitize user inputs
-    query += firstName ? `firstName = '${firstName}', ` : '';
-    query += lastName ? `lastName = '${lastName}', ` : '';
-    query += email ? `email = '${email}', ` : '';
-    query += passwordEncrypt ? `password = '${passwordEncrypt}', ` : '';
+    // Update the selected job
+    await db.query(
+      `UPDATE User SET firstName = '${firstName}', lastName = '${lastName}', \`password\` = '${password}', email = '${email}' WHERE userName = '${userName}';`,
+      {
+        type: db.QueryTypes.UPDATE,
+      }
+    );
 
-    query = `${query.substring(0, query.lastIndexOf(','))} WHERE username='${userInfo.userName}'`;
-
-    await db.query(query);
-
-    res.status(200).send({
-      message: 'User updated successfully',
-    });
-  } catch (error) {
+    return res.status(200).send({ message: "Sucessfully updated user." });
+  } catch (err) {
     return res.status(400).send({
-      error: 'Cannot update user',
+      error: "Error updating user.",
     });
   }
 };
@@ -76,7 +95,36 @@ exports.deleteUser = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(400).send({
-      error: 'Cannot delete user',
+      error: "Cannot delete user",
+    });
+  }
+};
+
+exports.editUserSubscription = async (req, res, next) => {
+  try {
+    console.log(req.params);
+
+    if (!req.params.subscriptionID || !req.params.userID) {
+      return res.status(400).send({
+        error: "SubscriptionID was not provided.",
+      });
+    }
+
+    const subscriptionID = req.params.subscriptionID;
+    const userName = req.params.userID;
+
+    console.log(subscriptionID);
+    console.log(userName);
+
+    // Update the selected job
+    await db.query(`UPDATE User SET subscriptionID = ${subscriptionID} WHERE userName = '${userName}';`, {
+      type: db.QueryTypes.UPDATE,
+    });
+
+    return res.status(200).send({ message: "Sucessfully updated user." });
+  } catch (err) {
+    return res.status(400).send({
+      error: "Error updating user.",
     });
   }
 };
