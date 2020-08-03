@@ -96,8 +96,6 @@ function PaymentMethods() {
     dispatch(browsePaymentRequest(currentUserName));
   }, [isSubmitting]);
 
-  console.log(paymentMethodList);
-
   return (
     <div className={classes.root}>
       <CssBaseline />

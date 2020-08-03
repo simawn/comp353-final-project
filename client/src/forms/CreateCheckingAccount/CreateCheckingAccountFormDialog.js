@@ -20,7 +20,6 @@ function CreateCheckingAccountFormDialog({ open, close, userName, editMode = fal
     editMode
       ? dispatch(putPaymentRequest(queryString.stringify(formValues), paymentID))
       : dispatch(postPaymentRequest(queryString.stringify(formValues), userName));
-
     close();
   };
 
