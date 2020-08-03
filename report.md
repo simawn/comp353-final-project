@@ -1,4 +1,4 @@
-# COMP 353 MAin Project
+# COMP 353 Main Project
 
 |    Student Name     | Student # |
 | :-----------------: | :-------: |
@@ -14,7 +14,7 @@
 - Sean Heinrichs
 - Simon Huang
 - Shuo Zhang
-- Pierre-André Gagnon
+- Pierre-André Gagnon: E/R design, relational schema normalization, multiple queries/transactions...
 
 ### PART 2 - Conceptual Design
 
@@ -247,7 +247,7 @@ So it is in 3NF.
 
 ### PART 4 - SQL Statements to Create the Database
 
-### Part 5 - SQL Statements to Populate the Database
+### PART 5 - SQL Statements to Populate the Database
 
-### Part 6 - SQL Statements to Query the Database
+### PART 6 - SQL Statements to Query the Database
 
