@@ -33,7 +33,7 @@ exports.register = async (req, res, next) => {
     const passwordEncrypt = await bcrypt.hash(password, 10);
 
     await db.query(
-      "INSERT INTO User (userName, subscriptionID, password, email, firstName, lastName, role, balance, suffering, active) VALUES (?, ?, ?, ?, ?, ?, ?, 0, 0, 1)",
+      "INSERT INTO User (userName, subscriptionID, password, email, firstName, lastName, role, balance, active) VALUES (?, ?, ?, ?, ?, ?, ?, 0, 1)",
       {
         replacements: [userName, subscription, passwordEncrypt, email, firstName, lastName, role],
         type: db.QueryTypes.INSERT,
