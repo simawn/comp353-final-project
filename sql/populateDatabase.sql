@@ -35,8 +35,6 @@ VALUES
 	('3536309143887770', '04/22', '684')
 ;   
 
-   
-
 INSERT INTO `PaymentMethod` (userName, creditCardNumber, accountNumber, active)
 VALUES 
 	('LeilaDisney', NULL, '1001001234', 1),
@@ -85,4 +83,3 @@ VALUES
   ('MelisseCostley', '4', 'hired'),
   ('SanfordGout', '5', 'pending'),
   ('LeilaDisney', '3', 'pending');
-	
