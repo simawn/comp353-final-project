@@ -42,6 +42,7 @@ const paymentReducer = (state = initialState, action) => {
       return {
         ...state,
         paymentMethodList: action.payload.paymentMethodList,
+        isLoading: false,
       };
     }
     case POST_PAYMENT_SUCCESS:
@@ -57,6 +58,7 @@ const paymentReducer = (state = initialState, action) => {
     case BROWSE_PAYMENTS_ERROR: {
       return {
         ...state,
+        paymentMethodList: [],
         isLoading: false,
       };
     }

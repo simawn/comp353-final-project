@@ -8,8 +8,8 @@ router.get("/payments/:userName", paymentController.getPaymentMethods);
 
 router.post("/payments/:userName", paymentController.postPaymentMethod);
 
-router.put("/payments/:userName", paymentController.editPaymentMethod);
+router.put("/payments/:paymentID", paymentController.editPaymentMethod);
 
-router.delete("/payments/:userName", paymentController.deletePaymentMethod);
+router.delete("/payments/:paymentID", paymentController.deletePaymentMethod);
 
 module.exports = router;

@@ -1,6 +1,16 @@
 // React & Redux
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+// Actions
+import { browsePaymentRequest, deletePaymentRequest, putPaymentRequest } from "../state/payments/paymentActions";
+
+// Selectors
+import {
+  paymentMethodListSelector,
+  paymentIsLoadingSelector,
+  paymentIsSubmittingSelector,
+} from "../state/payments/paymentSelectors";
 
 // Material UI
 import {
@@ -66,15 +76,27 @@ const useStyles = makeStyles((theme) => ({
 
 function PaymentMethods() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const paymentMethodList = [];
+  const paymentMethodList = useSelector(paymentMethodListSelector);
+  const isLoading = useSelector(paymentIsLoadingSelector);
+  const isSubmitting = useSelector(paymentIsSubmittingSelector);
 
   const [open, setOpen] = useState(true);
+  const [editMode, setEditMode] = useState(false);
+  const [currentPayment, setCurrentPayment] = useState("");
+  const [currentCreditCardNumber, setCurrentCreditCardNumber] = useState("");
   const [openCreateCreditCardform, setOpenCreateCreditCardform] = useState(false);
   const [openCreateCheckingAccountForm, setOpenCreateCheckingAccountForm] = useState(false);
 
   const currentUserRole = localStorage.get("currentUserRole");
   const currentUserName = localStorage.get("currentUserName");
+
+  useEffect(() => {
+    dispatch(browsePaymentRequest(currentUserName));
+  }, [isSubmitting]);
+
+  console.log(paymentMethodList);
 
   return (
     <div className={classes.root}>
@@ -87,19 +109,23 @@ function PaymentMethods() {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               {/* Payment Methods */}
-              {false ? (
-                <LoadingScreen fullScreen={false} message={"Loading jobs..."} />
+              {isLoading && isEmpty(paymentMethodList) ? (
+                <LoadingScreen fullScreen={false} message={"Loading payment methods..."} />
               ) : (
                 <Paper className={classes.paper}>
                   <CreateCreditCardFormDialog
                     open={openCreateCreditCardform}
                     close={() => setOpenCreateCreditCardform(false)}
                     userName={currentUserName}
+                    editMode={editMode}
+                    currentCreditCardNumber={currentCreditCardNumber}
                   />
                   <CreateCheckingAccountFormDialog
                     open={openCreateCheckingAccountForm}
                     close={() => setOpenCreateCheckingAccountForm(false)}
                     userName={currentUserName}
+                    editMode={editMode}
+                    paymentID={currentPayment}
                   />
                   <Typography align="center" variant="h3">
                     Your Payment Methods
@@ -110,7 +136,10 @@ function PaymentMethods() {
                         className={classes.padding}
                         fullWidth
                         variant="outlined"
-                        onClick={() => setOpenCreateCreditCardform(true)}
+                        onClick={() => {
+                          setEditMode(false);
+                          setOpenCreateCreditCardform(true);
+                        }}
                       >
                         ADD CREDIT CARD
                       </Button>
@@ -120,13 +149,16 @@ function PaymentMethods() {
                         className={classes.padding}
                         fullWidth
                         variant="outlined"
-                        onClick={() => setOpenCreateCheckingAccountForm(true)}
+                        onClick={() => {
+                          setEditMode(false);
+                          setOpenCreateCheckingAccountForm(true);
+                        }}
                       >
                         ADD CHECKING ACCOUNT
                       </Button>
                     </Grid>
                   </Grid>
-                  {!isEmpty(paymentMethodList) ? (
+                  {isEmpty(paymentMethodList) ? (
                     <Typography align="center">You don't have any payment methods added yet...</Typography>
                   ) : (
                     <Table size="medium">
@@ -143,25 +175,76 @@ function PaymentMethods() {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {/* {jobsList.map((job, key) => ( */}
-                        <TableRow>
-                          <TableCell align="center">Credit</TableCell>
-                          <TableCell align="center">Account Number</TableCell>
-                          <TableCell align="center">123</TableCell>
-                          <TableCell align="center">02/19</TableCell>
-                          <TableCell align="center">Active</TableCell>
-                          <TableCell align="center">
-                            <IconButton onClick={() => null} className={classes.margin} size="medium">
-                              <EditIcon color="primary" />
-                            </IconButton>
-                          </TableCell>
-                          <TableCell align="center">
-                            <IconButton className={classes.margin} size="medium" onClick={() => null} disabled={false}>
-                              <DeleteIcon color="secondary" />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                        {/* ))} */}
+                        {paymentMethodList.map((paymentMethod, key) => (
+                          <TableRow key={key}>
+                            <TableCell align="center">
+                              {paymentMethod.creditCardNumber ? "Credit Card" : "Checking Account"}
+                            </TableCell>
+                            <TableCell align="center">
+                              {paymentMethod.creditCardNumber
+                                ? paymentMethod.creditCardNumber
+                                : paymentMethod.accountNumber}
+                            </TableCell>
+                            <TableCell align="center">
+                              {paymentMethod.creditCardNumber ? paymentMethod.cvv : "-"}
+                            </TableCell>
+                            <TableCell align="center">
+                              {paymentMethod.creditCardNumber ? paymentMethod.expirationDate : "-"}
+                            </TableCell>
+                            <TableCell align="center">{paymentMethod.active ? <b>SELECTED</b> : "-"}</TableCell>
+                            <TableCell align="center">
+                              <IconButton
+                                onClick={
+                                  paymentMethod.creditCardNumber
+                                    ? () => {
+                                        setEditMode(true);
+                                        setCurrentPayment(paymentMethod.paymentID);
+                                        setCurrentCreditCardNumber(paymentMethod.creditCardNumber);
+                                        setOpenCreateCreditCardform(true);
+                                      }
+                                    : () => {
+                                        setEditMode(true);
+                                        setCurrentPayment(paymentMethod.paymentID);
+                                        setOpenCreateCheckingAccountForm(true);
+                                      }
+                                }
+                                className={classes.margin}
+                                size="medium"
+                              >
+                                <EditIcon color="primary" />
+                              </IconButton>
+                            </TableCell>
+                            <TableCell align="center">
+                              <IconButton
+                                className={classes.margin}
+                                size="medium"
+                                onClick={() => dispatch(deletePaymentRequest(paymentMethod.paymentID))}
+                                disabled={false}
+                              >
+                                <DeleteIcon color="secondary" />
+                              </IconButton>
+                            </TableCell>
+                            <TableCell align="center">
+                              <Button
+                                className={classes.margin}
+                                variant="contained"
+                                color="primary"
+                                size="medium"
+                                onClick={() =>
+                                  dispatch(
+                                    putPaymentRequest(
+                                      { userName: currentUserName, active: true },
+                                      paymentMethod.paymentID
+                                    )
+                                  )
+                                }
+                                disabled={paymentMethod.active === 1}
+                              >
+                                SELECT
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
                       </TableBody>
                     </Table>
                   )}

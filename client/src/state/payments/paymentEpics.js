@@ -54,8 +54,8 @@ const postPaymentEvent = (action$) => {
 const putPaymentEvent = (action$) => {
   return action$.pipe(
     ofType(PUT_PAYMENT_REQUEST),
-    mergeMap(({ payload: { paymentInformation, userName } }) =>
-      xhr("PUT", `/payments/${userName}`, paymentInformation).pipe(
+    mergeMap(({ payload: { paymentInformation, paymentID } }) =>
+      xhr("PUT", `/payments/${paymentID}`, paymentInformation).pipe(
         map(({ response }) => putPaymentSuccess(response)),
         catchError(({ response }) => {
           return of(putPaymentError(response));
@@ -68,8 +68,8 @@ const putPaymentEvent = (action$) => {
 const deletePaymentEvent = (action$) => {
   return action$.pipe(
     ofType(DELETE_PAYMENT_REQUEST),
-    mergeMap(({ payload: { userName } }) =>
-      xhr("DELETE", `/payments/${userName}`).pipe(
+    mergeMap(({ payload: { paymentID } }) =>
+      xhr("DELETE", `/payments/${paymentID}`).pipe(
         map(({ response }) => deletePaymentSuccess(response)),
         catchError((err) => {
           return of(deletePaymentError(err));

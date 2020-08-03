@@ -17,10 +17,10 @@ export const postPaymentRequest = (paymentInformation, userName) => {
 };
 
 export const PUT_PAYMENT_REQUEST = "PUT_PAYMENT_REQUEST";
-export const putPaymentRequest = (paymentInformation, userName) => {
+export const putPaymentRequest = (paymentInformation, paymentID) => {
   return {
     type: PUT_PAYMENT_REQUEST,
-    payload: { paymentInformation, userName },
+    payload: { paymentInformation, paymentID },
   };
 };
 

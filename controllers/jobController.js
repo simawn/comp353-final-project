@@ -160,7 +160,7 @@ exports.editJob = async (req, res, next) => {
     await db.query(
       `UPDATE Job SET categoryName = '${categoryName}', title = '${title}', \`description\` = '${description}', employeesNeeded = ${employeesNeeded} WHERE jobID = ${jobID};`,
       {
-        type: db.QueryTypes.DELETE,
+        type: db.QueryTypes.UPDATE,
       }
     );
 

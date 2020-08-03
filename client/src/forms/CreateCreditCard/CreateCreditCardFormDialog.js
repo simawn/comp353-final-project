@@ -3,21 +3,23 @@ import React from "react";
 import { useDispatch } from "react-redux";
 
 // Actions
-import { postPaymentRequest } from "../../state/payments/paymentActions";
+import { postPaymentRequest, putPaymentRequest } from "../../state/payments/paymentActions";
 
 // Form
-import { TextField, Select } from "mui-rff";
+import { TextField } from "mui-rff";
 import FormDialog from "../FormDialog";
 import createCreditCardSchema from "./CreateCreditCardFormDialog.schema";
 
 // Util
 import queryString from "query-string";
 
-function CreateCreditCardFormDialog({ open, close, userName }) {
+function CreateCreditCardFormDialog({ open, close, userName, editMode = false, currentCreditCardNumber }) {
   const dispatch = useDispatch();
 
   const onSubmit = (formValues) => {
-    dispatch(postPaymentRequest(queryString.stringify(formValues), userName));
+    editMode
+      ? dispatch(putPaymentRequest(queryString.stringify(formValues), currentCreditCardNumber))
+      : dispatch(postPaymentRequest(queryString.stringify(formValues), userName));
     close();
   };
 
@@ -26,8 +28,8 @@ function CreateCreditCardFormDialog({ open, close, userName }) {
       open={open}
       close={close}
       maxWidth="md"
-      title="Add Credit Card"
-      primaryButtonLabel="Add Payment Method"
+      title={editMode ? "Edit Credit Card" : "Add Credit Card"}
+      primaryButtonLabel={editMode ? "Edit Payment Method" : "Add Payment Method"}
       secondaryButtonLabel="Cancel"
       validationSchema={createCreditCardSchema}
       onSubmit={onSubmit}
