@@ -81,7 +81,7 @@ const postJobEvent = (action$) => {
       xhr("POST", `/jobs/${userName}`, jobInformation).pipe(
         map((response) => postJobSuccess(response)),
         catchError((err) => {
-          return of(postJobError(err));
+          return of(postJobError(err.response));
         })
       )
     )

@@ -6,7 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEmployerJobsRequest, browseCategoriesRequest, deleteJobRequest } from "../state/jobs/jobActions";
 
 // Selectors
-import { jobsListSelector, jobListIsLoadingSelector, jobIsSubmittingSelector } from "../state/jobs/jobSelectors";
+import {
+  jobsListSelector,
+  jobListIsLoadingSelector,
+  jobIsSubmittingSelector,
+  jobLimitSelector,
+} from "../state/jobs/jobSelectors";
 
 // MaterialUI
 import {
@@ -19,8 +24,10 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Snackbar,
   makeStyles,
 } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
@@ -34,8 +41,6 @@ import JobApplicantDialog from "./JobApplicantDialog";
 // Util
 import { isEmpty } from "lodash";
 
-// TODO: Limit number of jobs an employer can list (based on subscription level)
-
 const useStyles = makeStyles((theme) => ({
   margin: {
     margin: theme.spacing(1),
@@ -46,6 +51,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function EmployerJobBoard({ userName, frozen }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -53,11 +62,14 @@ function EmployerJobBoard({ userName, frozen }) {
   const jobsList = useSelector(jobsListSelector);
   const isLoadingJobList = useSelector(jobListIsLoadingSelector);
   const isSubmitting = useSelector(jobIsSubmittingSelector);
+  const atJobLimit = useSelector(jobLimitSelector);
 
   const [createJobFormOpen, setCreateJobFormOpen] = useState(false);
   const [editJobFormOpen, setEditJobFormOpen] = useState(false);
+  const [pageInitialized, setPageInitialized] = useState(false);
   const [createCategoryFormOpen, setCreateCategoryFormOpen] = useState(false);
   const [jobApplicantDialogOpen, setJobApplicantDialogOpen] = useState(false);
+  const [displaySnackbar, setDisplaySnackbar] = useState(false);
   const [selectedListing, setSelectedListing] = useState(0);
 
   // Check for jobsList on page load
@@ -74,13 +86,34 @@ function EmployerJobBoard({ userName, frozen }) {
     dispatch(browseCategoriesRequest());
   }, [isSubmitting]);
 
+  useEffect(() => {
+    if (atJobLimit && pageInitialized) {
+      setDisplaySnackbar(true);
+    }
+  }, [atJobLimit]);
+
   return (
     <Fragment>
       {isLoadingJobList ? (
         <LoadingScreen fullScreen={false} message={"Loading jobs..."} />
       ) : (
         <Fragment>
-          <CreateJobFormDialog open={createJobFormOpen} close={() => setCreateJobFormOpen(false)} userName={userName} />
+          <Snackbar
+            open={displaySnackbar}
+            autoHideDuration={6000}
+            onClose={() => setDisplaySnackbar(false)}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          >
+            <Alert onClose={() => setDisplaySnackbar(false)} severity={"error"}>
+              {"You have reached your job capacity. Please either delete a job or upgrade your subscription."}
+            </Alert>
+          </Snackbar>
+          <CreateJobFormDialog
+            open={createJobFormOpen}
+            close={() => setCreateJobFormOpen(false)}
+            userName={userName}
+            setPageInitialized={setPageInitialized}
+          />
           <CreateCategoryFormDialog open={createCategoryFormOpen} close={() => setCreateCategoryFormOpen(false)} />
           <EditJobFormDialog open={editJobFormOpen} close={() => setEditJobFormOpen(false)} job={selectedListing} />
           <JobApplicantDialog

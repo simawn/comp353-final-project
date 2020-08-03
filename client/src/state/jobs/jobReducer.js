@@ -25,13 +25,13 @@ import {
 const initialState = {
   jobsList: [],
   categoryList: [],
+  atJobLimit: false,
   isLoadingJobsList: false,
   isLoadingCategoryList: false,
   isSubmitting: false,
 };
 
 const jobReducer = (state = initialState, action) => {
-  console.log(action);
   switch (action.type) {
     /* REQUESTS */
     case BROWSE_JOBS_REQUEST:
@@ -47,7 +47,13 @@ const jobReducer = (state = initialState, action) => {
         isLoadingCategoryList: false,
       };
     }
-    case POST_JOB_REQUEST:
+    case POST_JOB_REQUEST: {
+      return {
+        ...state,
+        atJobLimit: false,
+        isSubmitting: true,
+      };
+    }
     case PUT_JOB_REQUEST:
     case DELETE_JOB_REQUEST:
     case POST_CATEGORY_REQUEST: {
@@ -73,7 +79,13 @@ const jobReducer = (state = initialState, action) => {
         isLoadingCategoryList: false,
       };
     }
-    case POST_JOB_SUCCESS:
+    case POST_JOB_SUCCESS: {
+      return {
+        ...state,
+        atJobLimit: false,
+        isSubmitting: false,
+      };
+    }
     case PUT_JOB_SUCCESS:
     case DELETE_JOB_SUCCESS:
     case POST_CATEGORY_SUCCESS: {
@@ -97,7 +109,13 @@ const jobReducer = (state = initialState, action) => {
         isLoadingCategoryList: false,
       };
     }
-    case POST_JOB_ERROR:
+    case POST_JOB_ERROR: {
+      return {
+        ...state,
+        isSubmitting: false,
+        atJobLimit: true,
+      };
+    }
     case PUT_JOB_ERROR:
     case DELETE_JOB_ERROR:
     case POST_CATEGORY_ERROR: {

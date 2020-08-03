@@ -16,6 +16,7 @@ import {
 const initialState = {
   applicantStatusList: [],
   applicantList: [],
+  atApplicationLimit: false,
   isLoadingApplicantList: false,
   isLoadingApplicantStatusList: false,
   isSubmitting: false,
@@ -36,8 +37,14 @@ const applicantReducer = (state = initialState, action) => {
         isLoadingApplicantList: true,
       };
     }
-    case PUT_APPLICANT_STATUS_REQUEST:
     case POST_APPLICATION_REQUEST: {
+      return {
+        ...state,
+        atApplicationLimit: false,
+        isSubmitting: true,
+      };
+    }
+    case PUT_APPLICANT_STATUS_REQUEST: {
       return {
         ...state,
         isSubmitting: true,
@@ -59,8 +66,14 @@ const applicantReducer = (state = initialState, action) => {
         isLoadingApplicantList: false,
       };
     }
-    case PUT_APPLICANT_STATUS_SUCCESS:
     case POST_APPLICATION_SUCCESS: {
+      return {
+        ...state,
+        atApplicationLimit: false,
+        isSubmitting: false,
+      };
+    }
+    case PUT_APPLICANT_STATUS_SUCCESS: {
       return {
         ...state,
         isSubmitting: false,
@@ -80,8 +93,14 @@ const applicantReducer = (state = initialState, action) => {
         isLoadingApplicantList: false,
       };
     }
-    case PUT_APPLICANT_STATUS_ERROR:
     case POST_APPLICATION_ERROR: {
+      return {
+        ...state,
+        atApplicationLimit: true,
+        isSubmitting: false,
+      };
+    }
+    case PUT_APPLICANT_STATUS_ERROR: {
       return {
         ...state,
         isSubmitting: false,

@@ -39,6 +39,29 @@ exports.postJobApplication = async (req, res, next) => {
   }
 
   const userName = req.params.userName;
+
+  // Find the amount of jobs the user should be able to apply for
+  const applicationLimit = (
+    await db.query(
+      `SELECT Subscription.limit FROM User JOIN Subscription ON Subscription.subscriptionID = User.subscriptionID WHERE Username = '${userName}';`,
+      { type: db.QueryTypes.SELECT }
+    )
+  )[0];
+
+  // Count the number of jobs the user has already applied for
+  const applicationCount = (
+    await db.query(`SELECT COUNT(*) FROM Applicant WHERE Username = '${userName}';`, {
+      type: db.QueryTypes.SELECT,
+    })
+  )[0];
+
+  // Check to see if they have reached their limit
+  if (applicationCount["COUNT(*)"] >= applicationLimit["limit"]) {
+    return res.status(400).send({
+      error: "You have reached the application limit. Please upgrade your subscription.",
+    });
+  }
+
   const jobID = req.params.jobID;
 
   try {
