@@ -74,11 +74,34 @@ exports.postJob = async (req, res, next) => {
       });
     }
 
+    const userName = req.params.userName;
+
+    // Find the amount of jobs the user should be about post
+    const jobLimit = (
+      await db.query(
+        `SELECT Subscription.limit FROM User JOIN Subscription ON Subscription.subscriptionID = User.subscriptionID WHERE Username = '${userName}';`,
+        { type: db.QueryTypes.SELECT }
+      )
+    )[0];
+
+    // Cound the number of jobs the user has posted
+    const jobCount = (
+      await db.query(`SELECT COUNT(*) FROM Job WHERE Username = '${userName}';`, {
+        type: db.QueryTypes.SELECT,
+      })
+    )[0];
+
+    // Check to see if they have reached their limit
+    if (jobCount["COUNT(*)"] >= jobLimit["limit"]) {
+      return res.status(400).send({
+        error: "You have reached the job limit. Please either delete a listing or upgrade your subscription.",
+      });
+    }
+
     const title = req.body.title;
     const categoryName = req.body.category;
     const description = req.body.jobDescription;
     const employeesNeeded = req.body.employeesNeeded;
-    const userName = req.params.userName;
 
     await db.query(
       `INSERT INTO \`Job\`(userName, categoryName, title, datePosted, \`description\`, employeesNeeded) VALUES ('${userName}', '${categoryName}', '${title}', CURDATE(), '${description}', ${employeesNeeded});`,

@@ -12,10 +12,15 @@ import {
 
 // Selectors
 import { jobsListSelector, jobCategoryListSelector, jobListIsLoadingSelector } from "../state/jobs/jobSelectors";
-import { applicantStatusListSelector, applicantIsSubmittingSelector } from "../state/applicants/applicantSelectors";
+import {
+  applicantStatusListSelector,
+  applicantIsSubmittingSelector,
+  applicantIsAtLimit,
+} from "../state/applicants/applicantSelectors";
 
 // MaterialUI
 import {
+  Snackbar,
   Button,
   Grid,
   List,
@@ -29,6 +34,7 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 
 // Components
 import LoadingScreen from "./LoadingScreen";
@@ -36,18 +42,23 @@ import LoadingScreen from "./LoadingScreen";
 // Util
 import { isEmpty, findIndex, get, capitalize } from "lodash";
 
-// TODO: Limit number of applications an employee can make (based on subscription level)
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 function EmployerJobBoard({ userName, frozen }) {
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState("Select All");
+  const [displaySnackbar, setDisplaySnackbar] = useState(false);
+  const [pageInitialized, setPageInitialized] = useState(false);
 
   const jobsList = useSelector(jobsListSelector);
   const categoryList = useSelector(jobCategoryListSelector);
   const applicantStatuses = useSelector(applicantStatusListSelector);
   const isLoadingJobList = useSelector(jobListIsLoadingSelector);
   const isSubmitting = useSelector(applicantIsSubmittingSelector);
+  const isAtLimit = useSelector(applicantIsAtLimit);
 
   const createButton = (status, jobID) => {
     switch (status) {
@@ -58,7 +69,10 @@ function EmployerJobBoard({ userName, frozen }) {
             variant="contained"
             color="primary"
             disabled={frozen}
-            onClick={() => dispatch(postApplicationRequest(userName, jobID))}
+            onClick={() => {
+              setPageInitialized(true);
+              dispatch(postApplicationRequest(userName, jobID));
+            }}
           >
             APPLY
           </Button>
@@ -104,12 +118,28 @@ function EmployerJobBoard({ userName, frozen }) {
     dispatch(getApplicantStatusRequest(userName));
   }, [isSubmitting]);
 
+  useEffect(() => {
+    if (isAtLimit && pageInitialized) {
+      setDisplaySnackbar(true);
+    }
+  }, [isAtLimit]);
+
   return (
     <Fragment>
       {isLoadingJobList || isEmpty(jobsList) || isEmpty(categoryList) ? (
         <LoadingScreen fullScreen={false} message={"Loading jobs..."} />
       ) : (
         <Fragment>
+          <Snackbar
+            open={displaySnackbar}
+            autoHideDuration={6000}
+            onClose={() => setDisplaySnackbar(false)}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          >
+            <Alert onClose={() => setDisplaySnackbar(false)} severity={"error"}>
+              {"You have reached the application limit. Please upgrade your subscription."}
+            </Alert>
+          </Snackbar>
           <Typography align="center" variant="h3">
             Job Listings
           </Typography>

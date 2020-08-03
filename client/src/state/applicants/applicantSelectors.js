@@ -7,6 +7,11 @@ export const applicantListSelector = createSelector(
   (applicantState) => applicantState.applicantList
 );
 
+export const applicantIsAtLimit = createSelector(
+  [applicantStateSelector],
+  (applicantState) => applicantState.atApplicationLimit
+);
+
 export const applicantStatusListSelector = createSelector(
   [applicantStateSelector],
   (applicantState) => applicantState.applicantStatusList

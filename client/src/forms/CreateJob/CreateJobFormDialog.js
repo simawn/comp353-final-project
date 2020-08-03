@@ -19,12 +19,13 @@ import createJobSchema from "./CreateJobFormDialog.schema";
 // Util
 import queryString from "query-string";
 
-function CreateJobFormDialog({ open, close, userName }) {
+function CreateJobFormDialog({ open, close, userName, setPageInitialized }) {
   const dispatch = useDispatch();
 
   const categoryList = useSelector(jobCategoryListSelector);
 
   const onSubmit = (formValues) => {
+    setPageInitialized(true);
     dispatch(postJobRequest(queryString.stringify(formValues), userName));
     close();
   };
