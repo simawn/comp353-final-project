@@ -1,6 +1,6 @@
 -- RUNNING THIS SCRIPT POPULATES THE DATABASE
 
-USE jxc353_1;
+-- USE jxc353_1;
 
 INSERT INTO `Subscription`(`name`, `limit`, cost)
 VALUES 
@@ -12,7 +12,7 @@ VALUES
 ;
 
     
-INSERT INTO `User`(userName, subscriptionID, password, email, firstName, lastName, role, balance, suffering, active, lastPayment)
+INSERT INTO `User`(userName, subscriptionID, `password`, email, firstName, lastName, `role`, balance, suffering, `active`, lastPayment)
 VALUES 
 	('LeilaDisney', 3,	'qwer', 'leila_disney@hotmail.com', 'Leila', 'Disney', 'employee', -9.98,	1, 1,	'2020-05-07'),
 	('HubeKlamman',	2,	'tyui', 'hube_klamman@hotmail.com', 'Hube', 'Klamman', 'employer', 0.00, 0, 1, '2020-07-08'), 				
@@ -24,22 +24,21 @@ VALUES
 	('ShelleyGirt', 1,	'fdsa', 'shelley_girt@gmail.com', 'Shelley', 'Girt', 'employer', 0,	 0, 1, '2020-06-08'), 					
 	('AlexeiAdcocks', 2,	'kjhg', 'alexei_adcocks@yahoo.com', 'Alexei',	'Adcocks', 'employer', 0,	0, 1, '2020-07-15'), 					
 	('SanfordGout', 5, 'vcxz', 'sanford_gout@yahoo.com', 'Sanford', 'Gout', 'employee', -99.99,	1, 1, '2020-06-01'), 	
-  ('JohnDoe', 1,	'mnbv', 'john_doe@yahoo.com', 'John', 'Doe', 'employee', -99.99, 1, 0, '2020-02-01')
+  ('JohnDoe', 3,	'mnbv', 'john_doe@yahoo.com', 'John', 'Doe', 'employee', -99.99, 1, 0, '2020-02-01')
 ;     
 
 INSERT INTO `CreditCard` (creditCardNumber, expirationDate, cvv)
 VALUES
-	('3533824238007180', '2024-07-09', '132'),
-  ('2016335644770111', '2022-05-14', '253'),
-  ('3742883897292441', '2022-09-15', '638'),
-  ('5602242629786240', '2022-04-08', '952'),
-  ('3558824795154210', '2023-07-20', '685'),
-  ('3570140841478170', '2021-11-02', '956'),
-  ('5020956162470040', '2023-11-27', '645'),
-  ('3547131580418310', '2023-11-27', '067'),
-  ('3536309143887770', '2022-04-11', '684'),
-  ('3555954581085500', '2022-09-06', '782')
-;
+	('3533824238007180', '07/24', '132'),
+  ('2016335644770111', '05/22', '253'),
+  ('3742883897292441', '09/22', '638'),
+  ('5602242629786240', '04/22', '952'),
+  ('3558824795154210', '07/23', '685'),
+  ('3570140841478170', '11/21', '956'),
+  ('5020956162470040', '11/23', '645'),
+  ('3547131580418310', '11/23', '067'),
+  ('3536309143887770', '04/22', '684'),
+  ('3555954581085500', '09/22', '782');
    
 
 INSERT INTO `PaymentMethod` (userName, creditCardNumber, accountNumber)
@@ -77,18 +76,19 @@ VALUES
   ('ArabellaAndreutti', 'Construction', 'Construction Worker', '2020-07-12', 'We build really cool stuff.', 5),
   ('BabKelsall', 'Design', 'Graphic Designer', '2020-07-14', 'We take commissions and give you bonuses.', 2),
   ('ShelleyGirt', 'Education', 'High School Teacher', '2020-07-14', 'Show the kids how to behave and smack em around.', 1),
-  ('AlexeiAdcocks', 'Engineering', 'Senior Mechanical Engineer', '2020-07-20', 'Help us, we are stuck', 1)
+  ('AlexeiAdcocks', 'Engineering', 'Senior Mechanical Engineer', '2020-07-20', 'Help us, we are stuck', 1),
+  ('AlexeiAdcocks', 'Engineering', 'Chief Mechanical Engineer', '2020-07-20', 'Help us, we are stuck too', 1)
 ;
 
 
 INSERT INTO `Applicant` (userName, jobID, `status`)
 VALUES 
-	('JohnDoe', '1', 'pending'),
-  ('JohnDoe', '2', 'rejected'),
-  ('JohnDoe', '3', 'withdrawn'),
-  ('JohnDoe', '4', 'hired'),
-  ('JohnDoe', '5', 'pending')
-;
+	('LeilaDisney', '1', 'pending'),
+  ('DenBalsdon', '2', 'rejected'),
+  ('DienaDaniele', '3', 'withdrawn'),
+  ('MelisseCostley', '4', 'hired'),
+  ('SanfordGout', '5', 'pending'),
+  ('LeilaDisney', '3', 'pending');
 	
 
 

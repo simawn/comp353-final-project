@@ -1,6 +1,6 @@
 -- RUNNING THIS SCRIPT RESETS THE DATABASE
 
-USE jxc353_1;
+-- USE jxc353_1;
 
 -- --------------------------------------------------
 -- Drop all previous tables (ORDER MATTERS)
@@ -35,17 +35,17 @@ CREATE TABLE `User`(
   `firstName` VARCHAR(255),
   `lastName` VARCHAR(255),
   `balance` DECIMAL(19, 4),
-  `suffering` BOOLEAN,
+  `paysWithManual` BOOLEAN,
   `active` BOOLEAN,
   `lastPayment` DATE,
   `role` ENUM('employer', 'employee', 'admin'),
   PRIMARY KEY (`userName`),
-  FOREIGN KEY (`subscriptionID`) REFERENCES `Subscription`(`subscriptionID`)
+  FOREIGN KEY (`subscriptionID`) REFERENCES `Subscription`(`subscriptionID`)  
 );
 
 CREATE TABLE `CreditCard`(
   `creditCardNumber` VARCHAR(255) NOT NULL,
-  `expirationDate` DATE,
+  `expirationDate` VARCHAR(5),
   `cvv` INT,  
   PRIMARY KEY (`creditCardNumber`)
 );
@@ -77,6 +77,7 @@ CREATE TABLE `Job`(
   FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
   FOREIGN KEY (`categoryName`) REFERENCES `Category`(`categoryName`)
 ) ENGINE=InnoDB;
+
 
 CREATE TABLE `Applicant`(
   `userName` VARCHAR(255) NOT NULL,
