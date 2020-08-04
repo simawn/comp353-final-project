@@ -21,9 +21,15 @@ import {
   GET_USER_REQUEST,
   getUserSuccess,
   getUserError,
+  GET_ALL_USERS_REQUEST,
+  getAllUsersSuccess,
+  getAllUsersError,
   PUT_USER_REQUEST,
   putUserSuccess,
   putUserError,
+  PUT_USER_ACTIVATION_REQUEST,
+  putUserActivationSuccess,
+  putUserActivationError,
   PUT_USER_SUBSCRIPTION_REQUEST,
   putUserSubscriptionSuccess,
   putUserSubscriptionError,
@@ -88,6 +94,20 @@ const getUserEvent = (action$) => {
   );
 };
 
+const getAllUsersEvent = (action$) => {
+  return action$.pipe(
+    ofType(GET_ALL_USERS_REQUEST),
+    mergeMap(() =>
+      xhr("GET", `/admin/useroverview`).pipe(
+        map(({ response }) => getAllUsersSuccess(response)),
+        catchError((err) => {
+          return of(getAllUsersError(err));
+        })
+      )
+    )
+  );
+};
+
 const putUserEvent = (action$) => {
   return action$.pipe(
     ofType(PUT_USER_REQUEST),
@@ -96,6 +116,20 @@ const putUserEvent = (action$) => {
         map(({ response }) => putUserSuccess(response)),
         catchError((err) => {
           return of(putUserError(err));
+        })
+      )
+    )
+  );
+};
+
+const putUserActivationEvent = (action$) => {
+  return action$.pipe(
+    ofType(PUT_USER_ACTIVATION_REQUEST),
+    mergeMap(({ payload: { userName, newStatus } }) =>
+      xhr("PUT", `/admin/${userName}/${newStatus}`).pipe(
+        map(({ response }) => putUserActivationSuccess(response)),
+        catchError((err) => {
+          return of(putUserActivationError(err));
         })
       )
     )
@@ -136,6 +170,8 @@ export default combineEpics(
   postLogoutEvent,
   getUserEvent,
   putUserEvent,
+  putUserActivationEvent,
   putUserSubscriptionEvent,
-  deleteUserEvent
+  deleteUserEvent,
+  getAllUsersEvent
 );

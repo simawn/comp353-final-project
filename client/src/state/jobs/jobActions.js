@@ -7,6 +7,13 @@ export const browseJobsRequest = () => {
   };
 };
 
+export const BROWSE_ALL_JOBS_REQUEST = "BROWSE_ALL_JOBS_REQUEST [ADMIN]";
+export const browseAllJobsRequest = () => {
+  return {
+    type: BROWSE_ALL_JOBS_REQUEST,
+  };
+};
+
 export const BROWSE_CATEGORIES_REQUEST = "BROWSE_CATEGORIES_REQUEST";
 export const browseCategoriesRequest = () => {
   return {
@@ -64,6 +71,14 @@ export const browseJobsSuccess = (jobList) => {
   };
 };
 
+export const BROWSE_ALL_JOBS_SUCCESS = "BROWSE_ALL_JOBS_SUCCESS [ADMIN]";
+export const browseAllJobsSuccess = (jobList) => {
+  return {
+    type: BROWSE_ALL_JOBS_SUCCESS,
+    payload: { jobList },
+  };
+};
+
 export const BROWSE_CATEGORIES_SUCCESS = "BROWSE_CATEGORIES_SUCCESS";
 export const browseCategoriesSuccess = (categoryList) => {
   return {
@@ -115,6 +130,14 @@ export const browseJobsError = (error) => ({
   type: BROWSE_JOBS_ERROR,
   payload: { error },
 });
+
+export const BROWSE_ALL_JOBS_ERROR = "BROWSE_ALL_JOBS_ERROR [ADMIN]";
+export const browseAllJobsError = (error) => {
+  return {
+    type: BROWSE_ALL_JOBS_ERROR,
+    payload: { error },
+  };
+};
 
 export const BROWSE_CATEGORIES_ERROR = "BROWSE_CATEGORIES_ERROR";
 export const browseCategoriesError = (error) => {

@@ -76,7 +76,7 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-function JobApplicantDialog({ open, close, jobID }) {
+function JobApplicantDialog({ open, close, jobID, isAdmin = false }) {
   const dispatch = useDispatch();
 
   const applicantList = useSelector(applicantListSelector);
@@ -115,7 +115,7 @@ function JobApplicantDialog({ open, close, jobID }) {
                     fullWidth
                     variant="contained"
                     color="primary"
-                    disabled={["rejected", "withdrawn", "hired", "offer"].includes(applicant.status)}
+                    disabled={["rejected", "withdrawn", "hired", "offer"].includes(applicant.status) || isAdmin}
                     onClick={() => dispatch(putApplicantStatusRequest(applicant.userName, applicant.jobID, "offer"))}
                   >
                     HIRE
@@ -126,7 +126,7 @@ function JobApplicantDialog({ open, close, jobID }) {
                     fullWidth
                     variant="contained"
                     color="secondary"
-                    disabled={["rejected", "withdrawn", "hired"].includes(applicant.status)}
+                    disabled={["rejected", "withdrawn", "hired"].includes(applicant.status) || isAdmin}
                     onClick={() => dispatch(putApplicantStatusRequest(applicant.userName, applicant.jobID, "rejected"))}
                   >
                     REJECT

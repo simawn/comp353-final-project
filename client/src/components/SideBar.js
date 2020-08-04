@@ -7,7 +7,7 @@ import { Drawer, IconButton, Divider, List } from "@material-ui/core";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
 // Components
-import MenuOptions from "./SideBarItems";
+import SideBarItems from "./SideBarItems";
 
 // Util
 import clsx from "clsx";
@@ -62,7 +62,7 @@ function SideBar({ open, setOpen, role }) {
       </div>
       <Divider />
       <List>
-        <MenuOptions role={role} />
+        <SideBarItems role={role} />
       </List>
     </Drawer>
   );

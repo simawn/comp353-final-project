@@ -111,6 +111,17 @@ function Dashboard() {
                     This account is <b>FROZEN</b>. Please make the appropriate payments to regain functionality.
                   </Typography>
                 ) : null}
+                {currentUser.active === 0 ? (
+                  <Typography
+                    align="center"
+                    color="secondary"
+                    gutterBottom
+                    variant="h6"
+                    style={{ paddingBottom: "20px" }}
+                  >
+                    This account is <b>DEACTIVATED</b>. You will be unable to use any of the functionality..
+                  </Typography>
+                ) : null}
                 {isEmpty(currentUser) ? (
                   <LoadingScreen fullScreen={false} message={"Loading User..."} />
                 ) : (

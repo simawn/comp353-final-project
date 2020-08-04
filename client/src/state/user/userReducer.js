@@ -11,12 +11,18 @@ import {
   PUT_USER_REQUEST,
   PUT_USER_SUCCESS,
   PUT_USER_ERROR,
+  PUT_USER_ACTIVATION_REQUEST,
+  PUT_USER_ACTIVATION_SUCCESS,
+  PUT_USER_ACTIVATION_ERROR,
   PUT_USER_SUBSCRIPTION_REQUEST,
   PUT_USER_SUBSCRIPTION_SUCCESS,
   PUT_USER_SUBSCRIPTION_ERROR,
   GET_USER_REQUEST,
   GET_USER_SUCCESS,
   GET_USER_ERROR,
+  GET_ALL_USERS_REQUEST,
+  GET_ALL_USERS_SUCCESS,
+  GET_ALL_USERS_ERROR,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
   DELETE_USER_ERROR,
@@ -24,6 +30,7 @@ import {
 
 const initialState = {
   currentUser: {},
+  userList: [],
   snackBarInformation: {
     message: "error message",
     severity: "error",
@@ -38,6 +45,7 @@ const userReducer = (state = initialState, action) => {
     /* REQUESTS */
     case POST_USER_REQUEST:
     case PUT_USER_REQUEST:
+    case PUT_USER_ACTIVATION_REQUEST:
     case PUT_USER_SUBSCRIPTION_REQUEST:
     case DELETE_USER_REQUEST: {
       return {
@@ -53,7 +61,8 @@ const userReducer = (state = initialState, action) => {
         isSubmitting: true,
       };
     }
-    case GET_USER_REQUEST: {
+    case GET_USER_REQUEST:
+    case GET_ALL_USERS_REQUEST: {
       return {
         ...state,
         isLoading: true,
@@ -90,7 +99,14 @@ const userReducer = (state = initialState, action) => {
         currentUser: action.payload.user,
       };
     }
+    case GET_ALL_USERS_SUCCESS: {
+      return {
+        ...state,
+        userList: action.payload.userList,
+      };
+    }
     case PUT_USER_SUCCESS:
+    case PUT_USER_ACTIVATION_SUCCESS:
     case PUT_USER_SUBSCRIPTION_SUCCESS:
     case DELETE_USER_SUCCESS: {
       return {
@@ -117,6 +133,7 @@ const userReducer = (state = initialState, action) => {
     }
     case POST_LOGOUT_ERROR:
     case PUT_USER_ERROR:
+    case PUT_USER_ACTIVATION_ERROR:
     case PUT_USER_SUBSCRIPTION_ERROR:
     case DELETE_USER_ERROR: {
       return {
@@ -124,7 +141,8 @@ const userReducer = (state = initialState, action) => {
         isSubmitting: false,
       };
     }
-    case GET_USER_ERROR: {
+    case GET_USER_ERROR:
+    case GET_ALL_USERS_ERROR: {
       return {
         ...state,
         isLoading: false,

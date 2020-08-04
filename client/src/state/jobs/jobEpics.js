@@ -12,6 +12,9 @@ import {
   BROWSE_JOBS_REQUEST,
   browseJobsSuccess,
   browseJobsError,
+  BROWSE_ALL_JOBS_REQUEST,
+  browseAllJobsSuccess,
+  browseAllJobsError,
   BROWSE_CATEGORIES_REQUEST,
   browseCategoriesSuccess,
   browseCategoriesError,
@@ -40,6 +43,20 @@ const browseJobsEvent = (action$) => {
         map(({ response }) => browseJobsSuccess(response)),
         catchError((err) => {
           return of(browseJobsError(err));
+        })
+      )
+    )
+  );
+};
+
+const browseAllJobsEvent = (action$) => {
+  return action$.pipe(
+    ofType(BROWSE_ALL_JOBS_REQUEST),
+    mergeMap(() =>
+      xhr("GET", `/admin/joboverview`).pipe(
+        map(({ response }) => browseAllJobsSuccess(response)),
+        catchError((err) => {
+          return of(browseAllJobsError(err));
         })
       )
     )
@@ -132,6 +149,7 @@ const postCategoryEvent = (action$) => {
 
 export default combineEpics(
   browseJobsEvent,
+  browseAllJobsEvent,
   browseCategoriesEvent,
   getEmployerJobsEvent,
   postJobEvent,

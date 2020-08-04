@@ -13,7 +13,7 @@ exports.getUserDetails = async (req, res) => {
   try {
     // Fetch user from database
     const user = await db.query(
-      `SELECT User.userName, User.role, User.firstName, User.subscriptionID, User.lastName, User.email, User.balance, User.lastPayment, User.paysWithManual, Subscription.name FROM User JOIN Subscription ON Subscription.subscriptionID = User.subscriptionID WHERE userName = '${userName}'`,
+      `SELECT User.userName, User.role, User.firstName, User.subscriptionID, User.lastName, User.email, User.active, User.balance, User.lastPayment, User.paysWithManual, Subscription.name FROM User JOIN Subscription ON Subscription.subscriptionID = User.subscriptionID WHERE userName = '${userName}'`,
       { type: db.QueryTypes.SELECT }
     );
 

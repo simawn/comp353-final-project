@@ -4,6 +4,8 @@ const userStateSelector = (state) => state.userReducer;
 
 export const currentUserSelector = createSelector([userStateSelector], (userState) => userState.currentUser);
 
+export const userListSelector = createSelector([userStateSelector], (userState) => userState.userList);
+
 export const userSnackBarInformationSelector = createSelector(
   [userStateSelector],
   (userState) => userState.snackBarInformation

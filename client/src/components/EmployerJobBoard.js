@@ -55,7 +55,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-function EmployerJobBoard({ userName, frozen }) {
+function EmployerJobBoard({ userName, frozen, deactivated }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -129,6 +129,11 @@ function EmployerJobBoard({ userName, frozen }) {
               This account is <b>FROZEN</b>. Please make the appropriate payments to regain functionality.
             </Typography>
           ) : null}
+          {deactivated ? (
+            <Typography align="center" color="secondary" gutterBottom variant="h6" style={{ paddingTop: "20px" }}>
+              This account is <b>DEACTIVATED</b>. You will be unable to use any of the functionality.
+            </Typography>
+          ) : null}
           <Grid container justify="center" spacing={2}>
             <Grid item xs={12} sm={6} md={3}>
               <Button
@@ -136,7 +141,7 @@ function EmployerJobBoard({ userName, frozen }) {
                 fullWidth
                 variant="outlined"
                 onClick={() => setCreateJobFormOpen(true)}
-                disabled={frozen}
+                disabled={frozen || deactivated}
               >
                 POST A JOB
               </Button>
@@ -147,7 +152,7 @@ function EmployerJobBoard({ userName, frozen }) {
                 fullWidth
                 variant="outlined"
                 onClick={() => setCreateCategoryFormOpen(true)}
-                disabled={frozen}
+                disabled={frozen || deactivated}
               >
                 ADD A CATEGORY
               </Button>
@@ -187,7 +192,7 @@ function EmployerJobBoard({ userName, frozen }) {
                           setSelectedListing(job);
                           setJobApplicantDialogOpen(true);
                         }}
-                        disabled={frozen}
+                        disabled={frozen || deactivated}
                       >
                         APPLICANTS
                       </Button>
@@ -200,9 +205,9 @@ function EmployerJobBoard({ userName, frozen }) {
                         }}
                         className={classes.margin}
                         size="medium"
-                        disabled={frozen}
+                        disabled={frozen || deactivated}
                       >
-                        <EditIcon color={frozen ? "default" : "secondary"} />
+                        <EditIcon color={frozen || deactivated ? "default" : "secondary"} />
                       </IconButton>
                     </TableCell>
                     <TableCell align="center">
@@ -210,9 +215,9 @@ function EmployerJobBoard({ userName, frozen }) {
                         className={classes.margin}
                         size="medium"
                         onClick={() => dispatch(deleteJobRequest(job.jobID))}
-                        disabled={isSubmitting || frozen}
+                        disabled={isSubmitting || frozen || deactivated}
                       >
-                        <DeleteIcon color={frozen ? "default" : "secondary"} />
+                        <DeleteIcon color={frozen || deactivated ? "default" : "secondary"} />
                       </IconButton>
                     </TableCell>
                   </TableRow>

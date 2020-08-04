@@ -39,6 +39,14 @@ export const putUserRequest = (userInformation, userName) => {
   };
 };
 
+export const PUT_USER_ACTIVATION_REQUEST = "PUT_USER_ACTIVATION_REQUEST [ADMIN]";
+export const putUserActivationRequest = (userName, newStatus) => {
+  return {
+    type: PUT_USER_ACTIVATION_REQUEST,
+    payload: { userName, newStatus },
+  };
+};
+
 export const PUT_USER_SUBSCRIPTION_REQUEST = "PUT_USER_SUBSCRIPTION_REQUEST";
 export const putUserSubscriptionRequest = (subscriptionID, userName) => {
   return {
@@ -52,6 +60,13 @@ export const deleteUserRequest = (userName) => {
   return {
     type: DELETE_USER_REQUEST,
     payload: { userName },
+  };
+};
+
+export const GET_ALL_USERS_REQUEST = "GET_ALL_USERS_REQUEST [ADMIN]";
+export const getAllUsersRequest = () => {
+  return {
+    type: GET_ALL_USERS_REQUEST,
   };
 };
 
@@ -95,6 +110,13 @@ export const putUserSuccess = () => {
   };
 };
 
+export const PUT_USER_ACTIVATION_SUCCESS = "PUT_USER_ACTIVATION_SUCCESS [ADMIN]";
+export const putUserActivationSuccess = () => {
+  return {
+    type: PUT_USER_ACTIVATION_SUCCESS,
+  };
+};
+
 export const PUT_USER_SUBSCRIPTION_SUCCESS = "PUT_USER_SUBSCRIPTION_SUCCESS";
 export const putUserSubscriptionSuccess = () => {
   return {
@@ -106,6 +128,14 @@ export const DELETE_USER_SUCCESS = "DELETE_USER_SUCCESS";
 export const deleteUserSuccess = () => {
   return {
     type: DELETE_USER_SUCCESS,
+  };
+};
+
+export const GET_ALL_USERS_SUCCESS = "GET_ALL_USERS_SUCCESS [ADMIN]";
+export const getAllUsersSuccess = (userList) => {
+  return {
+    type: GET_ALL_USERS_SUCCESS,
+    payload: { userList },
   };
 };
 
@@ -151,6 +181,14 @@ export const putUserError = (error) => {
   };
 };
 
+export const PUT_USER_ACTIVATION_ERROR = "PUT_USER_ACTIVATION_ERROR [ADMIN]";
+export const putUserActivationError = (error) => {
+  return {
+    type: PUT_USER_ACTIVATION_ERROR,
+    payload: { error },
+  };
+};
+
 export const PUT_USER_SUBSCRIPTION_ERROR = "PUT_USER_SUBSCRIPTION_ERROR";
 export const putUserSubscriptionError = (error) => {
   return {
@@ -163,6 +201,14 @@ export const DELETE_USER_ERROR = "DELETE_USER_ERROR";
 export const deleteUserError = (error) => {
   return {
     type: DELETE_USER_ERROR,
+    payload: { error },
+  };
+};
+
+export const GET_ALL_USERS_ERROR = "GET_ALL_USERS_ERROR [ADMIN]";
+export const getAllUsersError = (error) => {
+  return {
+    type: GET_ALL_USERS_SUCCESS,
     payload: { error },
   };
 };
