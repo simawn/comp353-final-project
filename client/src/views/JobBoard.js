@@ -78,8 +78,6 @@ function Dashboard() {
     }
   };
 
-  console.log(user);
-
   useEffect(() => {
     dispatch(getUserRequest(currentUserName));
     if (user && user.balance) {

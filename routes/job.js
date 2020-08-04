@@ -6,6 +6,7 @@ const router = express.Router();
 
 // Job Specific Routes
 router.get("/jobs", jobController.getAllJobs);
+router.get("/jobs/:startDate/:endDate", jobController.getDatedJobs);
 router.post("/jobs/categories", jobController.postJobCategory);
 router.post("/jobs/:userName", jobController.postJob);
 router.get("/jobs/categories", jobController.getJobCategories);

@@ -1,9 +1,10 @@
 // REQUEST
 
 export const BROWSE_JOBS_REQUEST = "BROWSE_JOBS_REQUEST";
-export const browseJobsRequest = () => {
+export const browseJobsRequest = (dates) => {
   return {
     type: BROWSE_JOBS_REQUEST,
+    payload: { dates },
   };
 };
 
@@ -26,6 +27,14 @@ export const getEmployerJobsRequest = (userName) => {
   return {
     type: GET_EMPLOYER_JOBS_REQUEST,
     payload: { userName },
+  };
+};
+
+export const GET_DATED_JOBS_REQUEST = "GET_DATED_JOBS_REQUEST";
+export const getDatedJobsRequest = (startDate, endDate) => {
+  return {
+    type: GET_DATED_JOBS_REQUEST,
+    payload: { startDate, endDate },
   };
 };
 
@@ -95,6 +104,14 @@ export const getEmployerJobsSuccess = (jobList) => {
   };
 };
 
+export const GET_DATED_JOBS_SUCCESS = "GET_DATED_JOBS_SUCCESS";
+export const getDatedJobsSuccess = (jobList) => {
+  return {
+    type: GET_DATED_JOBS_SUCCESS,
+    payload: { jobList },
+  };
+};
+
 export const POST_JOB_SUCCESS = "POST_JOB_SUCCESS";
 export const postJobSuccess = () => {
   return {
@@ -151,6 +168,14 @@ export const GET_EMPLOYER_JOBS_ERROR = "GET_EMPLOYER_JOBS_ERROR";
 export const getEmployerJobsError = (error) => {
   return {
     type: GET_EMPLOYER_JOBS_ERROR,
+    payload: { error },
+  };
+};
+
+export const GET_DATED_JOBS_ERROR = "GET_DATED_JOBS_ERROR";
+export const getDatedJobsError = (error) => {
+  return {
+    type: GET_DATED_JOBS_ERROR,
     payload: { error },
   };
 };
