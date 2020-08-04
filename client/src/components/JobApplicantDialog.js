@@ -87,8 +87,6 @@ function JobApplicantDialog({ open, close, jobID, isAdmin = false }) {
     dispatch(getApplicantsRequest(jobID));
   }, [isSubmitting, jobID]);
 
-  console.log(applicantList);
-
   const renderTable = () => {
     if (isEmpty(applicantList)) {
       return <Typography align="center">No one was has applied to this job yet.</Typography>;
