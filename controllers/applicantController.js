@@ -66,7 +66,7 @@ exports.postJobApplication = async (req, res, next) => {
 
   try {
     await db.query(
-      `INSERT INTO \`Applicant\`(userName, jobID, \`status\`) VALUES ('${userName}', ${jobID}, 'pending')`,
+      `INSERT INTO \`Applicant\`(userName, jobID, \`status\`, \`appliedDate\`) VALUES ('${userName}', ${jobID}, 'pending', CURDATE())`,
       { type: db.QueryTypes.INSERT }
     );
 
@@ -119,7 +119,7 @@ exports.getApplicants = async (req, res, next) => {
 
   try {
     const applicantList = await db.query(
-      `SELECT User.userName, User.firstName, User.lastName, Applicant.status, Applicant.jobID FROM Applicant JOIN User ON Applicant.userName = User.userName WHERE Applicant.jobID = ${jobID};`,
+      `SELECT User.userName, User.firstName, User.lastName, Applicant.status, Applicant.appliedDate, Applicant.jobID FROM Applicant JOIN User ON Applicant.userName = User.userName WHERE Applicant.jobID = ${jobID};`,
       { type: db.QueryTypes.SELECT }
     );
 

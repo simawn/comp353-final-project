@@ -84,6 +84,7 @@ CREATE TABLE `Applicant`(
   `userName` VARCHAR(255) NOT NULL,
   `jobID` INT NOT NULL,
   `status` ENUM('pending', 'rejected', 'hired', 'withdrawn', 'offer'),
+  `appliedDate` DATE,
   PRIMARY KEY (`userName`, `jobID`),
   FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
   FOREIGN KEY (`jobID`) REFERENCES `Job`(`jobID`)
