@@ -393,6 +393,7 @@ WHERE
 	User.subscriptionID = Subscription.subscriptionID AND
     role = @givenRole;
 
+
 -- ----------------------------------------------------------------------------------------------------------------  
 -- xviii. Report of all outstanding balance accounts (User name, email, balance, since when the account is
 -- suffering).
@@ -401,3 +402,48 @@ SELECT userName, email, balance, lastPayment
 FROM User
 WHERE
 	balance < 0;
+    
+    
+-- ----------------------------------------------------------------------------------------------------------------  
+-- bonus: A suffering account will receive a warning message once a week until the account is settled or deactivated.
+-- ----------------------------------------------------------------------------------------------------------------
+SELECT userName, email 
+FROM `user` 
+WHERE lastPayment < DATE_ADD(DATE(NOW()), INTERVAL -1 WEEK)
+		AND balance < 0 
+        AND `active` = 1;
+
+
+-- ----------------------------------------------------------------------------------------------------------------  
+-- bonus: A suffering account for a year will be deactivated automatically by the system.
+-- ----------------------------------------------------------------------------------------------------------------
+SET SQL_SAFE_UPDATES=0;
+UPDATE `user`
+	SET `active` = 0
+    WHERE
+		lastPayment < DATE_ADD(DATE(NOW()), INTERVAL -1 YEAR)
+		AND balance < 0 
+		AND `active` = 1;
+SET SQL_SAFE_UPDATES=1;
+
+
+-- ----------------------------------------------------------------------------------------------------------------  
+-- bonus: Charge everyone using automatic payment in the DB the amount of their subscription cost. 
+-- ----------------------------------------------------------------------------------------------------------------
+SET SQL_SAFE_UPDATES=0;
+
+-- for automatic payment 
+UPDATE `user`
+	SET lastPayment = DATE(NOW()), balance = 0
+    WHERE paysWithManual = 0 
+			AND `active` = 1 
+            AND lastPayment < DATE_ADD(DATE(NOW()), INTERVAL -1 MONTH);
+
+-- for manual payment 
+SELECT userName, email 
+	FROM `user`
+    WHERE paysWithManual = 1 
+			AND `active` = 1 
+            AND lastPayment < DATE_ADD(DATE(NOW()), INTERVAL -1 MONTH); 
+
+SET SQL_SAFE_UPDATES=1;
