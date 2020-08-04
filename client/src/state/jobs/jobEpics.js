@@ -21,6 +21,9 @@ import {
   GET_EMPLOYER_JOBS_REQUEST,
   getEmployerJobsSuccess,
   getEmployerJobsError,
+  GET_DATED_JOBS_REQUEST,
+  getDatedJobsSuccess,
+  getDatedJobsError,
   POST_JOB_REQUEST,
   postJobSuccess,
   postJobError,
@@ -91,6 +94,20 @@ const getEmployerJobsEvent = (action$) => {
   );
 };
 
+const getDatedJobsEvent = (action$) => {
+  return action$.pipe(
+    ofType(GET_DATED_JOBS_REQUEST),
+    mergeMap(({ payload: { startDate, endDate } }) =>
+      xhr("GET", `/jobs/${startDate}/${endDate}`).pipe(
+        map(({ response }) => getDatedJobsSuccess(response)),
+        catchError((err) => {
+          return of(getDatedJobsError(err));
+        })
+      )
+    )
+  );
+};
+
 const postJobEvent = (action$) => {
   return action$.pipe(
     ofType(POST_JOB_REQUEST),
@@ -152,6 +169,7 @@ export default combineEpics(
   browseAllJobsEvent,
   browseCategoriesEvent,
   getEmployerJobsEvent,
+  getDatedJobsEvent,
   postJobEvent,
   deleteJobEvent,
   postCategoryEvent,

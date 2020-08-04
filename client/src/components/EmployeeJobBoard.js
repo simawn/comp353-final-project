@@ -3,7 +3,7 @@ import React, { useEffect, useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Actions
-import { browseJobsRequest, browseCategoriesRequest } from "../state/jobs/jobActions";
+import { browseJobsRequest, browseCategoriesRequest, getDatedJobsRequest } from "../state/jobs/jobActions";
 import {
   getApplicantStatusRequest,
   putApplicantStatusRequest,
@@ -34,6 +34,7 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
+import { DatePicker } from "@material-ui/pickers";
 import MuiAlert from "@material-ui/lab/Alert";
 
 // Components
@@ -52,6 +53,8 @@ function EmployerJobBoard({ userName, frozen, deactivated }) {
   const [category, setCategory] = useState("Select All");
   const [displaySnackbar, setDisplaySnackbar] = useState(false);
   const [pageInitialized, setPageInitialized] = useState(false);
+  const [startDate, handleStartDate] = useState(new Date());
+  const [endDate, handleEndDate] = useState(new Date());
 
   const jobsList = useSelector(jobsListSelector);
   const categoryList = useSelector(jobCategoryListSelector);
@@ -59,6 +62,18 @@ function EmployerJobBoard({ userName, frozen, deactivated }) {
   const isLoadingJobList = useSelector(jobListIsLoadingSelector);
   const isSubmitting = useSelector(applicantIsSubmittingSelector);
   const isAtLimit = useSelector(applicantIsAtLimit);
+
+  function formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
 
   const createButton = (status, jobID) => {
     switch (status) {
@@ -126,7 +141,7 @@ function EmployerJobBoard({ userName, frozen, deactivated }) {
 
   return (
     <Fragment>
-      {isLoadingJobList || isEmpty(jobsList) || isEmpty(categoryList) ? (
+      {isLoadingJobList || isEmpty(categoryList) ? (
         <LoadingScreen fullScreen={false} message={"Loading jobs..."} />
       ) : (
         <Fragment>
@@ -153,13 +168,15 @@ function EmployerJobBoard({ userName, frozen, deactivated }) {
               This account is <b>DEACTIVATED</b>. You will be unable to use any of the functionality.
             </Typography>
           ) : null}
-          <Grid container justify="flex-start" spacing={1}>
-            <Grid item xs={12} sm={12} md={4}>
+          <Grid container justify="flex-start" alignItems="center" spacing={1}>
+            <Grid item xs={12} sm={12} md={6}>
               <List>
                 <ListItem>
-                  <Typography>Select a category to narrow your search:</Typography>
+                  <Typography>
+                    Select a category and <b>(optionally)</b> a date to narrow your search:
+                  </Typography>
                 </ListItem>
-                <ListItem>
+                <ListItem style={{ paddingBottom: "30px" }}>
                   <Select value={category} onChange={handleChange} fullWidth>
                     {categoryList.map((category, key) => (
                       <MenuItem key={key} value={category.categoryName}>
@@ -169,6 +186,33 @@ function EmployerJobBoard({ userName, frozen, deactivated }) {
                   </Select>
                 </ListItem>
               </List>
+            </Grid>
+            <Grid item xs={12} sm={12} md={2}>
+              <DatePicker
+                label="Start Date"
+                value={startDate}
+                onChange={handleStartDate}
+                animateYearScrolling
+                format="yyyy-MM-dd"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={2}>
+              <DatePicker
+                label="End Date"
+                value={endDate}
+                onChange={handleEndDate}
+                animateYearScrolling
+                format="yyyy-MM-dd"
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} md={2}>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={() => dispatch(getDatedJobsRequest(formatDate(startDate), formatDate(endDate)))}
+              >
+                SEARCH
+              </Button>
             </Grid>
           </Grid>
           <Table size="medium">
@@ -185,39 +229,41 @@ function EmployerJobBoard({ userName, frozen, deactivated }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {jobsList.map((job, key) => {
-                const index = findIndex(applicantStatuses, { jobID: job.jobID });
-                const jobStatus = capitalize(get(applicantStatuses[index], `status`, "Not Yet Applied"));
-                if (category === "Select All" || category === job.categoryName) {
-                  return (
-                    <TableRow key={key}>
-                      <TableCell align="center">{job.jobID}</TableCell>
-                      <TableCell align="center">{job.title}</TableCell>
-                      <TableCell align="center">{job.description}</TableCell>
-                      <TableCell align="center">{job.categoryName}</TableCell>
-                      <TableCell align="center">{job.employeesNeeded}</TableCell>
-                      <TableCell align="center">{job.datePosted}</TableCell>
-                      <TableCell align="center">
-                        {jobStatus === "Offer" ? (
-                          <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            disabled={frozen || deactivated}
-                            onClick={() => dispatch(putApplicantStatusRequest(userName, job.jobID, "hired"))}
-                          >
-                            ACCEPT
-                          </Button>
-                        ) : (
-                          jobStatus
-                        )}
-                      </TableCell>
-                      <TableCell>{createButton(jobStatus, job.jobID)}</TableCell>
-                    </TableRow>
-                  );
-                }
-                return null;
-              })}
+              {!isEmpty(jobsList)
+                ? jobsList.map((job, key) => {
+                    const index = findIndex(applicantStatuses, { jobID: job.jobID });
+                    const jobStatus = capitalize(get(applicantStatuses[index], `status`, "Not Yet Applied"));
+                    if (category === "Select All" || category === job.categoryName) {
+                      return (
+                        <TableRow key={key}>
+                          <TableCell align="center">{job.jobID}</TableCell>
+                          <TableCell align="center">{job.title}</TableCell>
+                          <TableCell align="center">{job.description}</TableCell>
+                          <TableCell align="center">{job.categoryName}</TableCell>
+                          <TableCell align="center">{job.employeesNeeded}</TableCell>
+                          <TableCell align="center">{job.datePosted}</TableCell>
+                          <TableCell align="center">
+                            {jobStatus === "Offer" ? (
+                              <Button
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                disabled={frozen || deactivated}
+                                onClick={() => dispatch(putApplicantStatusRequest(userName, job.jobID, "hired"))}
+                              >
+                                ACCEPT
+                              </Button>
+                            ) : (
+                              jobStatus
+                            )}
+                          </TableCell>
+                          <TableCell>{createButton(jobStatus, job.jobID)}</TableCell>
+                        </TableRow>
+                      );
+                    }
+                    return null;
+                  })
+                : null}
             </TableBody>
           </Table>
         </Fragment>

@@ -2,6 +2,9 @@ import React from "react";
 import { AppContainer, setConfig } from "react-hot-loader";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+
+import DateFnsUtils from "@date-io/date-fns";
 
 import AppRouter from "./AppRouter";
 import store from "./state/store";
@@ -15,7 +18,9 @@ const renderApp = (App) => {
   render(
     <AppContainer>
       <Provider store={reduxStore}>
-        <App />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <App />
+        </MuiPickersUtilsProvider>
       </Provider>
     </AppContainer>,
     document.getElementById("root")

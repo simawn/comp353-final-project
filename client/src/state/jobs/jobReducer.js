@@ -11,6 +11,9 @@ import {
   GET_EMPLOYER_JOBS_REQUEST,
   GET_EMPLOYER_JOBS_SUCCESS,
   GET_EMPLOYER_JOBS_ERROR,
+  GET_DATED_JOBS_REQUEST,
+  GET_DATED_JOBS_SUCCESS,
+  GET_DATED_JOBS_ERROR,
   POST_JOB_REQUEST,
   POST_JOB_SUCCESS,
   POST_JOB_ERROR,
@@ -35,11 +38,13 @@ const initialState = {
 };
 
 const jobReducer = (state = initialState, action) => {
+  console.log(action);
   switch (action.type) {
     /* REQUESTS */
     case BROWSE_JOBS_REQUEST:
     case BROWSE_ALL_JOBS_REQUEST:
-    case GET_EMPLOYER_JOBS_REQUEST: {
+    case GET_EMPLOYER_JOBS_REQUEST:
+    case GET_DATED_JOBS_REQUEST: {
       return {
         ...state,
         isLoadingJobs: true,
@@ -70,7 +75,8 @@ const jobReducer = (state = initialState, action) => {
     /* SUCCESSES */
     case BROWSE_JOBS_SUCCESS:
     case BROWSE_ALL_JOBS_SUCCESS:
-    case GET_EMPLOYER_JOBS_SUCCESS: {
+    case GET_EMPLOYER_JOBS_SUCCESS:
+    case GET_DATED_JOBS_SUCCESS: {
       return {
         ...state,
         jobsList: action.payload.jobList,
@@ -103,7 +109,8 @@ const jobReducer = (state = initialState, action) => {
     /* ERRORS */
     case BROWSE_JOBS_ERROR:
     case BROWSE_ALL_JOBS_ERROR:
-    case GET_EMPLOYER_JOBS_ERROR: {
+    case GET_EMPLOYER_JOBS_ERROR:
+    case GET_DATED_JOBS_ERROR: {
       return {
         ...state,
         isLoadingJobs: false,

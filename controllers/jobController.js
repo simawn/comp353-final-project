@@ -1,4 +1,29 @@
 const db = require("../database");
+const lodash = require("lodash");
+
+exports.getDatedJobs = async (req, res, next) => {
+  const startDate = req.params.startDate;
+  const endDate = req.params.endDate;
+
+  try {
+    // Fetch jobs from database
+    const jobs = await db.query(`SELECT * FROM Job WHERE datePosted BETWEEN '${startDate}' AND '${endDate}'`, {
+      type: db.QueryTypes.SELECT,
+    });
+
+    // Return no content if no jobs exist in list
+    if (lodash.isEmpty(jobs)) {
+      return res.status(204).send([]);
+    }
+
+    // Return list of jobs
+    return res.status(200).send(jobs);
+  } catch (err) {
+    return res.status(404).send({
+      error: "Could not retrieve jobs.",
+    });
+  }
+};
 
 exports.getAllJobs = async (req, res, next) => {
   try {
