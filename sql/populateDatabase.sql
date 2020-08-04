@@ -75,7 +75,7 @@ VALUES
 ;
 
 
-INSERT INTO `Applicant` (userName, jobID, `status`, `date`)
+INSERT INTO `Applicant` (userName, jobID, `status`, `appliedDate`)
 VALUES 
 	('LeilaDisney', '1', 'pending', '2020-06-01'),
   ('DenBalsdon', '2', 'rejected', '2020-05-01'),
