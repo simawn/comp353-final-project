@@ -46,7 +46,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-function EmployerJobBoard({ userName, frozen }) {
+function EmployerJobBoard({ userName, frozen, deactivated }) {
   const dispatch = useDispatch();
 
   const [category, setCategory] = useState("Select All");
@@ -68,7 +68,7 @@ function EmployerJobBoard({ userName, frozen }) {
             fullWidth
             variant="contained"
             color="primary"
-            disabled={frozen}
+            disabled={frozen || deactivated}
             onClick={() => {
               setPageInitialized(true);
               dispatch(postApplicationRequest(userName, jobID));
@@ -85,7 +85,7 @@ function EmployerJobBoard({ userName, frozen }) {
             fullWidth
             variant="contained"
             color="secondary"
-            disabled={frozen}
+            disabled={frozen || deactivated}
             onClick={() => dispatch(putApplicantStatusRequest(userName, jobID, "withdrawn"))}
           >
             WITHDRAW
@@ -148,6 +148,11 @@ function EmployerJobBoard({ userName, frozen }) {
               This account is <b>FROZEN</b>. Please make the appropriate payments to regain functionality.
             </Typography>
           ) : null}
+          {deactivated ? (
+            <Typography align="center" color="secondary" gutterBottom variant="h6" style={{ paddingTop: "20px" }}>
+              This account is <b>DEACTIVATED</b>. You will be unable to use any of the functionality.
+            </Typography>
+          ) : null}
           <Grid container justify="flex-start" spacing={1}>
             <Grid item xs={12} sm={12} md={4}>
               <List>
@@ -198,7 +203,7 @@ function EmployerJobBoard({ userName, frozen }) {
                             fullWidth
                             variant="contained"
                             color="primary"
-                            disabled="frozen"
+                            disabled={frozen || deactivated}
                             onClick={() => dispatch(putApplicantStatusRequest(userName, job.jobID, "hired"))}
                           >
                             ACCEPT

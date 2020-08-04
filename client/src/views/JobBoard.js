@@ -15,6 +15,7 @@ import { CssBaseline, Container, Grid, Paper } from "@material-ui/core";
 // Components
 import EmployeeJobBoard from "../components/EmployeeJobBoard";
 import EmployerJobBoard from "../components/EmployerJobBoard";
+import AdminJobBoard from "../components/AdminJobBoard";
 import AppBar from "../components/AppBar";
 import SideBar from "../components/SideBar";
 import LoadingScreen from "../components/LoadingScreen";
@@ -58,28 +59,36 @@ function Dashboard() {
 
   const [open, setOpen] = useState(true);
   const [userIsFrozen, setUserIsFrozen] = useState(false);
+  const [userIsDeactivated, setUserIsDeactivated] = useState(false);
 
-  const renderJobBoard = (userIsFrozen) => {
+  const renderJobBoard = (userIsFrozen, userIsDeactivated) => {
     switch (currentUserRole) {
       case "employee": {
-        return <EmployeeJobBoard userName={currentUserName} frozen={userIsFrozen} />;
+        return <EmployeeJobBoard userName={currentUserName} frozen={userIsFrozen} deactivated={userIsDeactivated} />;
       }
       case "employer": {
-        return <EmployerJobBoard userName={currentUserName} frozen={userIsFrozen} />;
+        return <EmployerJobBoard userName={currentUserName} frozen={userIsFrozen} deactivated={userIsDeactivated} />;
       }
-      // TODO: Implement admin board (mix of employee and employer board)
+      case "admin": {
+        return <AdminJobBoard />;
+      }
       default: {
         return null;
       }
     }
   };
 
+  console.log(user);
+
   useEffect(() => {
     dispatch(getUserRequest(currentUserName));
     if (user && user.balance) {
       setUserIsFrozen(parseFloat(user.balance) < 0.0);
     }
-  }, [user.balance]);
+    if (user && user.active === 0) {
+      setUserIsDeactivated(true);
+    }
+  }, [user.balance, user.active]);
 
   return (
     <div className={classes.root}>
@@ -96,7 +105,7 @@ function Dashboard() {
                 {isEmpty(user) ? (
                   <LoadingScreen fullScreen={false} message={"Loading User..."} />
                 ) : (
-                  renderJobBoard(userIsFrozen)
+                  renderJobBoard(userIsFrozen, userIsDeactivated)
                 )}
               </Paper>
             </Grid>

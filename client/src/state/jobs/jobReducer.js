@@ -2,6 +2,9 @@ import {
   BROWSE_JOBS_REQUEST,
   BROWSE_JOBS_SUCCESS,
   BROWSE_JOBS_ERROR,
+  BROWSE_ALL_JOBS_REQUEST,
+  BROWSE_ALL_JOBS_SUCCESS,
+  BROWSE_ALL_JOBS_ERROR,
   BROWSE_CATEGORIES_REQUEST,
   BROWSE_CATEGORIES_SUCCESS,
   BROWSE_CATEGORIES_ERROR,
@@ -35,6 +38,7 @@ const jobReducer = (state = initialState, action) => {
   switch (action.type) {
     /* REQUESTS */
     case BROWSE_JOBS_REQUEST:
+    case BROWSE_ALL_JOBS_REQUEST:
     case GET_EMPLOYER_JOBS_REQUEST: {
       return {
         ...state,
@@ -65,6 +69,7 @@ const jobReducer = (state = initialState, action) => {
 
     /* SUCCESSES */
     case BROWSE_JOBS_SUCCESS:
+    case BROWSE_ALL_JOBS_SUCCESS:
     case GET_EMPLOYER_JOBS_SUCCESS: {
       return {
         ...state,
@@ -97,6 +102,7 @@ const jobReducer = (state = initialState, action) => {
 
     /* ERRORS */
     case BROWSE_JOBS_ERROR:
+    case BROWSE_ALL_JOBS_ERROR:
     case GET_EMPLOYER_JOBS_ERROR: {
       return {
         ...state,
