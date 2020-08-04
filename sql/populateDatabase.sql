@@ -75,11 +75,11 @@ VALUES
 ;
 
 
-INSERT INTO `Applicant` (userName, jobID, `status`)
+INSERT INTO `Applicant` (userName, jobID, `status`, `appliedDate`)
 VALUES 
-	('LeilaDisney', '1', 'pending'),
-  ('DenBalsdon', '2', 'rejected'),
-  ('DienaDaniele', '3', 'withdrawn'),
-  ('MelisseCostley', '4', 'hired'),
-  ('SanfordGout', '5', 'pending'),
-  ('LeilaDisney', '3', 'pending');
+	('LeilaDisney', '1', 'pending', '2020-06-01'),
+  ('DenBalsdon', '2', 'rejected', '2020-05-01'),
+  ('DienaDaniele', '3', 'withdrawn', '2020-04-01'),
+  ('MelisseCostley', '4', 'hired', '2020-03-01'),
+  ('SanfordGout', '5', 'pending', '2020-02-01'),
+  ('LeilaDisney', '3', 'pending', '2020-01-01');

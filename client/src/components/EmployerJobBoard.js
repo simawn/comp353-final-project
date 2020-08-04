@@ -207,7 +207,7 @@ function EmployerJobBoard({ userName, frozen, deactivated }) {
                         size="medium"
                         disabled={frozen || deactivated}
                       >
-                        <EditIcon color={frozen || deactivated ? "default" : "secondary"} />
+                        <EditIcon color={frozen || deactivated ? "default" : "primary"} />
                       </IconButton>
                     </TableCell>
                     <TableCell align="center">

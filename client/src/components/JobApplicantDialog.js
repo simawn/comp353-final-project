@@ -97,6 +97,7 @@ function JobApplicantDialog({ open, close, jobID, isAdmin = false }) {
             <TableRow>
               <TableCell align="center">First Name</TableCell>
               <TableCell align="center">Last Name</TableCell>
+              <TableCell align="center">Date Applied</TableCell>
               <TableCell align="center">Status</TableCell>
               <TableCell align="center"></TableCell>
               <TableCell align="center"></TableCell>
@@ -107,6 +108,7 @@ function JobApplicantDialog({ open, close, jobID, isAdmin = false }) {
               <TableRow key={key}>
                 <TableCell align="center">{applicant.firstName}</TableCell>
                 <TableCell align="center">{applicant.lastName}</TableCell>
+                <TableCell align="center">{applicant.appliedDate}</TableCell>
                 <TableCell align="center">
                   {startCase(applicant.status === "offer" ? "Offer Sent" : applicant.status)}
                 </TableCell>
