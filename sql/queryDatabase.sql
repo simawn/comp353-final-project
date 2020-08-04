@@ -270,14 +270,134 @@ SET @givenUserName = 'LeilaDisney';
 
 UPDATE applicant 
 SET `status` = 'hired'
-WHERE jobID = @givenJobID AND userName = @givenUserName;
+WHERE
+	jobID = @givenJobID AND
+    userName = @givenUserName;
 
 -- -----------------------------------------------------------------------------------------------------------------
--- xi. Withdraw from an applied job by an employee. DUPLICATE AS VII.
+-- xi. Withdraw from an applied job by an employee.
 -- -----------------------------------------------------------------------------------------------------------------
+SET @givenEmployeeUserName = 'JohnDoe';
+SET @givenJobID = '1'; 
 
+UPDATE Applicant
+SET status = 'withdrawn'
+WHERE
+	userName = @givenEmployeeUserName AND
+    jobID = @givenJobID;
 
 -- ----------------------------------------------------------------------------------------------------------------  
---   
+-- xiii. Report of applied jobs by an employee during a specific period of time (Job title, date applied, short
+-- description of the job up to 50 characters, status of the application).
 -- ----------------------------------------------------------------------------------------------------------------    
+SET @givenEmployeeUserName = 'LeilaDisney';
+SET @givenStartDate = '2019-05-07';
+SET @givenEndDate = '2020-06-07';
 
+SELECT title, appliedDate, description, status
+FROM Job, Applicant
+WHERE
+	Applicant.userName = @givenEmployeeUserName AND
+    Job.jobID = Applicant.jobID AND
+    @givenStartDate <= appliedDate AND
+    appliedDate <= @givenEndDate;
+
+-- ----------------------------------------------------------------------------------------------------------------  
+-- xiv. Add a method of payment by a user.
+-- ----------------------------------------------------------------------------------------------------------------
+
+-- Add credit card.alter
+SET @givenUserName = 'BabKelsall';
+SET @givenCreditCardNumber = '3533824238000000';
+SET @givenExpirationDate = '10/25';
+SET @givenCvv = '123';
+
+INSERT INTO `CreditCard` (creditCardNumber, expirationDate, cvv)
+VALUES
+	(@givenCreditCardNumber, @givenExpirationDate, @givenCvv);
+
+INSERT INTO `PaymentMethod` (userName, creditCardNumber, accountNumber)
+VALUES
+	(@givenUserName, @givenCreditCardNumber , NULL);
+
+-- Add bank accound.
+SET @givenUserName = 'BabKelsall';
+SET @givenAccountNumber = '1001000000';
+
+INSERT INTO `PaymentMethod` (userName, creditCardNumber, accountNumber)
+VALUES
+	(@givenUserName, NULL, @givenAccountNumber);
+
+-- ----------------------------------------------------------------------------------------------------------------  
+-- xiv. Delete a method of payment by a user.
+-- ----------------------------------------------------------------------------------------------------------------
+
+SET @givenPaymentID = 30;
+
+DELETE PaymentMethod, CreditCard
+FROM PaymentMethod
+	INNER JOIN CreditCard ON PaymentMethod.creditCardNumber = CreditCard.creditCardNumber
+WHERE
+	paymentID = @givenPaymentID;
+
+DELETE FROM PaymentMethod
+WHERE
+	paymentID = @givenPaymentID;
+
+-- ----------------------------------------------------------------------------------------------------------------  
+-- xiv. Edit a method of payment by a user.
+-- ----------------------------------------------------------------------------------------------------------------
+
+-- Edit credit card.
+SET @givenPaymentID = 3;
+SET @givenCreditCardNumber = '3533824238000001';
+SET @givenExpirationDate = '11/25';
+SET @givenCvv = '123';
+
+SET @previousCreditCardNumber = (SELECT creditCardNumber FROM PaymentMethod WHERE paymentID = @givenPaymentID);
+
+UPDATE `CreditCard`
+SET creditCardNumber = @givenCreditCardNumber, expirationDate = @givenExpirationDate, cvv = @givenCvv
+WHERE
+	creditCardNumber = @previousCreditCardNumber;
+
+-- Edit bank account.
+SET @givenPaymentID = 1;
+SET @givenAccountNumber = '1001000001';
+
+UPDATE `PaymentMethod`
+SET accountNumber = @givenAccountNumber
+WHERE
+	paymentID = @givenPaymentID;
+
+-- ----------------------------------------------------------------------------------------------------------------  
+-- xvi. Make a manual payment by a user.
+-- ----------------------------------------------------------------------------------------------------------------
+SET @givenUserName = 'SanfordGout';
+
+UPDATE User
+SET balance = 0, lastPayment = DATE(NOW()), active = True
+WHERE
+	userName = @givenUserName AND
+    subscriptionID <> 0;
+
+-- ----------------------------------------------------------------------------------------------------------------  
+-- xvii. Report of all users by the administrator for employers or employees (Name, email, category, status,
+-- balance).
+-- ----------------------------------------------------------------------------------------------------------------
+SET @givenRole = 'employer';
+
+SELECT firstName, lastName, email, Subscription.name, active, balance
+FROM User, Subscription
+WHERE
+	User.subscriptionID = Subscription.subscriptionID AND
+    role = @givenRole;
+
+-- ----------------------------------------------------------------------------------------------------------------  
+-- xviii. Report of all outstanding balance accounts (User name, email, balance, since when the account is
+-- suffering).
+-- ----------------------------------------------------------------------------------------------------------------
+SELECT userName, email, balance, lastPayment
+FROM User
+WHERE
+	balance < 0;
