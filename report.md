@@ -84,15 +84,31 @@ The transformation is straightforward since we have only one many-to-many relati
 #### Relational Schema
 
 After the conversion we add the following relations:
-- `User(userName,password,email,firstName,lastName,balance,payswithManual,active,lastPayment,role)`
-- `Job`
-- `Category`
-- `PaymentMethod`
-- `Subscription`
-- `CreditCard`
-- `Applicant`
+- User(userName,password,email,firstName,lastName,balance,payswithManual,active,lastPayment,role)
+  - Primary key: `userName`
+  - Foreign key: `subscriptionID` from `Subscription`
+- Job(jobID,userName,categoryName,title,datePosted,description,employeeNeeded)
+  - Primary key: `jobID`
+  - Foreign key: `userName` from `User`
+  - Foreigh key: `categoryName` from `Category`
+- Category(categoryName)
+  - Primary key: `categoryName`
+- PaymentMethod(paymentID,userName,creditCardNumber,accountNumber,active)
+  - Primary key: `paymentID`
+  - Foreign key: `userName` from `User`
+  - Foreign key: `creditCardNumber` from `CreditCard`
+- Subscription(subscriptionID,name,limit,cost)
+  - Primary key: `subscriptionID`
+- CreditCard(creditCardNumber,expirationDate,cvv)
+  - Primary key: `creditCardNumber`
+- Applicant(userName,jobID,status,applicationDate)
+  - Foreign keys: `userName`, `jobID`
+  - Foreign key: `userName` from `User`
+  - Foreign key: `jobID` from `Job`
 
-When we converted our E/R diagram to a relational schema, the decomposition was straightforward. We only had to test that is was 3NF, lossless and dependency preserving.
+#### Normalization
+
+With the conversion from E/R diagram to a relational schema, we already had a decomposition thats looked promising. To make sure it was, we only had to test that is was 3NF, lossless and dependency preserving.
 
 To simplify the proofs, we combined attributes that had the same dependencies. What is left is:
 
