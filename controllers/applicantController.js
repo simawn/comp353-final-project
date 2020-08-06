@@ -50,7 +50,7 @@ exports.postJobApplication = async (req, res, next) => {
 
   // Count the number of jobs the user has already applied for
   const applicationCount = (
-    await db.query(`SELECT COUNT(*) FROM Applicant WHERE Username = '${userName}' AND status = 'pending';`, {
+    await db.query(`SELECT COUNT(*) FROM Applicant WHERE Username = '${userName}' AND (status = 'pending' OR status = 'offer');`, {
       type: db.QueryTypes.SELECT,
     })
   )[0];
