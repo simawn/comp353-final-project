@@ -69,6 +69,29 @@ The functional dependencies will be listed in the next part after the the E/R di
 
 ### PART 3 - Database Relational Schema and Normalization
 
+**Relational schema diagram can be found attached at the end of this document.**
+
+#### E/R Diagram to Relational Schema conversions
+
+The transformation is straightforward since we have only one many-to-many relationships. Obviously, each entity set becomes a relation. The relationships are converted as follow:
+- `Applicant`: since it is many-to-many, we need a new relation with `userName` and `jobID` as primary and foreign keys.
+- `Offering`: since it is many-to-one, we can add a `userName` foreign key in `Job`.
+- `JobCategory`: since it is many-to-one, we can add a `categoryName` foreign key in `Job`.
+- `UserSubscription`: since it is many-to-one, we can add a `subscriptionID` foreigh key in `User`.
+- `UserPaymentMethod`: since it is many-to-one, we can add a `userName` foreign key in `PaymentMethod`.
+- `IsCreditCard`: since it is one-to-one, we could add a foreign in either relations, but since there is referential integrity on `PaymentMethod`, we added `creditCardNumber` on `PaymentMethod`.
+
+#### Relational Schema
+
+After the conversion we add the following relations:
+- `User(userName,password,email,firstName,lastName,balance,payswithManual,active,lastPayment,role)`
+- `Job`
+- `Category`
+- `PaymentMethod`
+- `Subscription`
+- `CreditCard`
+- `Applicant`
+
 When we converted our E/R diagram to a relational schema, the decomposition was straightforward. We only had to test that is was 3NF, lossless and dependency preserving.
 
 To simplify the proofs, we combined attributes that had the same dependencies. What is left is:
