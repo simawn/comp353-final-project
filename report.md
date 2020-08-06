@@ -65,6 +65,7 @@ There are some constraints that could not be captured by the E/R diagram.
 - The number of jobs a user can register to is limited by her/his subscription. However, since each subscription has a different limit, it cannot be included in the diagram.
 - Each user can only have one active payment method.
 
+The functional dependencies will be listed in the next part after the the E/R diagram as been transformed into a relational schema.
 
 ### PART 3 - Database Relational Schema and Normalization
 
