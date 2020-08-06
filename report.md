@@ -117,17 +117,17 @@ To simplify the proofs, we combined attributes that had the same dependencies. W
 Variable|Attributes|
 -|-
 `S`|`subscriptionID`
-`s`|`Subscription` attributes
+`s`|other `Subscription` attributes
 `U`|`userName`
-`u`|`User` attributes
+`u`|other `User` attributes
 `R`|`creditCardNumber`
-`r`|`CreditCard` attributes
+`r`|other `CreditCard` attributes
 `P`|`paymentID`
 `b`|`accountNumber`
 `C`|`categoryName`
 `J`|`jobID`
-`j`|`Job` attributes
-`a`|`Application` attributes
+`j`|other `Job` attributes
+`a`|other `Applicant` attributes
 
 Using these variables, the decomposition and the functional dependencies can be expressed as follow:
 
