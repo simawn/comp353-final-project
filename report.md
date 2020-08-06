@@ -84,27 +84,29 @@ The transformation is straightforward since we have only one many-to-many relati
 #### Relational Schema
 
 After the conversion we add the following relations:
-- User(userName,password,email,firstName,lastName,balance,payswithManual,active,lastPayment,role)
+- `User(userName,password,email,firstName,lastName,balance,payswithManual,active,lastPayment,role)`
   - Primary key: `userName`
   - Foreign key: `subscriptionID` from `Subscription`
-- Job(jobID,userName,categoryName,title,datePosted,description,employeeNeeded)
+- `Job(jobID,userName,categoryName,title,datePosted,description,employeeNeeded)`
   - Primary key: `jobID`
   - Foreign key: `userName` from `User`
   - Foreigh key: `categoryName` from `Category`
-- Category(categoryName)
+- `Category(categoryName)
   - Primary key: `categoryName`
-- PaymentMethod(paymentID,userName,creditCardNumber,accountNumber,active)
+- `PaymentMethod(paymentID,userName,creditCardNumber,accountNumber,active)`
   - Primary key: `paymentID`
   - Foreign key: `userName` from `User`
   - Foreign key: `creditCardNumber` from `CreditCard`
-- Subscription(subscriptionID,name,limit,cost)
+- `Subscription(subscriptionID,name,limit,cost)`
   - Primary key: `subscriptionID`
-- CreditCard(creditCardNumber,expirationDate,cvv)
+- `CreditCard(creditCardNumber,expirationDate,cvv)`
   - Primary key: `creditCardNumber`
-- Applicant(userName,jobID,status,applicationDate)
+- `Applicant(userName,jobID,status,applicationDate)`
   - Foreign keys: `userName`, `jobID`
   - Foreign key: `userName` from `User`
   - Foreign key: `jobID` from `Job`
+
+The other constraints can be found on the relational schema diagram.
 
 #### Normalization
 
