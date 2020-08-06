@@ -16,15 +16,57 @@
 - Shuo Zhang
 - Pierre-André Gagnon: E/R design, relational schema normalization, multiple queries/transactions...
 
-### PART 2 - Conceptual Design
+### PART 2 - Conceptual Design and E/R Diagram
 
-#### Assumptions
+Since we were provided with the minimum requirements, we had to assume certain elements of the design. Moreover, some details had to be changed to fit these assumptions. In this section, all thes assumptions and changes will be listed.
 
-#### Changes to the requirements
+#### Assumptions about Requirements
 
-#### Additions to the requirements
+- A job must have exacly one job category.
+- A job application can have one of 5 status: `pending`, `rejected`, `hired`, `withdrawn`, `offer`.
+- An employer can only send a job offer and reject a job application when it is on `pending`.
+- A job offer can only be accepted/denied by an employee if the job application is on `offer`.
+- The applied job maximum only consider applications that are `pending` and `offer`.
+- Each user can have only one active payment method which is either automatic of manual.
+- A manual payment can only be done when the user account is frozen by a negative balance.
 
-### PART 3 - Normalization
+#### Changes to Requirements
+
+- The requirements asked for "Create/Delete/Edit/Display a category by an Employer. Since this entered in conflict with our assumption that a job offer must have exaclty one job category and it could have lead to issues about job category ownership, we only included the option create job categories.
+- Instead of keeping track of the date when an account started to be suffering, we decided to keep track of the date of the last payment since it was more useful.
+
+#### E/R Diagram
+
+**E/R Diagrams can be found attached at the end of this document.**
+
+Based on the analysis of the modified requirements, we came up with an E/R Diagram containing the following elements and their respective constraints (not that a ^ is used to used to note referential integrity):
+- Entity Sets:
+  - `User`
+  - `Job`
+  - `Category`
+  - `PaymentMethod`
+  - `Subscription`
+  - `CreditCard`
+- Relationships:
+  - `Applicant`: many-to-many between `User` and `Job`
+    - Each user may apply to many jobs and each job can be applied to by many users.
+  - `Offering`: many-to-one^ between `Job` and `User`
+    - Each job must be offered by exactly one user and a user can offer many jobs.
+  - `JobCategory`: many-to-one^ between `Job` and `Category`
+    - Each job must be in exactly one category and one category can have many jobs.
+  - `UserSubscription`: many-to-one^ between `User` and `Subscription`
+    - Each user must have exactly one subscription and one subscription can have many users.
+  - `UserPaymentMethod`: between many-to-one^ `PaymentMethod` and `User`
+    - Each payment method must belong to exactly one user and a user can have many payment methods.
+  - `IsCreditCard`: one-to-one^ between `CreditCard` and `PaymentMethod`
+    - Each credit card must belong to exactly one payment method and one payment method might have one credit card. 
+
+There are some constraints that could not be captured by the E/R diagram.
+- The number of jobs a user can register to is limited by her/his subscription. However, since each subscription has a different limit, it cannot be included in the diagram.
+- Each user can only have one active payment method.
+
+
+### PART 3 - Database Relational Schema and Normalization
 
 When we converted our E/R diagram to a relational schema, the decomposition was straightforward. We only had to test that is was 3NF, lossless and dependency preserving.
 
