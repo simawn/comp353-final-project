@@ -53,7 +53,7 @@ function EmployerJobBoard({ userName, frozen, deactivated }) {
   const [category, setCategory] = useState("Select All");
   const [displaySnackbar, setDisplaySnackbar] = useState(false);
   const [pageInitialized, setPageInitialized] = useState(false);
-  const [startDate, handleStartDate] = useState(new Date());
+  const [startDate, handleStartDate] = useState(new Date(2020, 5, 1));
   const [endDate, handleEndDate] = useState(new Date());
 
   const jobsList = useSelector(jobsListSelector);

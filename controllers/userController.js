@@ -51,9 +51,12 @@ exports.editUserDetails = async (req, res) => {
 
       const newBalance = Number(balance) + Number(payment);
 
-      await db.query(`UPDATE User SET balance = ${newBalance} WHERE userName = '${userName}'`, {
-        type: db.QueryTypes.UPDATE,
-      });
+      await db.query(
+        `UPDATE User SET balance = ${newBalance}, lastPayment = CURDATE() WHERE userName = '${userName}'`,
+        {
+          type: db.QueryTypes.UPDATE,
+        }
+      );
 
       return res.status(200).send({
         message: "Successfully updated upayment.",
