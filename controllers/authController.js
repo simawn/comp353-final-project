@@ -69,8 +69,6 @@ exports.logout = async (req, res, next) => {
 };
 
 exports.resetPassword = async (req, res, next) => {
-  console.log("got here! 1");
-
   const { newPassword, firstName, lastName, userName } = req.body;
 
   if (!newPassword || !firstName || !lastName || !userName) {
@@ -79,15 +77,11 @@ exports.resetPassword = async (req, res, next) => {
       severity: "error",
     });
   }
-
-  console.log("got here! 2");
   try {
     const userData = await db.query("SELECT firstName, lastName FROM User WHERE userName=?", {
       replacements: [userName],
       type: db.QueryTypes.SELECT,
     });
-
-    console.log("got here! 3");
 
     if (firstName === userData[0].firstName && lastName === userData[0].lastName) {
       const encryptNewPassword = await bcrypt.hash(newPassword, 10);
