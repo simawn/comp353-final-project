@@ -14,7 +14,7 @@
 - Sean Heinrichs: E/R design, front end, back end, multiple queries...
 - Simon Huang
 - Shuo Zhang
-- Pierre-André Gagnon: E/R design, relational schema normalization, multiple queries/transactions...
+- Pierre-André Gagnon: E/R design, E/R to relational schema conversion, relational schema normalization, multiple queries/transactions...
 
 ### PART 2 - Conceptual Design and E/R Diagram
 
@@ -106,11 +106,13 @@ After the conversion we add the following relations:
 - `CreditCard(creditCardNumber,expirationDate,cvv)`
   - Primary key: `creditCardNumber`
 - `Applicant(userName,jobID,status,applicationDate)`
-  - Foreign keys: `userName`, `jobID`
+  - Primary keys: `userName`, `jobID`
   - Foreign key: `userName` from `User`
   - Foreign key: `jobID` from `Job`
 
-The other constraints can be found on the relational schema diagram.
+Note that to respect the constraint on the E/R diagram, all foreign keys must respect referential integrity except for `creditCardNumber` in `PaymentMethod`.
+
+Also note that the functional dependencies of this relational schema are only listed in the next section to avoid repetition.
 
 #### Normalization
 
