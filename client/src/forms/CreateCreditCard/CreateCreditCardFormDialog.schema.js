@@ -5,7 +5,7 @@ const createCreditCardSchema = Joi.object({
   cvv: Joi.string().length(3).regex(/^\d+$/).required().label("CVV"),
   expirationDate: Joi.string()
     .length(5)
-    .regex(/\d\d\/\d\d/)
+    .regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/)
     .required()
     .label("Expiration Date (MM/YY)"),
 });

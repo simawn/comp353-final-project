@@ -256,14 +256,14 @@ function Dashboard() {
                               fullWidth
                               variant="outlined"
                               color={activePaymentAccount === "" ? "primary" : "secondary"}
-                              disabled={parseFloat(currentUser.balance) >= 0.0}
+                              disabled={parseFloat(currentUser.balance) >= 0.0 || activePaymentAccount === ""}
                               onClick={
                                 activePaymentAccount === ""
                                   ? () => history.push("/paymentmethods")
                                   : () => setOpenMakePaymentDialog(true)
                               }
                             >
-                              {activePaymentAccount === "" ? "SELECT A PAYMENT METHOD" : "MAKE PAYMENT"}
+                              MAKE PAYMENT
                             </Button>
                           </Grid>
                         </Grid>

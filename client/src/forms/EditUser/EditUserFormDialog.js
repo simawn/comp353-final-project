@@ -62,6 +62,7 @@ function EditUserFormDialog({ open, close, userName }) {
           margin="normal"
           required
           fullWidth
+          type="password"
           id="password"
           label="Password"
           name="password"
