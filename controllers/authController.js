@@ -67,3 +67,40 @@ exports.logout = async (req, res, next) => {
   req.logout();
   res.sendStatus(200);
 };
+
+exports.resetPassword = async (req, res, next) => {
+  const {
+    newPassword, firstName, lastName, userName,
+  } = req.body;
+
+  if (!newPassword || !firstName || !lastName || !userName) {
+    return res.status(400).send({
+      message: "We cannot reset your password. Please try again.",
+      alertSeverity: "error",
+    });
+  }
+
+  try {
+    const userData = await db.query("SELECT firstName, lastName FROM User WHERE userName=?", { replacements: [userName], type: db.QueryTypes.SELECT });
+
+    if (firstName === userData[0].firstName && lastName === userData[0].lastName) {
+      const encryptNewPassword = await bcrypt.hash(newPassword, 10);
+      await db.query("Update User SET password=? WHERE userName=?", { replacements: [encryptNewPassword, userName] });
+
+      res.status(200).send({
+        message: "Your password has been reset.",
+        alertSeverity: "success",
+      });
+    } else {
+      return res.status(400).send({
+        message: "The information provided is invalid. Please try again.",
+        alertSeverity: "error",
+      });
+    }
+  } catch (err) {
+    res.status(400).send({
+      message: "An error has occured. Please try again.",
+      alertSeverity: "error",
+    });
+  }
+};
