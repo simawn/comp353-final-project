@@ -212,7 +212,7 @@ function EditSubscriptionFormDialog({ open, close, role, currentSubscription, us
 
   return (
     <Dialog maxWidth="md" fullWidth onClose={() => close()} aria-labelledby="customized-dialog-title" open={open}>
-      <DialogTitle onClose={() => close()}>Select a Subscripption</DialogTitle>
+      <DialogTitle onClose={() => close()}>Select a Subscription</DialogTitle>
       <DialogContent dividers>
         {role === "employee" ? renderEmployeeSubscriptions() : renderEmployerSubscriptions()}
       </DialogContent>
