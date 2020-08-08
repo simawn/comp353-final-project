@@ -18,6 +18,9 @@ import {
   POST_LOGOUT_REQUEST,
   postLogoutSuccess,
   postLogoutError,
+  POST_RESET_PASSWORD_REQUEST,
+  postResetPasswordSuccess,
+  postResetPasswordError,
   GET_USER_REQUEST,
   getUserSuccess,
   getUserError,
@@ -74,6 +77,20 @@ const postLogoutEvent = (action$) => {
         map(({ response }) => postLogoutSuccess(response)),
         catchError(({ response }) => {
           return of(postLogoutError(response));
+        })
+      )
+    )
+  );
+};
+
+const postResetPasswordEvent = (action$) => {
+  return action$.pipe(
+    ofType(POST_RESET_PASSWORD_REQUEST),
+    mergeMap(({ payload: { userInformation } }) =>
+      xhr("POST", `/resetPassword`, userInformation).pipe(
+        map(({ response }) => postResetPasswordSuccess(response)),
+        catchError(({ response }) => {
+          return of(postResetPasswordError(response));
         })
       )
     )
@@ -168,6 +185,7 @@ export default combineEpics(
   postUserEvent,
   postLoginEvent,
   postLogoutEvent,
+  postResetPasswordEvent,
   getUserEvent,
   putUserEvent,
   putUserActivationEvent,

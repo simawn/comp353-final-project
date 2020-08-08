@@ -16,6 +16,14 @@ export const postLoginRequest = (userInformation, withCreds) => {
   };
 };
 
+export const POST_RESET_PASSWORD_REQUEST = "POST_RESET_PASSWORD_REQUEST";
+export const postResetPasswordRequest = (userInformation) => {
+  return {
+    type: POST_RESET_PASSWORD_REQUEST,
+    payload: { userInformation },
+  };
+};
+
 export const POST_LOGOUT_REQUEST = "POST_LOGOUT_REQUEST";
 export const postLogoutRequest = () => {
   return {
@@ -95,6 +103,13 @@ export const postLogoutSuccess = () => {
   };
 };
 
+export const POST_RESET_PASSWORD_SUCCESS = "POST_RESET_PASSWORD_SUCCESS";
+export const postResetPasswordSuccess = () => {
+  return {
+    type: POST_RESET_PASSWORD_SUCCESS,
+  };
+};
+
 export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
 export const getUserSuccess = (user) => {
   return {
@@ -161,6 +176,14 @@ export const POST_LOGOUT_ERROR = "POST_LOGOUT_ERROR";
 export const postLogoutError = (error) => {
   return {
     type: POST_LOGOUT_ERROR,
+    payload: { error },
+  };
+};
+
+export const POST_RESET_PASSWORD_ERROR = "POST_RESET_PASSWORD_ERROR";
+export const postResetPasswordError = (error) => {
+  return {
+    type: POST_RESET_PASSWORD_ERROR,
     payload: { error },
   };
 };

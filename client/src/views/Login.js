@@ -13,6 +13,9 @@ import {
   userIsSubmittingSelector,
   userSuccessfulLoginSelector,
   currentUserSelector,
+  userSnackBarInformationSelector,
+  userPasswordChangeSuccessSelector,
+  userErrorSelector,
 } from "../state/user/userSelectors";
 
 // Material UI
@@ -32,6 +35,9 @@ import {
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import MuiAlert from "@material-ui/lab/Alert";
+
+// Components
+import ForgotPasswordDialogForm from "../forms/ForgotPassword/ForgotPasswordFormDialog";
 
 // Util
 import localStorage from "local-storage";
@@ -67,13 +73,17 @@ function Login() {
 
   const isSubmitting = useSelector(userIsSubmittingSelector);
   const loginSuccess = useSelector(userSuccessfulLoginSelector);
+  const passwordChangeSuccess = useSelector(userPasswordChangeSuccessSelector);
   const currentUser = useSelector(currentUserSelector);
+  const snackBarInfo = useSelector(userSnackBarInformationSelector);
+  const error = useSelector(userErrorSelector);
 
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [displaySnackbar, setDisplaySnackbar] = useState(false);
   const [snackBarMessage, setSnackBarMessage] = useState("");
   const [snackBarSeverity, setSnackBarSeverity] = useState("");
+  const [openForgotPasswordDialog, setOpenForgotPassworddialog] = useState(false);
 
   const login = () => {
     try {
@@ -86,11 +96,7 @@ function Login() {
       dispatch(postLoginRequest({ username: userName, password: password }, true));
 
       setPassword("");
-    } catch (error) {
-      setSnackBarSeverity("warning");
-      setSnackBarMessage(error.message);
-      setDisplaySnackbar(true);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -101,8 +107,25 @@ function Login() {
     }
   }, [isSubmitting]);
 
+  useEffect(() => {
+    if (error) {
+      setSnackBarSeverity(snackBarInfo.severity);
+      setSnackBarMessage(snackBarInfo.message);
+      setDisplaySnackbar(true);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (passwordChangeSuccess) {
+      setSnackBarSeverity("success");
+      setSnackBarMessage("Successfully changed password!");
+      setDisplaySnackbar(true);
+    }
+  }, [passwordChangeSuccess]);
+
   return (
     <Container component="main" maxWidth="xs">
+      <ForgotPasswordDialogForm open={openForgotPasswordDialog} close={() => setOpenForgotPassworddialog(false)} />
       <Snackbar
         open={displaySnackbar}
         autoHideDuration={6000}
@@ -161,15 +184,7 @@ function Login() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link
-                href="#"
-                variant="body2"
-                onClick={() => {
-                  setSnackBarMessage("Well that's too bad ¯\\_(ツ)_/¯");
-                  setSnackBarSeverity("info");
-                  setDisplaySnackbar(true);
-                }}
-              >
+              <Link href="#" variant="body2" onClick={() => setOpenForgotPassworddialog(true)}>
                 Forgot password?
               </Link>
             </Grid>

@@ -6,6 +6,13 @@ export const currentUserSelector = createSelector([userStateSelector], (userStat
 
 export const userListSelector = createSelector([userStateSelector], (userState) => userState.userList);
 
+export const userErrorSelector = createSelector([userStateSelector], (userState) => userState.errorReturned);
+
+export const userPasswordChangeSuccessSelector = createSelector(
+  [userStateSelector],
+  (userState) => userState.successfulPasswordChange
+);
+
 export const userSnackBarInformationSelector = createSelector(
   [userStateSelector],
   (userState) => userState.snackBarInformation

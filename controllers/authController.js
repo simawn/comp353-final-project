@@ -8,7 +8,7 @@ exports.login = async (req, res, next) => {
     try {
       if (err) throw err;
       if (!user) {
-        res.status(400).send({ message: "Unable to login!", severity: "error" });
+        res.status(400).send({ message: "Password or username is incorrect!", severity: "error" });
       } else {
         req.logIn(user, (err) => {
           //eslint-disable-line
@@ -17,7 +17,7 @@ exports.login = async (req, res, next) => {
         });
       }
     } catch (error) {
-      res.status(400).send({ message: "Unable to login!", severity: "error" });
+      res.status(400).send({ message: "Password or username is incorrect!", severity: "error" });
     }
   })(req, res, next);
 };
@@ -53,12 +53,12 @@ exports.register = async (req, res, next) => {
 
     res.status(200).send({
       message: "Account created. You may now log in.",
-      alertSeverity: "success",
+      severity: "success",
     });
   } catch (error) {
     res.status(400).send({
       message: "There has been an error in you registration. Please try again.",
-      alertSeverity: "error",
+      severity: "error",
     });
   }
 };
@@ -69,19 +69,19 @@ exports.logout = async (req, res, next) => {
 };
 
 exports.resetPassword = async (req, res, next) => {
-  const {
-    newPassword, firstName, lastName, userName,
-  } = req.body;
+  const { newPassword, firstName, lastName, userName } = req.body;
 
   if (!newPassword || !firstName || !lastName || !userName) {
     return res.status(400).send({
       message: "We cannot reset your password. Please try again.",
-      alertSeverity: "error",
+      severity: "error",
     });
   }
-
   try {
-    const userData = await db.query("SELECT firstName, lastName FROM User WHERE userName=?", { replacements: [userName], type: db.QueryTypes.SELECT });
+    const userData = await db.query("SELECT firstName, lastName FROM User WHERE userName=?", {
+      replacements: [userName],
+      type: db.QueryTypes.SELECT,
+    });
 
     if (firstName === userData[0].firstName && lastName === userData[0].lastName) {
       const encryptNewPassword = await bcrypt.hash(newPassword, 10);
@@ -89,18 +89,18 @@ exports.resetPassword = async (req, res, next) => {
 
       res.status(200).send({
         message: "Your password has been reset.",
-        alertSeverity: "success",
+        severity: "success",
       });
     } else {
       return res.status(400).send({
         message: "The information provided is invalid. Please try again.",
-        alertSeverity: "error",
+        severity: "error",
       });
     }
   } catch (err) {
     res.status(400).send({
       message: "An error has occured. Please try again.",
-      alertSeverity: "error",
+      severity: "error",
     });
   }
 };
