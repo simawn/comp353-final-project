@@ -74,10 +74,6 @@ function Register() {
     // Clean up data
     try {
       const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-      setUserName(userName.trim());
-      setFirstName(firstName.trim());
-      setLastName(lastName.trim());
-      setEmail(email.trim());
 
       // I can replace this with a library called JOI for validation, makes it really clean
       if (userName.length <= 0) throw new Error("Username cannot be empty");
@@ -152,7 +148,7 @@ function Register() {
                 label="Username"
                 name="username"
                 autoComplete="username"
-                onChange={(e) => setUserName(e.target.value)}
+                onChange={(e) => setUserName(e.target.value.trim())}
                 value={userName}
                 autoFocus
               />
@@ -166,7 +162,7 @@ function Register() {
                 fullWidth
                 id="firstName"
                 label="First Name"
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) => setFirstName(e.target.value.trim())}
                 value={firstName}
               />
             </Grid>
@@ -179,7 +175,7 @@ function Register() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lname"
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) => setLastName(e.target.value.trim())}
                 value={lastName}
               />
             </Grid>
