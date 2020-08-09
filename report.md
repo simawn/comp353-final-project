@@ -1080,8 +1080,17 @@ vi. Report of posted jobs by an employer during a specific period of time (Job t
 
 
 vii. Create/Delete/Edit/Display an Employee.
+
+<img src = "https://i.imgur.com/qe3pbvP.png">
+
 viii. Search for a job by an employee.
+
+<img src = "https://i.imgur.com/dENsTdD.png">
+
 ix. Apply for a job by an employee.
+
+<img src = "https://i.imgur.com/ofRw8wD.png">
+
 x. Accept/Deny a job offer by an employee.
 xi. Withdraw from an applied job by an employee.
 xii. Delete a profile by an employee.
