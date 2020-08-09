@@ -981,11 +981,20 @@ VALUES
   SET SQL_SAFE_UPDATES=1;
 ```
 ### PART 7 - User Interface  
+
+The user interface is divided to satisfy the need of 3 types of users: the employee, the employer and the administrator. 
+
+All users need to first login regardless of their type. Below are the login and registration interfaces.
+
+Login page             |  Registration page
+:-------------------------:|:-------------------------:
+<img src="https://i.imgur.com/HHXuKrm.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/nSTdV7V.png" alt="" width="500"/>
+
+
 <figure>
 	<img src="https://i.imgur.com/HHXuKrm.png" alt="" width="500"/>
 	<figcaption>                    figure 1: login page</figcaption>
 </figure>
-
 
 <figure>
 	<img src="https://i.imgur.com/nSTdV7V.png" alt="" width="500"/>
