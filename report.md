@@ -37,7 +37,7 @@ Since we were provided with the minimum requirements, we had to assume certain e
 
 #### E/R Diagram
 
-**E/R Diagrams can be found attached at the end of this document.**
+<img src = "https://i.imgur.com/fu8QFfb.png" width = " 1500">
 
 Based on the analysis of the modified requirements, we came up with an E/R Diagram containing the following elements and their respective constraints (not that a ^ is used to used to note referential integrity):
 - Entity Sets:
@@ -68,8 +68,6 @@ There are some constraints that could not be captured by the E/R diagram.
 The functional dependencies will be listed in the next part after the the E/R diagram as been transformed into a relational schema.
 
 ### PART 3 - Database Relational Schema and Normalization
-
-<img src = "https://i.imgur.com/fu8QFfb.png" width = " 1500">
 
 #### E/R Diagram to Relational Schema conversions
 
