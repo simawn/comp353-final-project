@@ -1071,7 +1071,14 @@ iv. Provide a job offer for an employee by an employer.
 <img src = "https://i.imgur.com/vaxxklI.png">
 
 v. Report of a posted job by an employer (Job title and description, date posted, list of employees applied to the job and status of each application).
+
+<img src = "https://i.imgur.com/QVcoEE2.png">
+
 vi. Report of posted jobs by an employer during a specific period of time (Job title, date posted, short description of the job up to 50 characters, number of needed employees to the post, number of applied jobs to the post, number of accepted offers).
+
+<img src = "https://i.imgur.com/F03a2uc.png">
+
+
 vii. Create/Delete/Edit/Display an Employee.
 viii. Search for a job by an employee.
 ix. Apply for a job by an employee.
