@@ -980,7 +980,7 @@ VALUES
 
   SET SQL_SAFE_UPDATES=1;
 ```
-### PART 7 - USER INTERFACE 
+### PART 7 - User Interface  
 
-
+![alt text](http://url/to/img.png)
 
