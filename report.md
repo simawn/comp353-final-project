@@ -14,7 +14,7 @@ Team Account/ID: jxc353_1
 ### PART 1 - Contributions
 
 - Sean Heinrichs
-- Simon Huang
+- Simon Huang: Initial code setup for React/Node/Express/MySQL stack, organize requirements, part of frontend and backend
 - Shuo Zhang: multiple queries/transactions, generate test data, documentation
 - Pierre-André Gagnon: E/R design, relational schema normalization, multiple queries/transactions...
 
