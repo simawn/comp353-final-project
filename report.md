@@ -1014,3 +1014,11 @@ For the user type admin, 2 types of panels can be accessed from the navigation p
 Job Overview            |  User Overview 
 :-------------------------:|:-------------------------:
 <img src="https://i.imgur.com/OImZ1Ib.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/Im89hS9.png" alt="" width="500"/> 
+
+
+Based on the above structure, additional panels show up when users interact with the database. Below are some sample panels.
+
+For the user type admin, 2 types of panels can be accessed from the navigation panel. Below are samples panels. 
+Editing Account information            |  Adding a CreditCard |  Changing Subscription Option 
+:-------------------------:|:-------------------------:|:-------------------------:
+<img src="https://i.imgur.com/Zg6HOXr.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/xw8ZoEw.png" alt="" width="500"/> |  <img src="https://imgur.com/4c499ddc-8412-4331-bbf1-b11e11e1f5f3" alt="" width="500"/> 
