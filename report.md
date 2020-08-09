@@ -517,19 +517,19 @@ VALUES
 -- i. Create an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
   
- SET @givenUserName = 'KevinCarlsen';
- SET @givenSubscriptionID = '3';
- SET @givenPassword = 'qetu';
- SET @givenEmail = 'kevin_carlsen@yahoo.com';
- SET @givenFirstName = 'Kevin';
- SET @givenLastName = 'Carlsen';
- SET @givenBalance = '0';
- SET @givenSuffering = '0';
- SET @givenActive = '1';
- SET @givenLastPayment = '2020-07-31'; 
+  SET @givenUserName = 'KevinCarlsen';
+  SET @givenSubscriptionID = '3';
+  SET @givenPassword = 'qetu';
+  SET @givenEmail = 'kevin_carlsen@yahoo.com';
+  SET @givenFirstName = 'Kevin';
+  SET @givenLastName = 'Carlsen';
+  SET @givenBalance = '0';
+  SET @givenSuffering = '0';
+  SET @givenActive = '1';
+  SET @givenLastPayment = '2020-07-31'; 
   
-INSERT INTO `User` (userName, `role`, subscriptionID, `password`, email, firstName, lastName, balance, suffering, `active`, lastPayment)
-VALUES
+  INSERT INTO `User` (userName, `role`, subscriptionID, `password`, email, firstName, lastName, balance, suffering, `active`, lastPayment)
+  VALUES
 	(@givenUserName, 'employer', @givenSubscriptionID, @givenPassword, @givenEmail, @givenFirstName, @givenLastName,
 	@givenBalance, @givenSuffering, @givenActive, @givenLastPayment); 
 
@@ -537,43 +537,43 @@ VALUES
 -- i. Delete an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
 
-SET @givenUserName = 'AlexeiAdcocks';
-SET @givenUserCreditCardNumber = 
+  SET @givenUserName = 'AlexeiAdcocks';
+  SET @givenUserCreditCardNumber = 
 	(SELECT C.creditCardNumber
     	FROM creditCard AS C, paymentMethod AS P
     	WHERE C.creditCardnumber = P.creditCardNumber AND P.userName = @givenUsername);
    
-DELETE FROM paymentMethod 
-WHERE 
+  DELETE FROM paymentMethod 
+  WHERE 
 	userName = @givenUserName; 
 
-DELETE FROM creditcard
-WHERE 
+  DELETE FROM creditcard
+  WHERE 
 	creditCardNumber = @givenUserCreditCardNumber; 
 
-DELETE FROM applicant 
-WHERE jobID IN  
+  DELETE FROM applicant 
+  WHERE jobID IN  
 	(SELECT	A.jobID 
     	FROM (SELECT * FROM job) AS J INNER JOIN (SELECT * FROM applicant) AS A
     	WHERE J.userName = @givenUserName); 
     
-DELETE FROM job 
-WHERE 
+  DELETE FROM job 
+  WHERE 
 	userName = @givenUserName; 
     
-DELETE FROM `user`
-WHERE 
+  DELETE FROM `user`
+  WHERE 
 	userName = @givenUserName;
  
 -- -----------------------------------------------------------------------------------------------------------------
 -- i. Display an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
 
- SET @givenUserName = 'AlexeiAdcocks';
+  SET @givenUserName = 'AlexeiAdcocks';
  
- SELECT *
- FROM `user`
- where userName = @givenUserName;
+  SELECT *
+  FROM `user`
+  where userName = @givenUserName;
  
 -- -----------------------------------------------------------------------------------------------------------------
 -- i. Edit an Employer.
@@ -585,7 +585,7 @@ WHERE
   SET @givenFirstName = 'Mickey';
   SET @givenLastName = 'Mouse';
   
-UPDATE `user`
+  UPDATE `user`
 	SET `password` = @givenPassword, email = @givenEmail, firstName = @givenFirstName, lastName = @givenLastName
     	WHERE userName = @givenUserName;
 
