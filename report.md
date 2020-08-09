@@ -994,5 +994,6 @@ Depending on the user type, different navigation panels show up after user login
 
 Employee             |  Employer | Admin
 :-------------------------:|:-------------------------:|:-------------------------:
-<img src="https://i.imgur.com/wPUekOQ.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/nSTdV7V.png" alt="" width="500"/> |<img src="https://i.imgur.com/nSTdV7V.png" alt="" width="500"/> 
+<img src="https://i.imgur.com/X28ZteR.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/6q5YhOV.png" alt="" width="500"/> |<img src="https://i.imgur.com/wPUekOQ.png" alt="" width="500"/> 
+
 
