@@ -994,7 +994,7 @@ Depending on the user type, different navigation panels show up after user login
 
 Employee             |  Employer | Admin
 :-------------------------:|:-------------------------:|:-------------------------:
-<img src="https://i.imgur.com/4LHQy2D.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/RfBBKve.png" alt="" width="500"/> |<img src="https://i.imgur.com/oplGCQR.png" alt="" width="500"/> 
+<img src="https://i.imgur.com/4LHQy2D.png" alt="" width="200"/>  |  <img src="https://i.imgur.com/RfBBKve.png" alt="" width="200"/> |<img src="https://i.imgur.com/oplGCQR.png" alt="" width="200"/> 
 
 For the user type employee, 3 types of panels can be accessed from the navigation panel. Below are samples of the 3 types of panels. 
 Job Listings             |  Account Settings | Payment Methods 
