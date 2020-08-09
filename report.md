@@ -69,7 +69,7 @@ The functional dependencies will be listed in the next part after the the E/R di
 
 ### PART 3 - Database Relational Schema and Normalization
 
-**Relational schema diagram can be found attached at the end of this document.**
+<img src = "https://i.imgur.com/fu8QFfb.png" width = " 1500">
 
 #### E/R Diagram to Relational Schema conversions
 
