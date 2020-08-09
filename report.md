@@ -983,5 +983,12 @@ VALUES
 ### PART 7 - User Interface  
 <figure>
 	<img src="https://i.imgur.com/HHXuKrm.png" alt="" width="500"/>
-	<figcaption>figure 1: login page</figcaption>
+	<figcaption>                    figure 1: login page</figcaption>
 </figure>
+
+
+<figure>
+	<img src="https://i.imgur.com/nSTdV7V.png" alt="" width="500"/>
+	<figcaption>                    figure 2: registration page</figcaption>
+</figure>
+
