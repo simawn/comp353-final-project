@@ -1056,15 +1056,17 @@ Editing Account information            |  Adding a CreditCard |  Changing Subscr
 ### PART 9 - Query Results 
 
 i. Create/Delete/Edit/Display an Employer.
-<img src = "https://i.imgur.com/rBJB7q1.png" width = "1000">
+<img src = "https://i.imgur.com/rBJB7q1.png">
 
 ii. Create/Delete/Edit/Display a category by an Employer.
-<img src = "https://i.imgur.com/APyvNcS.png" width = "1000">
+<img src = "https://i.imgur.com/APyvNcS.png">
 
 iii. Post a new job by an employer.
-<img src = "https://i.imgur.com/dKgkFCs.png" width = "1000">
+<img src = "https://i.imgur.com/dKgkFCs.png">
 
 iv. Provide a job offer for an employee by an employer.
+<img src = "https://i.imgur.com/vaxxklI.png">
+
 v. Report of a posted job by an employer (Job title and description, date posted, list of employees applied to the job and status of each application).
 vi. Report of posted jobs by an employer during a specific period of time (Job title, date posted, short description of the job up to 50 characters, number of needed employees to the post, number of applied jobs to the post, number of accepted offers).
 vii. Create/Delete/Edit/Display an Employee.
