@@ -1027,27 +1027,26 @@ Employee             |  Employer | Admin
 <img src="https://i.imgur.com/4LHQy2D.png" alt="" width="200"/>  |  <img src="https://i.imgur.com/RfBBKve.png" alt="" width="200"/> |<img src="https://i.imgur.com/oplGCQR.png" alt="" width="200"/> 
 
 
-For the user type employee, 3 types of panels can be accessed from the navigation panel. Below are sample panels. 
+For the user type employee, 3 types of dashboards can be accessed from the navigation panel. Below are sample boards. 
 Job Listings             |  Account Settings | Payment Methods 
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://i.imgur.com/VfSHNda.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/zaSRJHN.png" alt="" width="500"/> |<img src="https://i.imgur.com/ifX7WsJ.png" alt="" width="500"/>
 
 
-For the user type employer, 4 types of panels can be accessed from the navigation panel. Below are samples panels.
+For the user type employer, 4 types of dashboards can be accessed from the navigation panel. Below are sample boards.
 Your Job Postings             |  Account Settings | Payment Methods | Contact Support 
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://i.imgur.com/PuJ4LK2.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/YBvhUFT.png" alt="" width="500"/> |<img src="https://i.imgur.com/h14al29.png" alt="" width="500"/> | <img src="https://i.imgur.com/F17SWez.png" alt="" width="500"/>
 
 
-For the user type admin, 2 types of panels can be accessed from the navigation panel. Below are samples panels. 
+For the user type admin, 2 types of dashboards can be accessed from the navigation panel. Below are sample boards. 
 Job Overview            |  User Overview 
 :-------------------------:|:-------------------------:
 <img src="https://i.imgur.com/OImZ1Ib.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/Im89hS9.png" alt="" width="500"/> 
 
 
-Based on the above structure, additional panels show up when users interact with the database. Below are some sample panels.
+Based on the above structure, additional dashboards show up when users interact with the database. Below are some sample boards.
 
-For the user type admin, 2 types of panels can be accessed from the navigation panel. Below are some of the samples panels. 
 Editing Account information            |  Adding a CreditCard |  Changing Subscription Option 
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://i.imgur.com/Zg6HOXr.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/xw8ZoEw.png" alt="" width="500"/> |  <img src="https://i.imgur.com/YPljWUR.png" alt="" width="500"/> 
@@ -1056,15 +1055,19 @@ Editing Account information            |  Adding a CreditCard |  Changing Subscr
 ### PART 9 - Query Results 
 
 i. Create/Delete/Edit/Display an Employer.
+
 <img src = "https://i.imgur.com/rBJB7q1.png">
 
 ii. Create/Delete/Edit/Display a category by an Employer.
+
 <img src = "https://i.imgur.com/APyvNcS.png">
 
 iii. Post a new job by an employer.
+
 <img src = "https://i.imgur.com/dKgkFCs.png">
 
 iv. Provide a job offer for an employee by an employer.
+
 <img src = "https://i.imgur.com/vaxxklI.png">
 
 v. Report of a posted job by an employer (Job title and description, date posted, list of employees applied to the job and status of each application).
