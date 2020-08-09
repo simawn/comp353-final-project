@@ -41,6 +41,7 @@ import ForgotPasswordDialogForm from "../forms/ForgotPassword/ForgotPasswordForm
 
 // Util
 import localStorage from "local-storage";
+import { isEmpty } from "lodash";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -178,7 +179,7 @@ function Login() {
             color="primary"
             className={classes.submit}
             onClick={() => login()}
-            disabled={isSubmitting}
+            disabled={isSubmitting || isEmpty(userName) || isEmpty(password)}
           >
             Login
           </Button>
