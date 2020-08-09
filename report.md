@@ -990,10 +990,13 @@ Login page             |  Registration page
 :-------------------------:|:-------------------------:
 <img src="https://i.imgur.com/HHXuKrm.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/nSTdV7V.png" alt="" width="500"/>
 
-Depending on the user type, different navigation panels show up after user login. Below are navigation panels for employees, employers and administrators
+Depending on the user type, different navigation panels show up after user login. Below are navigation panels for employees, employers and administrators.
 
 Employee             |  Employer | Admin
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://i.imgur.com/4LHQy2D.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/RfBBKve.png" alt="" width="500"/> |<img src="https://i.imgur.com/oplGCQR.png" alt="" width="500"/> 
 
-
+For the user type employee, 3 types of panels can be accessed from the navigation panel. Below are samples of the 3 types of panels. 
+Job Listings             |  Account Settings | Payment Methods 
+:-------------------------:|:-------------------------:|:-------------------------:
+<img src="https://i.imgur.com/VfSHNda.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/zaSRJHN.png" alt="" width="500"/> |<img src="https://i.imgur.com/ifX7WsJ.png" alt="" width="500"/>
