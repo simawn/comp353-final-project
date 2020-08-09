@@ -1003,7 +1003,8 @@ Depending on the user type and his or her subscription, a user can query the dat
 We have put forward a sophisticated set of constraints for our input validation. For example, we check for if an input credit card has a valid number of digits, or if an input email address's syntax is valid. 
 
 * Password Encryption 
-We encrypt our user passwords, and the administrator has no access to passwords. 
+
+We encrypt our users' passwords. 
 
 
 
@@ -1058,7 +1059,11 @@ i. Create/Delete/Edit/Display an Employer.
 <img src = "https://i.imgur.com/rBJB7q1.png" width = "1000">
 
 ii. Create/Delete/Edit/Display a category by an Employer.
+<img src = "https://i.imgur.com/APyvNcS.png" width = "1000">
+
 iii. Post a new job by an employer.
+<img src = "https://i.imgur.com/dKgkFCs.png" width = "1000">
+
 iv. Provide a job offer for an employee by an employer.
 v. Report of a posted job by an employer (Job title and description, date posted, list of employees applied to the job and status of each application).
 vi. Report of posted jobs by an employer during a specific period of time (Job title, date posted, short description of the job up to 50 characters, number of needed employees to the post, number of applied jobs to the post, number of accepted offers).
