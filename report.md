@@ -980,7 +980,16 @@ VALUES
 
   SET SQL_SAFE_UPDATES=1;
 ```
-### PART 7 - User Interface  
+### PART 7 - Functionalities 
+To satisfy the project requirements, we have implemented the following functionalities: 
+
+* user authentication   
+In order to use the database, an user has to store his or her information in the database by registering. The registration requires the user to provide his or her user name, first name, last name, email address and password. A registered user can login to the database with the correct combination of user name and password. 
+
+* account setting 
+A user can change his or her account information such as email and password, as well as changing his or her subscription type. 
+
+### PART 8 - User Interface  
 
 The user interface is divided to satisfy the need of 3 types of users: the employee, the employer and the administrator. 
 
