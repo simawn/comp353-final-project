@@ -982,5 +982,4 @@ VALUES
 ```
 ### PART 7 - User Interface  
 
-![alt text ](https://i.imgur.com/HHXuKrm.png | width = 100) 
-
+<img src="https://i.imgur.com/HHXuKrm.png" alt="" width="200"/>
