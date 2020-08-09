@@ -16,7 +16,7 @@ Team Account/ID: jxc353_1
 - Sean Heinrichs
 - Simon Huang: Initial code setup for React/Node/Express/MySQL stack, organize requirements, part of frontend and backend
 - Shuo Zhang: multiple queries/transactions, generate test data, documentation
-- Pierre-André Gagnon: E/R design, relational schema normalization, multiple queries/transactions...
+- Pierre-André Gagnon: E/R design, transformation to relational schema, normalization, multiple queries/transactions.
 
 ### PART 2 - Conceptual Design and E/R Diagram
 
