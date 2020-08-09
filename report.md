@@ -981,13 +981,22 @@ VALUES
   SET SQL_SAFE_UPDATES=1;
 ```
 ### PART 7 - Functionalities 
+
 To satisfy the project requirements, we have implemented the following functionalities: 
 
-* user authentication   
+* User Authentication   
 In order to use the database, an user has to store his or her information in the database by registering. The registration requires the user to provide his or her user name, first name, last name, email address and password. A registered user can login to the database with the correct combination of user name and password. 
 
-* account setting 
-A user can change his or her account information such as email and password, as well as changing his or her subscription type. 
+* Account Setting 
+A user can change his or her account information such as email and password, as well as changing his or her subscription type, or to change his or her payment method. 
+
+* Database Interaction  
+Depending on the user type and his or her subscription, a user can query the database of existing jobs and to modify entries. For example, an employee can search for and apply to jobs, an employer can post jobs and see who has applied to his or her postings. 
+
+* Input Validation 
+We have made a sophisticated set of constraints for our input validation. For example, we check for if an input credit card has a valid number of digits, if an input email address is of a valid syntax, etc. 
+
+
 
 ### PART 8 - User Interface  
 
