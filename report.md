@@ -1,6 +1,6 @@
 # COMP 353 Main Project
 
-Team Account/ID: jxc353_1 
+Team Account/ID: jxc353_1
 
 |    Student Name     | Student # |
 | :-----------------: | :-------: |
@@ -13,7 +13,7 @@ Team Account/ID: jxc353_1
 
 ### PART 1 - Contributions
 
-- Sean Heinrichs
+- Sean Heinrichs: E/R design, Front End, Back End, SQL queries
 - Simon Huang: Initial code setup for React/Node/Express/MySQL stack, organize requirements, part of frontend and backend
 - Shuo Zhang: multiple queries/transactions, generate test data, documentation
 - Pierre-André Gagnon: E/R design, transformation to relational schema, normalization, multiple queries/transactions.
@@ -42,6 +42,7 @@ Since we were provided with the minimum requirements, we had to assume certain e
 <img src = "https://i.imgur.com/fu8QFfb.png" width = " 1500">
 
 Based on the analysis of the modified requirements, we came up with an E/R Diagram containing the following elements and their respective constraints (not that a ^ is used to used to note referential integrity):
+
 - Entity Sets:
   - `User`
   - `Job`
@@ -61,9 +62,10 @@ Based on the analysis of the modified requirements, we came up with an E/R Diagr
   - `UserPaymentMethod`: between many-to-one^ `PaymentMethod` and `User`
     - Each payment method must belong to exactly one user and a user can have many payment methods.
   - `IsCreditCard`: one-to-one^ between `CreditCard` and `PaymentMethod`
-    - Each credit card must belong to exactly one payment method and one payment method might have one credit card. 
+    - Each credit card must belong to exactly one payment method and one payment method might have one credit card.
 
 There are some constraints that could not be captured by the E/R diagram.
+
 - The number of jobs a user can register to is limited by her/his subscription. However, since each subscription has a different limit, it cannot be included in the diagram.
 - Each user can only have one active payment method.
 
@@ -74,6 +76,7 @@ The functional dependencies will be listed in the next part after the the E/R di
 #### E/R Diagram to Relational Schema conversions
 
 The transformation is straightforward since we have only one many-to-many relationships. Obviously, each entity set becomes a relation. The relationships are converted as follow:
+
 - `Applicant`: since it is many-to-many, we need a new relation with `userName` and `jobID` as primary and foreign keys.
 - `Offering`: since it is many-to-one, we can add a `userName` foreign key in `Job`.
 - `JobCategory`: since it is many-to-one, we can add a `categoryName` foreign key in `Job`.
@@ -84,6 +87,7 @@ The transformation is straightforward since we have only one many-to-many relati
 #### Relational Schema
 
 After the conversion we add the following relations:
+
 - `User(userName,password,email,firstName,lastName,balance,payswithManual,active,lastPayment,role)`
   - Primary key: `userName`
   - Foreign key: `subscriptionID` from `Subscription`
@@ -114,51 +118,51 @@ With the conversion from E/R diagram to a relational schema, we already had a de
 
 To simplify the proofs, we combined attributes that had the same dependencies. What is left is:
 
-Variable|Attributes|
--|-
-`S`|`subscriptionID`
-`s`|other `Subscription` attributes
-`U`|`userName`
-`u`|other `User` attributes
-`R`|`creditCardNumber`
-`r`|other `CreditCard` attributes
-`P`|`paymentID`
-`b`|`accountNumber`
-`C`|`categoryName`
-`J`|`jobID`
-`j`|other `Job` attributes
-`a`|other `Applicant` attributes
+| Variable | Attributes                      |
+| -------- | ------------------------------- |
+| `S`      | `subscriptionID`                |
+| `s`      | other `Subscription` attributes |
+| `U`      | `userName`                      |
+| `u`      | other `User` attributes         |
+| `R`      | `creditCardNumber`              |
+| `r`      | other `CreditCard` attributes   |
+| `P`      | `paymentID`                     |
+| `b`      | `accountNumber`                 |
+| `C`      | `categoryName`                  |
+| `J`      | `jobID`                         |
+| `j`      | other `Job` attributes          |
+| `a`      | other `Applicant` attributes    |
 
 Using these variables, the decomposition and the functional dependencies can be expressed as follow:
 
-Relation|Functional Dependencies
--|-
-`Ss`|`S->s`
-`USu`|`U->uS`
-`Rr`|`R->r`
-`PbRU`|`P->URb`
-`JjCU`|`J->UCj`
-`JUa`|`JU->a`
-`PJ`|
+| Relation | Functional Dependencies |
+| -------- | ----------------------- |
+| `Ss`     | `S->s`                  |
+| `USu`    | `U->uS`                 |
+| `Rr`     | `R->r`                  |
+| `PbRU`   | `P->URb`                |
+| `JjCU`   | `J->UCj`                |
+| `JUa`    | `JU->a`                 |
+| `PJ`     |
 
 #### Lossless
 
 Table initialization
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α||α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α||α|α||||||||
 `Rr`|||||α|α||||||
 `PbR`|||||α||α|α||||
-`JjCU`|||α||||||α|α|α|	
+`JjCU`|||α||||||α|α|α|
 `JUa`|||α||||||α|||α
 `PJ`|||||||α||α|||
 
 Round 1: `S->s`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|+α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|+α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|||α||α||α|α||||
 `JjCU`|||α||||||α|α|α|
@@ -168,53 +172,52 @@ Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 Round 1: `U->uS`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|+α||α|+α|α||α|α||||
-`JjCU`|+α||α|+α|||||α|α|α|	
+`JjCU`|+α||α|+α|||||α|α|α|
 `JUa`|+α||α|+α|||||α|||α
 `PJ`|||||||α||α|||
-
 
 Round 1: `R->r`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α||α|α|α|+α|α|α||||
-`JjCU`|α||α|α|||||α|α|α|	
+`JjCU`|α||α|α|||||α|α|α|
 `JUa`|α||α|α|||||α|||α
 `PJ`|||||||α||α|||
 
 Round 1: `P->URb`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α||α|α|α|α|α|α||||
-`JjCU`|α||α|α|||||α|α|α|	
+`JjCU`|α||α|α|||||α|α|α|
 `JUa`|α||α|α|||||α|||α
 `PJ`|||+α||+α||α|+α|α|||
 
 Round 1: `J->UCj`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α||α|α|α|α|α|α||||
-`JjCU`|α||α|α|||||α|α|α|	
+`JjCU`|α||α|α|||||α|α|α|
 `JUa`|α||α|α|||||α|+α|+α|α
 `PJ`|||α||α||α|α|α|+α|+α|
 
 Round 1: `JU->a`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α||α|α|α|α|α|α||||
 `JjCU`|α||α|α|||||α|α|α|+α
@@ -224,8 +227,8 @@ Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 Round 2: `S->s`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α|+α|α|α|α|α|α|α||||
 `JjCU`|α|+α|α|α|||||α|α|α|α
@@ -235,8 +238,8 @@ Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 Round 2: `U->uS`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α|α|α|α|α|α|α|α||||
 `JjCU`|α|α|α|α|||||α|α|α|α
@@ -246,8 +249,8 @@ Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 Round 2: `R->r`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α|α|α|α|α|α|α|α||||
 `JjCU`|α|α|α|α|||||α|α|α|α
@@ -257,8 +260,8 @@ Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 Round 2: `R->r`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α|α|α|α|α|α|α|α||||
 `JjCU`|α|α|α|α|||||α|α|α|α
@@ -268,8 +271,8 @@ Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 Round 2: `P->URb`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α|α|α|α|α|α|α|α||||
 `JjCU`|α|α|α|α|||||α|α|α|α
@@ -279,8 +282,8 @@ Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 Round 2: `J->UCj`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α|α|α|α|α|α|α|α||||
 `JjCU`|α|α|α|α|||||α|α|α|α
@@ -290,8 +293,8 @@ Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 Round 2: `JU->a`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α|α|α|α|α|α|α|α||||
 `JjCU`|α|α|α|α|||||α|α|α|α
@@ -301,8 +304,8 @@ Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 Round 3: `S->s`
 Relation|`S`|`s`|`U`|`u`|`R`|`r`|`P`|`b`|`J`|`j`|`C`|`a`
 -|-|-|-|-|-|-|-|-|-|-|-|-
-`Ss`|α|α|||||||||| 
-`USu`|α|α|α|α|||||||| 
+`Ss`|α|α||||||||||
+`USu`|α|α|α|α||||||||
 `Rr`|||||α|α||||||
 `PbRU`|α|α|α|α|α|α|α|α||||
 `JjCU`|α|α|α|α|||||α|α|α|α
@@ -320,12 +323,12 @@ There is nothing to check since all the original functional dependencies are pre
 Candidate key: `PJ`.
 Prime attributes: `P` and `J`.
 
-* Check `S->s` in `Ss`: Ok, since `S` is a key in `Ss`.
-* Check `U->uS` in `USu`: Ok, since `U` is a key in `USu`.
-* Check `R->r` in `Rr`: Ok, since `R` is a key in `Rr`.
-* Check `P->URb` in `PbRU`: Ok, since `P` is a key in `PbRU`.
-* Check `J->UCj` in `JjCU`: Ok, since `J` is a key in `JjCU`.
-* Check `JU->a` in `JUa`: Ok, since `JU` is a key in `JUa`.
+- Check `S->s` in `Ss`: Ok, since `S` is a key in `Ss`.
+- Check `U->uS` in `USu`: Ok, since `U` is a key in `USu`.
+- Check `R->r` in `Rr`: Ok, since `R` is a key in `Rr`.
+- Check `P->URb` in `PbRU`: Ok, since `P` is a key in `PbRU`.
+- Check `J->UCj` in `JjCU`: Ok, since `J` is a key in `JjCU`.
+- Check `JU->a` in `JUa`: Ok, since `JU` is a key in `JUa`.
 
 So it is in 3NF.
 
@@ -364,7 +367,7 @@ CREATE TABLE `Subscription`(
 CREATE TABLE `CreditCard`(
   `creditCardNumber` VARCHAR(255) NOT NULL,
   `expirationDate` VARCHAR(5),
-  `cvv` INT,  
+  `cvv` INT,
   PRIMARY KEY (`creditCardNumber`)
 );
 
@@ -425,14 +428,15 @@ CREATE TABLE `Applicant`(
 
 ```
 
-### PART 5 - SQL Statements to Populate the Database with test data 
+### PART 5 - SQL Statements to Populate the Database with test data
+
 ```
 -- RUNNING THIS SCRIPT POPULATES THE DATABASE
 
 USE jxc353_1;
 
 INSERT INTO `Subscription`(`name`, `limit`, cost)
-VALUES 
+VALUES
 	('Employer Prime Membership', 5, 50.00),
 	('Employer Gold Membership', 9999, 100.00),
 	('Employee Basic Membership', 0, 0.00),
@@ -441,18 +445,18 @@ VALUES
 ;
 
 INSERT INTO `User`(userName, subscriptionID, `password`, email, firstName, lastName, `role`, balance, paysWithManual, `active`, lastPayment)
-VALUES 
+VALUES
 	('LeilaDisney', 3, 'qwer', 'leila_disney@hotmail.com', 'Leila', 'Disney', 'employee', -9.98, 1, 1, '2020-05-07'),
-	('HubeKlamman',	2, 'tyui', 'hube_klamman@hotmail.com', 'Hube', 'Klamman', 'employer', 0.00, 0, 1, '2020-07-08'), 				
+	('HubeKlamman',	2, 'tyui', 'hube_klamman@hotmail.com', 'Hube', 'Klamman', 'employer', 0.00, 0, 1, '2020-07-08'),
 	('DenBalsdon', 4, 'vcbh', 'den_balsdon@hotmail.com', 'Den', 'Balsdon', 'employee', 0.00, 0, 1, '2020-07-28'),
 	('ArabellaAndreutti', 1, 'ghjk', 'arabella_andreutti@gmail.com', 'Arabella', 'Andreutti', 'employer', -19.9, 1, 0, '2020-06-08'),
-	('DienaDaniele', 5, 'zxcv', 'diena_daniele@gmail.com', 'Diena',	'Daniele', 'employee', 0.00, 0, 0, '2020-07-21'), 	
-	('BabKelsall', 1, 'rewq', 'bab_kelsall@gmail.com', 'Bab', 'Kelsall', 'employer', 0.00, 0, 1, '2020-04-01'), 					
-	('MelisseCostley', 3, 'iuyt', 'melisse_costley@gmail.com', 'Melisse', 'Costley', 'employee', -19.99, 1,	0, '2020-04-08'), 	
-	('ShelleyGirt', 1, 'fdsa', 'shelley_girt@gmail.com', 'Shelley', 'Girt', 'employer', 0, 0, 1, '2020-06-08'), 					
-	('AlexeiAdcocks', 2, 'kjhg', 'alexei_adcocks@yahoo.com', 'Alexei', 'Adcocks', 'employer', 0, 0, 1, '2020-07-15'), 				
-	('SanfordGout', 5, 'vcxz', 'sanford_gout@yahoo.com', 'Sanford', 'Gout', 'employee', -99.99, 1, 1, '2020-06-01')	
-;     
+	('DienaDaniele', 5, 'zxcv', 'diena_daniele@gmail.com', 'Diena',	'Daniele', 'employee', 0.00, 0, 0, '2020-07-21'),
+	('BabKelsall', 1, 'rewq', 'bab_kelsall@gmail.com', 'Bab', 'Kelsall', 'employer', 0.00, 0, 1, '2020-04-01'),
+	('MelisseCostley', 3, 'iuyt', 'melisse_costley@gmail.com', 'Melisse', 'Costley', 'employee', -19.99, 1,	0, '2020-04-08'),
+	('ShelleyGirt', 1, 'fdsa', 'shelley_girt@gmail.com', 'Shelley', 'Girt', 'employer', 0, 0, 1, '2020-06-08'),
+	('AlexeiAdcocks', 2, 'kjhg', 'alexei_adcocks@yahoo.com', 'Alexei', 'Adcocks', 'employer', 0, 0, 1, '2020-07-15'),
+	('SanfordGout', 5, 'vcxz', 'sanford_gout@yahoo.com', 'Sanford', 'Gout', 'employee', -99.99, 1, 1, '2020-06-01')
+;
 
 INSERT INTO `CreditCard` (creditCardNumber, expirationDate, cvv)
 VALUES
@@ -462,10 +466,10 @@ VALUES
 	('5020956162470040', '11/23', '645'),
 	('3547131580418310', '11/23', '067'),
 	('3536309143887770', '04/22', '684')
-;   
+;
 
 INSERT INTO `PaymentMethod` (userName, creditCardNumber, accountNumber, active)
-VALUES 
+VALUES
 	('LeilaDisney', NULL, '1001001234', 1),
 	('HubeKlamman', '2016335644770111', NULL, 1),
 	('DenBalsdon', '3742883897292441', NULL, 1),
@@ -479,7 +483,7 @@ VALUES
 ;
 
 INSERT INTO `Category`(categoryName)
-VALUES 
+VALUES
   	('Administration'),
  	('Computing'),
  	('Construction'),
@@ -491,9 +495,9 @@ VALUES
   	('Retail'),
   	('Security')
 ;
-  
+
 INSERT INTO `Job`(userName, categoryName, title, datePosted, `description`, employeesNeeded)
-VALUES 
+VALUES
 	('HubeKlamman', 'Computing', 'Full Stack Developer', '2020-06-01', 'We work with COBOL!', 3),
   	('ArabellaAndreutti', 'Construction', 'Construction Worker', '2020-07-12', 'We build really cool stuff.', 5),
   	('BabKelsall', 'Design', 'Graphic Designer', '2020-07-14', 'We take commissions and give you bonuses.', 2),
@@ -503,7 +507,7 @@ VALUES
 ;
 
 INSERT INTO `Applicant` (userName, jobID, `status`, `appliedDate`)
-VALUES 
+VALUES
 	('LeilaDisney', '1', 'pending', '2020-06-01'),
   	('DenBalsdon', '2', 'rejected', '2020-05-01'),
   	('DienaDaniele', '3', 'withdrawn', '2020-04-01'),
@@ -511,12 +515,14 @@ VALUES
   	('SanfordGout', '5', 'pending', '2020-02-01'),
   	('LeilaDisney', '3', 'pending', '2020-01-01');
 ```
+
 ### PART 6 - SQL Statements to Query the Database
+
 ```
 -- -----------------------------------------------------------------------------------------------------------------
 -- i. Create an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
-  
+
   SET @givenUserName = 'KevinCarlsen';
   SET @givenSubscriptionID = '3';
   SET @givenPassword = 'qetu';
@@ -526,65 +532,65 @@ VALUES
   SET @givenBalance = '0';
   SET @givenSuffering = '0';
   SET @givenActive = '1';
-  SET @givenLastPayment = '2020-07-31'; 
-  
+  SET @givenLastPayment = '2020-07-31';
+
   INSERT INTO `User` (userName, `role`, subscriptionID, `password`, email, firstName, lastName, balance, suffering, `active`, lastPayment)
   VALUES
 	(@givenUserName, 'employer', @givenSubscriptionID, @givenPassword, @givenEmail, @givenFirstName, @givenLastName,
-	@givenBalance, @givenSuffering, @givenActive, @givenLastPayment); 
+	@givenBalance, @givenSuffering, @givenActive, @givenLastPayment);
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- i. Delete an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
 
   SET @givenUserName = 'AlexeiAdcocks';
-  SET @givenUserCreditCardNumber = 
+  SET @givenUserCreditCardNumber =
 	(SELECT C.creditCardNumber
     	FROM creditCard AS C, paymentMethod AS P
     	WHERE C.creditCardnumber = P.creditCardNumber AND P.userName = @givenUsername);
-   
-  DELETE FROM paymentMethod 
-  WHERE 
-	userName = @givenUserName; 
+
+  DELETE FROM paymentMethod
+  WHERE
+	userName = @givenUserName;
 
   DELETE FROM creditcard
-  WHERE 
-	creditCardNumber = @givenUserCreditCardNumber; 
+  WHERE
+	creditCardNumber = @givenUserCreditCardNumber;
 
-  DELETE FROM applicant 
-  WHERE jobID IN  
-	(SELECT	A.jobID 
+  DELETE FROM applicant
+  WHERE jobID IN
+	(SELECT	A.jobID
     	FROM (SELECT * FROM job) AS J INNER JOIN (SELECT * FROM applicant) AS A
-    	WHERE J.userName = @givenUserName); 
-    
-  DELETE FROM job 
-  WHERE 
-	userName = @givenUserName; 
-    
-  DELETE FROM `user`
-  WHERE 
+    	WHERE J.userName = @givenUserName);
+
+  DELETE FROM job
+  WHERE
 	userName = @givenUserName;
- 
+
+  DELETE FROM `user`
+  WHERE
+	userName = @givenUserName;
+
 -- -----------------------------------------------------------------------------------------------------------------
 -- i. Display an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
 
   SET @givenUserName = 'AlexeiAdcocks';
- 
+
   SELECT *
   FROM `user`
   where userName = @givenUserName;
- 
+
 -- -----------------------------------------------------------------------------------------------------------------
 -- i. Edit an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
- 
+
   SET @givenUserName = 'KevinCarlsen';
   SET @givenPassword = 'qetu';
   SET @givenEmail = 'Mickey_mouse@gg.com';
   SET @givenFirstName = 'Mickey';
   SET @givenLastName = 'Mouse';
-  
+
   UPDATE `user`
 	SET `password` = @givenPassword, email = @givenEmail, firstName = @givenFirstName, lastName = @givenLastName
     	WHERE userName = @givenUserName;
@@ -594,48 +600,48 @@ VALUES
 -- -----------------------------------------------------------------------------------------------------------------
 
   SET @givenCategoryName = 'concordia';
-  
+
   INSERT INTO category (categoryName)
-  VALUES 
+  VALUES
 	(@givenCategoryName);
-  
+
 -- -----------------------------------------------------------------------------------------------------------------
 -- ii. Delete a category by an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
 
-  SET @givenCategoryName = 'concordia'; 
-  
+  SET @givenCategoryName = 'concordia';
+
   DELETE FROM category
-  WHERE 
+  WHERE
 	(categoryName = @givenCategoryName);
-    
+
   -- -----------------------------------------------------------------------------------------------------------------
 -- ii. Edit a category by an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
 
   SET @originalCategoryName = 'concordia';
-  SET @givenCategoryName = 'mcgill'; 
-  
+  SET @givenCategoryName = 'mcgill';
+
   UPDATE category
   SET categoryName = @givenCategoryName
   WHERE
 	(categoryName = @originalCategoryName);
-    
+
 -- -----------------------------------------------------------------------------------------------------------------
 -- ii. Display a category by an Employer.
--- ----------------------------------------------------------------------------------------------------------------- 
+-- -----------------------------------------------------------------------------------------------------------------
 
   SET @givenCategoryName = 'mcgill';
-   
+
   SELECT *
   FROM category
-  where categoryName = @givenCategoryName; 
-    
-  
+  where categoryName = @givenCategoryName;
+
+
   -- -----------------------------------------------------------------------------------------------------------------
--- iii. post a new job by an employer 
--- ----------------------------------------------------------------------------------------------------------------- 
-  
+-- iii. post a new job by an employer
+-- -----------------------------------------------------------------------------------------------------------------
+
   SET @givenUserName = 'ArabellaAndreutti';
   SET @givenCategoryName = 'finance';
   SET @givenTitle = 'stock manager';
@@ -652,14 +658,14 @@ VALUES
 -- ------------------------------------------------------------------------------------------------------------------
 
   SET @givenUserName = 'LeilaDisney';
-  SET @givenJobID = '1'; 
+  SET @givenJobID = '1';
 
   UPDATE applicant
   SET status = 'offer'
   WHERE userName = @givenUserName AND jobID = @givenJobID;
 
 -- ------------------------------------------------------------------------------------------------------------------
--- v. Report of a posted job by an employer (Job title and description, date posted, 
+-- v. Report of a posted job by an employer (Job title and description, date posted,
 -- list of employees applied to the job and status of each application).
 -- ------------------------------------------------------------------------------------------------------------------
 
@@ -671,8 +677,8 @@ VALUES
 
 
 -- ------------------------------------------------------------------------------------------------------------------
--- vi. Report of posted jobs by an employer during a specific period of time (Job title, date posted, 
--- short description of the job up to 50 characters, number of needed employees to the post, number of applied jobs to the post, 
+-- vi. Report of posted jobs by an employer during a specific period of time (Job title, date posted,
+-- short description of the job up to 50 characters, number of needed employees to the post, number of applied jobs to the post,
 -- number of accepted offers).
 -- ------------------------------------------------------------------------------------------------------------------
 
@@ -682,8 +688,8 @@ VALUES
 
   SELECT J.jobID, J.title, J.datePosted, J.`description`, J.employeesNeeded, count(A.jobID) as numOfApplicants
   FROM job AS J, applicant AS A
-  WHERE J.datePosted BETWEEN @givenStartDate AND @givenEndDate 
-	AND J.jobID = A.jobID 
+  WHERE J.datePosted BETWEEN @givenStartDate AND @givenEndDate
+	AND J.jobID = A.jobID
         AND J.userName = @givenUserName
   GROUP BY J.jobID;
 
@@ -691,7 +697,7 @@ VALUES
 -- -----------------------------------------------------------------------------------------------------------------
 -- vii. Create an Employee.
 -- -----------------------------------------------------------------------------------------------------------------
-  
+
   SET @givenUserName = 'MickeyMouse';
   SET @givenSubscriptionID = '3';
   SET @givenPassword = 'qetu';
@@ -701,49 +707,49 @@ VALUES
   SET @givenBalance = '0';
   SET @givenSuffering = '0';
   SET @givenActive = '1';
-  SET @givenLastPayment = '2020-07-02'; 
-  
+  SET @givenLastPayment = '2020-07-02';
+
   INSERT INTO `user` (userName, `role`, subscriptionID, `password`, email, firstName, lastName, balance, suffering, `active`, lastPayment)
   VALUES
   	(@givenUserName, 'employee', @givenSubscriptionID, @givenPassword, @givenEmail, @givenFirstName, @givenLastName,
-  	@givenBalance, @givenSuffering, @givenActive, @givenLastPayment); 
+  	@givenBalance, @givenSuffering, @givenActive, @givenLastPayment);
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- vii. Delete an Employee.
 -- -----------------------------------------------------------------------------------------------------------------
 
   SET @givenUserName = 'LeilaDisney';
-  SET @givenUserCreditCardNumber = 
+  SET @givenUserCreditCardNumber =
 	(SELECT C.creditCardNumber
     	FROM creditCard AS C, paymentMethod AS P
     	WHERE C.creditCardnumber = P.creditCardNumber AND P.userName = @givenUsername);
 
-  DELETE FROM paymentMethod 
-  WHERE 
-  	userName = @givenUserName; 
+  DELETE FROM paymentMethod
+  WHERE
+  	userName = @givenUserName;
 
   DELETE FROM creditcard
-  WHERE 
-  	creditCardNumber = @givenUserCreditCardNumber; 
+  WHERE
+  	creditCardNumber = @givenUserCreditCardNumber;
 
-  DELETE FROM applicant 
-  WHERE 
-	userName = @givenUserName; 
-    
-  DELETE FROM `user`
-  WHERE 
+  DELETE FROM applicant
+  WHERE
 	userName = @givenUserName;
- 
+
+  DELETE FROM `user`
+  WHERE
+	userName = @givenUserName;
+
 -- -----------------------------------------------------------------------------------------------------------------
 -- vii. Display an Employee.
 -- -----------------------------------------------------------------------------------------------------------------
 
   SET @givenUserName = 'LeilaDisney';
- 
+
   SELECT *
   FROM `user`
   WHERE userName = @givenUserName;
- 
+
 -- -----------------------------------------------------------------------------------------------------------------
 -- vii. Edit an Employee.
 -- -----------------------------------------------------------------------------------------------------------------
@@ -760,40 +766,40 @@ VALUES
     	WHERE userName = @givenUserName;
 
 -- -----------------------------------------------------------------------------------------------------------------
--- viii. Search for a job by an Employee 
+-- viii. Search for a job by an Employee
 -- -----------------------------------------------------------------------------------------------------------------
 
   SET @givenJobTitle = 'full stack developer';
   SET @givenJobCategory = 'construction';
 
-  -- search by title 
-  SELECT *
-  FROM job 
-  WHERE title = @givenJobTitle; 
-
-  -- search by category 
+  -- search by title
   SELECT *
   FROM job
-  WHERE categoryName = @givenJobCategory; 
+  WHERE title = @givenJobTitle;
+
+  -- search by category
+  SELECT *
+  FROM job
+  WHERE categoryName = @givenJobCategory;
 
 -- -----------------------------------------------------------------------------------------------------------------
 -- ix. apply for a job by an employee
 -- -----------------------------------------------------------------------------------------------------------------
 
-  SET @givenJobID = '5'; 
+  SET @givenJobID = '5';
   SET @givenUserName = 'LeilaDisney';
 
-  INSERT INTO applicant(userName, jobID, `status`) 
+  INSERT INTO applicant(userName, jobID, `status`)
   VALUES ( @givenUserName, @givenJobID,'pending');
 
 -- -----------------------------------------------------------------------------------------------------------------
--- x. Accept a job offer by an employee 
+-- x. Accept a job offer by an employee
 -- -----------------------------------------------------------------------------------------------------------------
 
   SET @givenJobID = '3';
   SET @givenUserName = 'LeilaDisney';
 
-  UPDATE applicant 
+  UPDATE applicant
   SET `status` = 'hired'
   WHERE
   	jobID = @givenJobID AND
@@ -804,7 +810,7 @@ VALUES
 -- -----------------------------------------------------------------------------------------------------------------
 
   SET @givenEmployeeUserName = 'JohnDoe';
-  SET @givenJobID = '1'; 
+  SET @givenJobID = '1';
 
   UPDATE Applicant
   SET status = 'withdrawn'
@@ -812,10 +818,10 @@ VALUES
   	userName = @givenEmployeeUserName AND
     	jobID = @givenJobID;
 
--- ----------------------------------------------------------------------------------------------------------------  
+-- ----------------------------------------------------------------------------------------------------------------
 -- xiii. Report of applied jobs by an employee during a specific period of time (Job title, date applied, short
 -- description of the job up to 50 characters, status of the application).
--- ----------------------------------------------------------------------------------------------------------------  
+-- ----------------------------------------------------------------------------------------------------------------
 
   SET @givenEmployeeUserName = 'LeilaDisney';
   SET @givenStartDate = '2019-05-07';
@@ -829,7 +835,7 @@ VALUES
     	@givenStartDate <= appliedDate AND
     	appliedDate <= @givenEndDate;
 
--- ----------------------------------------------------------------------------------------------------------------  
+-- ----------------------------------------------------------------------------------------------------------------
 -- xiv. Add a method of payment by a user.
 -- ----------------------------------------------------------------------------------------------------------------
 
@@ -855,7 +861,7 @@ VALUES
   VALUES
   	(@givenUserName, NULL, @givenAccountNumber);
 
--- ----------------------------------------------------------------------------------------------------------------  
+-- ----------------------------------------------------------------------------------------------------------------
 -- xiv. Delete a method of payment by a user.
 -- ----------------------------------------------------------------------------------------------------------------
 
@@ -871,7 +877,7 @@ VALUES
   WHERE
 	paymentID = @givenPaymentID;
 
--- ----------------------------------------------------------------------------------------------------------------  
+-- ----------------------------------------------------------------------------------------------------------------
 -- xiv. Edit a method of payment by a user.
 -- ----------------------------------------------------------------------------------------------------------------
 
@@ -897,7 +903,7 @@ VALUES
   WHERE
 	paymentID = @givenPaymentID;
 
--- ----------------------------------------------------------------------------------------------------------------  
+-- ----------------------------------------------------------------------------------------------------------------
 -- xvi. Make a manual payment by a user.
 -- ----------------------------------------------------------------------------------------------------------------
 
@@ -909,7 +915,7 @@ VALUES
   	userName = @givenUserName AND
     	subscriptionID <> 0;
 
--- ----------------------------------------------------------------------------------------------------------------  
+-- ----------------------------------------------------------------------------------------------------------------
 -- xvii. Report of all users by the administrator for employers or employees (Name, email, category, status,
 -- balance).
 -- ----------------------------------------------------------------------------------------------------------------
@@ -923,7 +929,7 @@ VALUES
     	role = @givenRole;
 
 
--- ----------------------------------------------------------------------------------------------------------------  
+-- ----------------------------------------------------------------------------------------------------------------
 -- xviii. Report of all outstanding balance accounts (User name, email, balance, since when the account is
 -- suffering).
 -- ----------------------------------------------------------------------------------------------------------------
@@ -932,20 +938,20 @@ VALUES
   FROM User
   WHERE
 	balance < 0;
-    
 
--- ----------------------------------------------------------------------------------------------------------------  
+
+-- ----------------------------------------------------------------------------------------------------------------
 -- bonus: A suffering account will receive a warning message once a week until the account is settled or deactivated.
 -- ----------------------------------------------------------------------------------------------------------------
 
-  SELECT userName, email 
-  FROM `user` 
+  SELECT userName, email
+  FROM `user`
   WHERE lastPayment < DATE_ADD(DATE(NOW()), INTERVAL -1 WEEK)
-	AND balance < 0 
+	AND balance < 0
         AND `active` = 1;
 
 
--- ----------------------------------------------------------------------------------------------------------------  
+-- ----------------------------------------------------------------------------------------------------------------
 -- bonus: A suffering account for a year will be deactivated automatically by the system.
 -- ----------------------------------------------------------------------------------------------------------------
 
@@ -954,105 +960,95 @@ VALUES
   	SET `active` = 0
     	WHERE
 		lastPayment < DATE_ADD(DATE(NOW()), INTERVAL -1 YEAR)
-		AND balance < 0 
+		AND balance < 0
 		AND `active` = 1;
   SET SQL_SAFE_UPDATES=1;
 
 
--- ----------------------------------------------------------------------------------------------------------------  
--- bonus: Charge everyone using automatic payment in the DB the amount of their subscription cost. 
+-- ----------------------------------------------------------------------------------------------------------------
+-- bonus: Charge everyone using automatic payment in the DB the amount of their subscription cost.
 -- ----------------------------------------------------------------------------------------------------------------
   SET SQL_SAFE_UPDATES=0;
 
-  -- for automatic payment 
+  -- for automatic payment
   UPDATE `user`
 	SET lastPayment = DATE(NOW()), balance = 0
-    	WHERE paysWithManual = 0 
-		AND `active` = 1 
+    	WHERE paysWithManual = 0
+		AND `active` = 1
             	AND lastPayment < DATE_ADD(DATE(NOW()), INTERVAL -1 MONTH);
 
-  -- for manual payment 
-  SELECT userName, email 
+  -- for manual payment
+  SELECT userName, email
 	FROM `user`
-    	WHERE paysWithManual = 1 
-		AND `active` = 1 
-            	AND lastPayment < DATE_ADD(DATE(NOW()), INTERVAL -1 MONTH); 
+    	WHERE paysWithManual = 1
+		AND `active` = 1
+            	AND lastPayment < DATE_ADD(DATE(NOW()), INTERVAL -1 MONTH);
 
   SET SQL_SAFE_UPDATES=1;
 ```
 
+### PART 7 - Functionalities
 
-### PART 7 - Functionalities 
+To satisfy the project requirements, we have implemented the following functionalities:
 
-To satisfy the project requirements, we have implemented the following functionalities: 
+- User Authentication
 
-* User Authentication   
+In order to use the database, an user has to store his or her information in the database by registering. The registration requires the user to provide his or her user name, first name, last name, email address and password. A registered user can login to the database with the correct combination of user name and password.
 
-In order to use the database, an user has to store his or her information in the database by registering. The registration requires the user to provide his or her user name, first name, last name, email address and password. A registered user can login to the database with the correct combination of user name and password. 
+- Account Setting
 
-* Account Setting 
+A user can change his or her account information such as email and password, as well as changing his or her subscription type, or his or her payment method.
 
-A user can change his or her account information such as email and password, as well as changing his or her subscription type, or his or her payment method. 
+- Database Interaction
 
-* Database Interaction  
+Depending on the user type and his or her subscription, a user can query the database of existing jobs and to modify entries. For example, an employee can search for and apply for jobs, while an employer can post jobs and see who has applied to his or her postings. The administrator has access to all user information, and can activate or deactivate user accounts.
 
-Depending on the user type and his or her subscription, a user can query the database of existing jobs and to modify entries. For example, an employee can search for and apply for jobs, while an employer can post jobs and see who has applied to his or her postings. The administrator has access to all user information, and can activate or deactivate user accounts. 
+- Input Validation
 
-* Input Validation 
+We have put forward a sophisticated set of constraints for our input validation. For example, we check for if an input credit card has a valid number of digits, or if an input email address's syntax is valid.
 
-We have put forward a sophisticated set of constraints for our input validation. For example, we check for if an input credit card has a valid number of digits, or if an input email address's syntax is valid. 
+- Password Encryption
 
-* Password Encryption 
+We encrypt our users' passwords.
 
-We encrypt our users' passwords. 
+### PART 8 - User Interface
 
-
-
-
-### PART 8 - User Interface  
-
-The user interface is divided to satisfy the need of 3 types of users: the employee, the employer and the administrator. 
+The user interface is divided to satisfy the need of 3 types of users: the employee, the employer and the administrator.
 
 All users need to first login regardless of their type. Below are the login and registration interfaces.
 
-Login page             |  Registration page
-:-------------------------:|:-------------------------:
-<img src="https://i.imgur.com/HHXuKrm.png" alt="" width="200"/>  |  <img src="https://i.imgur.com/nSTdV7V.png" alt="" width="200"/>
+|                           Login page                            |                        Registration page                        |
+| :-------------------------------------------------------------: | :-------------------------------------------------------------: |
+| <img src="https://i.imgur.com/HHXuKrm.png" alt="" width="200"/> | <img src="https://i.imgur.com/nSTdV7V.png" alt="" width="200"/> |
 
 Depending on the user type, different navigation panels show up after user login. Below are navigation panels for employees, employers and administrators.
 
+|                            Employee                             |                            Employer                             |                              Admin                              |
+| :-------------------------------------------------------------: | :-------------------------------------------------------------: | :-------------------------------------------------------------: |
+| <img src="https://i.imgur.com/4LHQy2D.png" alt="" width="200"/> | <img src="https://i.imgur.com/RfBBKve.png" alt="" width="200"/> | <img src="https://i.imgur.com/oplGCQR.png" alt="" width="200"/> |
 
-Employee             |  Employer | Admin
+For the user type employee, 3 types of dashboards can be accessed from the navigation panel. Below are sample boards.
+Job Listings | Account Settings | Payment Methods
 :-------------------------:|:-------------------------:|:-------------------------:
-<img src="https://i.imgur.com/4LHQy2D.png" alt="" width="200"/>  |  <img src="https://i.imgur.com/RfBBKve.png" alt="" width="200"/> |<img src="https://i.imgur.com/oplGCQR.png" alt="" width="200"/> 
-
-
-For the user type employee, 3 types of dashboards can be accessed from the navigation panel. Below are sample boards. 
-Job Listings             |  Account Settings | Payment Methods 
-:-------------------------:|:-------------------------:|:-------------------------:
-<img src="https://i.imgur.com/VfSHNda.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/zaSRJHN.png" alt="" width="500"/> |<img src="https://i.imgur.com/ifX7WsJ.png" alt="" width="500"/>
-
+<img src="https://i.imgur.com/VfSHNda.png" alt="" width="500"/> | <img src="https://i.imgur.com/zaSRJHN.png" alt="" width="500"/> |<img src="https://i.imgur.com/ifX7WsJ.png" alt="" width="500"/>
 
 For the user type employer, 4 types of dashboards can be accessed from the navigation panel. Below are sample boards.
-Your Job Postings             |  Account Settings | Payment Methods | Contact Support 
+Your Job Postings | Account Settings | Payment Methods | Contact Support
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
-<img src="https://i.imgur.com/PuJ4LK2.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/YBvhUFT.png" alt="" width="500"/> |<img src="https://i.imgur.com/h14al29.png" alt="" width="500"/> | <img src="https://i.imgur.com/F17SWez.png" alt="" width="500"/>
+<img src="https://i.imgur.com/PuJ4LK2.png" alt="" width="500"/> | <img src="https://i.imgur.com/YBvhUFT.png" alt="" width="500"/> |<img src="https://i.imgur.com/h14al29.png" alt="" width="500"/> | <img src="https://i.imgur.com/F17SWez.png" alt="" width="500"/>
 
-
-For the user type admin, 2 types of dashboards can be accessed from the navigation panel. Below are sample boards. 
-Job Overview            |  User Overview 
+For the user type admin, 2 types of dashboards can be accessed from the navigation panel. Below are sample boards.
+Job Overview | User Overview
 :-------------------------:|:-------------------------:
-<img src="https://i.imgur.com/OImZ1Ib.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/Im89hS9.png" alt="" width="500"/> 
-
+<img src="https://i.imgur.com/OImZ1Ib.png" alt="" width="500"/> | <img src="https://i.imgur.com/Im89hS9.png" alt="" width="500"/>
 
 Based on the above structure, additional dashboards show up when users interact with the database. Below are some sample boards.
 
-Editing Account information            |  Adding a CreditCard |  Changing Subscription Option 
-:-------------------------:|:-------------------------:|:-------------------------:
-<img src="https://i.imgur.com/Zg6HOXr.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/xw8ZoEw.png" alt="" width="500"/> |  <img src="https://i.imgur.com/YPljWUR.png" alt="" width="500"/> 
+|                   Editing Account information                   |                       Adding a CreditCard                       |                  Changing Subscription Option                   |
+| :-------------------------------------------------------------: | :-------------------------------------------------------------: | :-------------------------------------------------------------: |
+| <img src="https://i.imgur.com/Zg6HOXr.png" alt="" width="500"/> | <img src="https://i.imgur.com/xw8ZoEw.png" alt="" width="500"/> | <img src="https://i.imgur.com/YPljWUR.png" alt="" width="500"/> |
 
-
-### PART 9 - Query Results 
+### PART 9 - Query Results
 
 i. Create/Delete/Edit/Display an Employer.
 
@@ -1078,7 +1074,6 @@ vi. Report of posted jobs by an employer during a specific period of time (Job t
 
 <img src = "https://i.imgur.com/F03a2uc.png">
 
-
 vii. Create/Delete/Edit/Display an Employee.
 
 <img src = "https://i.imgur.com/qe3pbvP.png">
@@ -1102,7 +1097,7 @@ xi. Withdraw from an applied job by an employee.
 
 xii. Delete a profile by an employee.
 
-The result of this query can be demonstrated on the demo. 
+The result of this query can be demonstrated on the demo.
 
 xiii. Report of applied jobs by an employee during a specific period of time (Job title, date applied, short description of the job up to 50 characters, status of the application).
 
@@ -1127,4 +1122,3 @@ xvii. Report of all users by the administrator for employers or employees (Name,
 xviii. Report of all outstanding balance accounts (User name, email, balance, since when the account is suffering).
 
 <img src = "https://i.imgur.com/MDm1Ynh.png">
-
