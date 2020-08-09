@@ -1,5 +1,7 @@
 # COMP 353 Main Project
 
+Team Account/ID: jxc353_1 
+
 |    Student Name     | Student # |
 | :-----------------: | :-------: |
 |   Sean Heinrichs    | 40075789  |
@@ -13,7 +15,7 @@
 
 - Sean Heinrichs
 - Simon Huang
-- Shuo Zhang
+- Shuo Zhang: multiple queries/transactions, generate test data, documentation
 - Pierre-André Gagnon: E/R design, relational schema normalization, multiple queries/transactions...
 
 ### PART 2 - Conceptual Design and E/R Diagram
