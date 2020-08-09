@@ -330,6 +330,8 @@ Prime attributes: `P` and `J`.
 So it is in 3NF.
 
 ### PART 4 - SQL Statements to Create or to Reset the Database
+
+```
 -- RUNNING THIS SCRIPT RESETS THE DATABASE
 
 USE jxc353_1;
@@ -338,14 +340,14 @@ USE jxc353_1;
 -- Drop all previous tables (ORDER MATTERS)
 -- --------------------------------------------------
 
-* DROP TABLE IF EXISTS `Applicant`;
-* DROP TABLE IF EXISTS `PaymentMethod`;
-* DROP TABLE IF EXISTS `CreditCard`;
-* DROP TABLE IF EXISTS `Admin`;
-* DROP TABLE IF EXISTS `Job`;
-* DROP TABLE IF EXISTS `User`;
-* DROP TABLE IF EXISTS `Category`;
-* DROP TABLE IF EXISTS `Subscription`;
+DROP TABLE IF EXISTS `Applicant`;
+DROP TABLE IF EXISTS `PaymentMethod`;
+DROP TABLE IF EXISTS `CreditCard`;
+DROP TABLE IF EXISTS `Admin`;
+DROP TABLE IF EXISTS `Job`;
+DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `Category`;
+DROP TABLE IF EXISTS `Subscription`;
 
 -- --------------------------------------------------
 -- Create all tables (ORDER MATTERS)
@@ -421,9 +423,10 @@ CREATE TABLE `Applicant`(
   FOREIGN KEY (`userName`) REFERENCES `User`(`userName`) ON DELETE CASCADE,
   FOREIGN KEY (`jobID`) REFERENCES `Job`(`jobID`)
 ) ENGINE=InnoDB;
+```
 
 ### PART 5 - SQL Statements to Populate the Database with test data 
-
+```
 -- RUNNING THIS SCRIPT POPULATES THE DATABASE
 
 USE jxc353_1;
@@ -509,8 +512,9 @@ VALUES
   ('MelisseCostley', '4', 'hired', '2020-03-01'),
   ('SanfordGout', '5', 'pending', '2020-02-01'),
   ('LeilaDisney', '3', 'pending', '2020-01-01');
-
+```
 ### PART 6 - SQL Statements to Query the Database
+```
 -- -----------------------------------------------------------------------------------------------------------------
 -- i. Create an Employer.
 -- -----------------------------------------------------------------------------------------------------------------
@@ -960,3 +964,4 @@ SELECT userName, email
             AND lastPayment < DATE_ADD(DATE(NOW()), INTERVAL -1 MONTH); 
 
 SET SQL_SAFE_UPDATES=1;
+```
