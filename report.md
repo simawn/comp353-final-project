@@ -998,13 +998,19 @@ Employee             |  Employer | Admin
 <img src="https://i.imgur.com/4LHQy2D.png" alt="" width="200"/>  |  <img src="https://i.imgur.com/RfBBKve.png" alt="" width="200"/> |<img src="https://i.imgur.com/oplGCQR.png" alt="" width="200"/> 
 
 
-For the user type employee, 3 types of panels can be accessed from the navigation panel. Below are samples of the 3 types of panels. 
+For the user type employee, 3 types of panels can be accessed from the navigation panel. Below are sample panels. 
 Job Listings             |  Account Settings | Payment Methods 
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://i.imgur.com/VfSHNda.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/zaSRJHN.png" alt="" width="500"/> |<img src="https://i.imgur.com/ifX7WsJ.png" alt="" width="500"/>
 
 
-For the user type employer, 4 types of panels can be accessed from the navigation panel. Below are samples of the 4 types of panels. 
+For the user type employer, 4 types of panels can be accessed from the navigation panel. Below are samples panels.
 Your Job Postings             |  Account Settings | Payment Methods | Contact Support 
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://i.imgur.com/PuJ4LK2.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/YBvhUFT.png" alt="" width="500"/> |<img src="https://i.imgur.com/h14al29.png" alt="" width="500"/> | <img src="https://i.imgur.com/F17SWez.png" alt="" width="500"/>
+
+
+For the user type admin, 2 types of panels can be accessed from the navigation panel. Below are samples panels. 
+Job Overview            |  User Overview 
+:-------------------------:|:-------------------------:
+<img src="https://i.imgur.com/OImZ1Ib.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/Im89hS9.png" alt="" width="500"/> 
