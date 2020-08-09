@@ -980,6 +980,8 @@ VALUES
 
   SET SQL_SAFE_UPDATES=1;
 ```
+
+
 ### PART 7 - Functionalities 
 
 To satisfy the project requirements, we have implemented the following functionalities: 
@@ -990,15 +992,19 @@ In order to use the database, an user has to store his or her information in the
 
 * Account Setting 
 
-A user can change his or her account information such as email and password, as well as changing his or her subscription type, or to change his or her payment method. 
+A user can change his or her account information such as email and password, as well as changing his or her subscription type, or his or her payment method. 
 
 * Database Interaction  
 
-Depending on the user type and his or her subscription, a user can query the database of existing jobs and to modify entries. For example, an employee can search for and apply to jobs, an employer can post jobs and see who has applied to his or her postings. 
+Depending on the user type and his or her subscription, a user can query the database of existing jobs and to modify entries. For example, an employee can search for and apply for jobs, while an employer can post jobs and see who has applied to his or her postings. The administrator has access to all user information, and can activate or deactivate user accounts. 
 
 * Input Validation 
 
-We have made a sophisticated set of constraints for our input validation. For example, we check for if an input credit card has a valid number of digits, if an input email address is of a valid syntax, etc. 
+We have put forward a sophisticated set of constraints for our input validation. For example, we check for if an input credit card has a valid number of digits, or if an input email address's syntax is valid. 
+
+* Password Encryption 
+We encrypt our user passwords, and the administrator has no access to passwords. 
+
 
 
 
@@ -1044,3 +1050,28 @@ For the user type admin, 2 types of panels can be accessed from the navigation p
 Editing Account information            |  Adding a CreditCard |  Changing Subscription Option 
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="https://i.imgur.com/Zg6HOXr.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/xw8ZoEw.png" alt="" width="500"/> |  <img src="https://i.imgur.com/YPljWUR.png" alt="" width="500"/> 
+
+
+### PART 9 - Query Results 
+
+i. Create/Delete/Edit/Display an Employer.
+<img src = "https://i.imgur.com/rBJB7q1.png" width = "1000">
+
+ii. Create/Delete/Edit/Display a category by an Employer.
+iii. Post a new job by an employer.
+iv. Provide a job offer for an employee by an employer.
+v. Report of a posted job by an employer (Job title and description, date posted, list of employees applied to the job and status of each application).
+vi. Report of posted jobs by an employer during a specific period of time (Job title, date posted, short description of the job up to 50 characters, number of needed employees to the post, number of applied jobs to the post, number of accepted offers).
+vii. Create/Delete/Edit/Display an Employee.
+viii. Search for a job by an employee.
+ix. Apply for a job by an employee.
+x. Accept/Deny a job offer by an employee.
+xi. Withdraw from an applied job by an employee.
+xii. Delete a profile by an employee.
+xiii. Report of applied jobs by an employee during a specific period of time (Job title, date applied, short description of the job up to 50 characters, status of the application).
+xiv. Add/Delete/Edit a method of payment by a user.
+xv. Add/Delete/Edit an automatic payment by a user.
+xvi. Make a manual payment by a user.
+xvii. Report of all users by the administrator for employers or employees (Name, email, category, status, balance.
+xviii. Report of all outstanding balance accounts (User name, email, balance, since when the account is suffering).
+
