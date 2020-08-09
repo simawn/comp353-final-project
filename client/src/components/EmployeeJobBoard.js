@@ -122,11 +122,9 @@ function EmployerJobBoard({ userName, frozen, deactivated }) {
   };
 
   useEffect(() => {
-    if (isEmpty(jobsList)) {
-      dispatch(browseJobsRequest());
-      dispatch(getApplicantStatusRequest(userName));
-      dispatch(browseCategoriesRequest());
-    }
+    dispatch(browseJobsRequest());
+    dispatch(getApplicantStatusRequest(userName));
+    dispatch(browseCategoriesRequest());
   }, []);
 
   useEffect(() => {
