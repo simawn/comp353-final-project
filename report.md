@@ -982,5 +982,5 @@ VALUES
 ```
 ### PART 7 - User Interface  
 
-![alt text](https://imgur.com/a/J1ZUwgK)
+![alt text](https://i.imgur.com/HHXuKrm.png)
 
