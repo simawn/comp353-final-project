@@ -990,14 +990,9 @@ Login page             |  Registration page
 :-------------------------:|:-------------------------:
 <img src="https://i.imgur.com/HHXuKrm.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/nSTdV7V.png" alt="" width="500"/>
 
+Depending on the user type, different navigation panels show up after user login. Below are navigation panels for employees, employers and administrators
 
-<figure>
-	<img src="https://i.imgur.com/HHXuKrm.png" alt="" width="500"/>
-	<figcaption>                    figure 1: login page</figcaption>
-</figure>
-
-<figure>
-	<img src="https://i.imgur.com/nSTdV7V.png" alt="" width="500"/>
-	<figcaption>                    figure 2: registration page</figcaption>
-</figure>
+Employee             |  Employer | Admin
+:-------------------------:|:-------------------------:|:-------------------------:
+<img src="https://i.imgur.com/wPUekOQ.png" alt="" width="500"/>  |  <img src="https://i.imgur.com/nSTdV7V.png" alt="" width="500"/> |<img src="https://i.imgur.com/nSTdV7V.png" alt="" width="500"/> 
 
