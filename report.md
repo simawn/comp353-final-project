@@ -91,7 +91,7 @@ After the conversion we add the following relations:
   - Primary key: `jobID`
   - Foreign key: `userName` from `User`
   - Foreigh key: `categoryName` from `Category`
-- `Category(categoryName)
+- `Category(categoryName)`
   - Primary key: `categoryName`
 - `PaymentMethod(paymentID,userName,creditCardNumber,accountNumber,active)`
   - Primary key: `paymentID`
@@ -980,3 +980,7 @@ VALUES
 
   SET SQL_SAFE_UPDATES=1;
 ```
+### PART 7 - USER INTERFACE 
+
+
+
