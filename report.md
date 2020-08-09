@@ -1092,12 +1092,33 @@ ix. Apply for a job by an employee.
 <img src = "https://i.imgur.com/ofRw8wD.png">
 
 x. Accept/Deny a job offer by an employee.
+
+When an employee denies a job, his or her status becomes 'withdrawn'
+<img src = "https://i.imgur.com/dfbv0gk.png">
+
 xi. Withdraw from an applied job by an employee.
+
+<img src = "https://i.imgur.com/dfbv0gk.png">
+
 xii. Delete a profile by an employee.
+
+The result of this query can be demonstrated on the demo. 
+
 xiii. Report of applied jobs by an employee during a specific period of time (Job title, date applied, short description of the job up to 50 characters, status of the application).
+
+<img src="https://i.imgur.com/FLaIqSu.png">
+
 xiv. Add/Delete/Edit a method of payment by a user.
+
+
 xv. Add/Delete/Edit an automatic payment by a user.
+
+
 xvi. Make a manual payment by a user.
+
+
 xvii. Report of all users by the administrator for employers or employees (Name, email, category, status, balance.
+
+
 xviii. Report of all outstanding balance accounts (User name, email, balance, since when the account is suffering).
 
