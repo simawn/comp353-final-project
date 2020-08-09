@@ -981,5 +981,7 @@ VALUES
   SET SQL_SAFE_UPDATES=1;
 ```
 ### PART 7 - User Interface  
-
-<img src="https://i.imgur.com/HHXuKrm.png" alt="" width="200"/>
+<figure>
+	<img src="https://i.imgur.com/HHXuKrm.png" alt="" width="500"/>
+	<figcaption>figure 1: login page</figcaption>
+</figure>
