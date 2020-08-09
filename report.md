@@ -1093,8 +1093,8 @@ ix. Apply for a job by an employee.
 
 x. Accept/Deny a job offer by an employee.
 
-When an employee denies a job, his or her status becomes 'withdrawn'
 <img src = "https://i.imgur.com/dfbv0gk.png">
+When an employee denies a job, his or her status becomes 'withdrawn'
 
 xi. Withdraw from an applied job by an employee.
 
@@ -1110,15 +1110,21 @@ xiii. Report of applied jobs by an employee during a specific period of time (Jo
 
 xiv. Add/Delete/Edit a method of payment by a user.
 
+<img src = "https://i.imgur.com/idWl1Uh.png">
 
 xv. Add/Delete/Edit an automatic payment by a user.
 
+<img src = "https://i.imgur.com/idWl1Uh.png">
 
 xvi. Make a manual payment by a user.
 
+<img src = "https://i.imgur.com/MDm1Ynh.png">
 
 xvii. Report of all users by the administrator for employers or employees (Name, email, category, status, balance.
 
+<img src = "https://i.imgur.com/xskQjjz.png">
 
 xviii. Report of all outstanding balance accounts (User name, email, balance, since when the account is suffering).
+
+<img src = "https://i.imgur.com/MDm1Ynh.png">
 
