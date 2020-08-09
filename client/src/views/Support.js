@@ -62,7 +62,7 @@ function Support() {
                   <b>Support Phone Number:</b> 1-888-123-4567
                 </Typography>
                 <Typography align="center" style={{ paddingTop: "30px", paddingBottom: "30px" }}>
-                  <b>Support E-mail:</b> atotallyrealemail@customersupport.ca
+                  <b>Support E-mail:</b> <a href="mailto:atotallyrealemail@customersupport.ca">atotallyrealemail@customersupport.ca</a>
                 </Typography>
               </Paper>
             </Grid>
